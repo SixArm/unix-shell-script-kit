@@ -1,5 +1,5 @@
 ## 
-# SixArm.com Unix shell functions
+# SixArm Unix shell functions
 #
 # We write lots of Unix shell functions for many kinds of scripts.
 # This file is our utility library of generally useful tiny functions.
@@ -13,8 +13,8 @@
 #
 # ## Tracking
 #
-#   * Package: sixarm-shell-helpers
-#   * Version: 5.0.0
+#   * Package: sixarm-unix-shell-functions
+#   * Version: 5.1.0
 #   * Created: 2017-08-22
 #   * Updated: 2018-10-21
 #   * License: GPL
@@ -67,18 +67,18 @@ sum() { awk '{for(i=1; i<=NF; i++) sum+=$i; } END {print sum}' ; }
 # cmd: return true iff a command exists
 cmd() { command -v $1 >/dev/null 2>&1 ; }
 
-# exe: run all the executable commands in a given directory and its subdirectories
+# exe: run all the executable commands in a given directory and subdirectories
 exe() { [ -d "$1" ] && find "$1" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec {} \; ; }
 
 ##
 # Array helpers
 ##
 
-# arri: get the array item at index `i`.
-arri() { [ $# == 3 ] && awk -F "$2" "{print \$$3}" <<< "$1" || awk "{print \$$2}" <<< "$1" ; }
+# array_i: get the array item at index `i`.
+array_i() { [ $# == 3 ] && awk -F "$2" "{print \$$3}" <<< "$1" || awk "{print \$$2}" <<< "$1" ; }
 
-# arrn: get the array number of fields a.k.a. length a.k.a. size.
-arrn() { [ $# == 2 ] && awk -F "$2" "{print NF}"   <<< "$1" || awk "{print NF}"   <<< "$1" ; }
+# array_n: get the array number of fields a.k.a. length a.k.a. size.
+array_n() { [ $# == 2 ] && awk -F "$2" "{print NF}"   <<< "$1" || awk "{print NF}" <<< "$1" ; }
 
 ##
 # Assert helpers
