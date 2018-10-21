@@ -1,0 +1,105 @@
+## 
+# SixArm.com Unix shell functions
+#
+# We write lots of Unix shell functions for many kinds of scripts.
+# This file is our utility library of generally useful tiny functions.
+#
+# ## Known issues
+#
+# now(): on macOS and BSD, the default `date` command does not
+# currently support the nanosecond format, so the now() function
+# returns the letter "N" instead of nanoseconds. This is fine for
+# our typical purposes. A good solution is to install GNU date.
+#
+# ## Tracking
+#
+#   * Package: sixarm-shell-helpers
+#   * Version: 5.0.0
+#   * Created: 2017-08-22
+#   * Updated: 2018-10-21
+#   * License: GPL
+#   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
+##
+
+##
+# Output helpers
+##
+
+# out: print output message to stdout
+out() { printf %s\\n "$*" ; }
+
+# err: print error message to stderr
+err() { >&2 printf %s\\n "$*" ; }
+
+# die: print error message to stderr, then exit with error code 1
+die() { >&2 printf %s\\n "$*" ; exit 1 ; }
+
+# log: print the current datestamp, the process id, and a message
+log() { printf '%s %s %s\n' "$( now )" $$ "$*" ; }
+
+# zid: generate a 32-bit secure random lowercase hex identifier
+zid() { hexdump -n 16 -v -e '16/1 "%02x" "\n"' /dev/random ; }
+
+##
+# Time helpers
+##
+
+# now: get the current datetime using ISO standard format.
+now() { date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" ; }
+
+# sec: get the current time in Unix seconds.
+sec() { date "+%s" ; }
+
+##
+# Number helpers
+##
+
+# int: convert a number string to an integer number string.
+int() { awk '{ print int($1) }' ; }
+
+# sum: print the sum of numbers
+sum() { awk '{for(i=1; i<=NF; i++) sum+=$i; } END {print sum}' ; }
+
+##
+# Run helpers
+##
+
+# cmd: return true iff a command exists
+cmd() { command -v $1 >/dev/null 2>&1 ; }
+
+# exe: run all the executable commands in a given directory and its subdirectories
+exe() { [ -d "$1" ] && find "$1" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec {} \; ; }
+
+##
+# Array helpers
+##
+
+# arri: get the array item at index `i`.
+arri() { [ $# == 3 ] && awk -F "$2" "{print \$$3}" <<< "$1" || awk "{print \$$2}" <<< "$1" ; }
+
+# arrn: get the array number of fields a.k.a. length a.k.a. size.
+arrn() { [ $# == 2 ] && awk -F "$2" "{print NF}"   <<< "$1" || awk "{print NF}"   <<< "$1" ; }
+
+##
+# Assert helpers
+##
+
+# Assert an item is empty.
+assert_empty() { [ -z "$1" ] || err $FUNCNAME "$@" ; }
+
+# Assert an item is equal to another item.
+assert_equal() { [ "$1" = "$2" ] || err $FUNCNAME "$@" ; }
+
+# Assert an item matches a regular expression.
+assert_match() { [[ "$2" =~ $1 ]] || err $FUNCNAME "$@" ; }
+
+##
+# Home helpers
+##
+
+log_home() { out "${LOG_HOME:=$HOME/.log}" ; }
+data_home() { out "${XDG_DATA_HOME:=$HOME/.local/share}" ; }
+cache_home() { out "${XDG_CACHE_HOME:=$HOME/.cache}" ; }
+config_home() { out "${XDG_CONFIG_HOME:-$HOME/.config}" ; }
+runtime_home() { out "${XDG_RUNTIME_HOME:=$HOME/.runtime}" ; }
+temp_home() { out $(mktemp -d -t "${1:-$(zid)}"); }
