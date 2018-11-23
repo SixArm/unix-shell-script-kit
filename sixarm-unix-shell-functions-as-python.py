@@ -6,6 +6,11 @@
 # These are for convenience, to help porting shell scripts to Python.
 ##
 
+import datetime
+import logging
+import subprocess
+import secrets
+
 def out(msg):
   print(msg)
 
