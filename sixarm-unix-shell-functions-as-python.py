@@ -21,6 +21,9 @@ def die(msg):
   logging.critcal(msg)
   sys.exit(1)
 
+def big(msg):
+  print("\n\n###\n#\n# " + msg + "\n#\n###\n\n")
+
 def now():
   return datetime.datetime.utcnow().isoformat() + "Z"
 

@@ -14,9 +14,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 5.1.0
+#   * Version: 5.2.0
 #   * Created: 2017-08-22
-#   * Updated: 2018-10-21
+#   * Updated: 2018-12-02
 #   * License: GPL
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -33,6 +33,9 @@ err() { >&2 printf %s\\n "$*" ; }
 
 # die: print error message to stderr, then exit with error code 1
 die() { >&2 printf %s\\n "$*" ; exit 1 ; }
+
+# big: print a big banner to stdout, good for human readability
+big() { printf \\n###\\n#\\n#\ %s\\n#\\n###\\n\\n "$*"; }
 
 # log: print the current datestamp, the process id, and a message
 log() { printf '%s %s %s\n' "$( now )" $$ "$*" ; }
