@@ -1,3 +1,5 @@
+#!/bin/sh
+
 ## 
 # SixArm Unix shell functions
 #
@@ -14,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 5.2.0
+#   * Version: 5.2.1
 #   * Created: 2017-08-22
-#   * Updated: 2018-12-02
+#   * Updated: 2018-12-10
 #   * License: GPL
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -68,7 +70,7 @@ sum() { awk '{for(i=1; i<=NF; i++) sum+=$i; } END {print sum}' ; }
 ##
 
 # cmd: return true iff a command exists
-cmd() { command -v $1 >/dev/null 2>&1 ; }
+cmd() { command -v "$1" >/dev/null 2>&1 ; }
 
 # exe: run all the executable commands in a given directory and subdirectories
 exe() { [ -d "$1" ] && find "$1" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec {} \; ; }
@@ -105,4 +107,4 @@ data_home() { out "${XDG_DATA_HOME:=$HOME/.local/share}" ; }
 cache_home() { out "${XDG_CACHE_HOME:=$HOME/.cache}" ; }
 config_home() { out "${XDG_CONFIG_HOME:-$HOME/.config}" ; }
 runtime_home() { out "${XDG_RUNTIME_HOME:=$HOME/.runtime}" ; }
-temp_home() { out $(mktemp -d -t "${1:-$(zid)}"); }
+temp_home() { out "$(mktemp -d -t "${1:-$(zid)}")"; }
