@@ -1,6 +1,6 @@
 #!/bin/sh
 
-## 
+##
 # SixArm Unix shell functions
 #
 # We write lots of Unix shell functions for many kinds of scripts.
@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 5.2.1
+#   * Version: 6.0.0
 #   * Created: 2017-08-22
-#   * Updated: 2018-12-10
+#   * Updated: 2019-08-08
 #   * License: GPL
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -66,14 +66,18 @@ int() { awk '{ print int($1) }' ; }
 sum() { awk '{for(i=1; i<=NF; i++) sum+=$i; } END {print sum}' ; }
 
 ##
-# Run helpers
+# Validation helpers
 ##
 
 # cmd: return true iff a command exists
 cmd() { command -v "$1" >/dev/null 2>&1 ; }
 
-# exe: run all the executable commands in a given directory and subdirectories
-exe() { [ -d "$1" ] && find "$1" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec {} \; ; }
+##
+# Extensibility helpers
+##
+
+# run_all: run all the executable commands in a given directory and subdirectories
+run_all() { find "$1" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec {} \; ; }
 
 ##
 # Array helpers
