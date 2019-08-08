@@ -16,7 +16,7 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 6.2.0
+#   * Version: 6.3.0
 #   * Created: 2017-08-22
 #   * Updated: 2019-08-08
 #   * License: GPL
@@ -77,13 +77,13 @@ cmd() { command -v "$1" >/dev/null 2>&1 ; }
 ##
 
 # dot_all: source all the executable files in a given directory and subdirectories
-dot_all() { find "$1" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec . {} \; ; }
-
-# rm_all: remove all files in a given directory and subdirectories-- use with caution
-rm_all() { find "$1" -type f -exec rm {} \; ; }
+dot_all() { find "$1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec . {} \; ; }
 
 # run_all: run all the executable commands in a given directory and subdirectories
-run_all() { find "$1" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec {} \; ; }
+run_all() { find "${1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec {} \; ; }
+
+# rm_all: remove all files in a given directory and subdirectories-- use with caution
+rm_all() { find "${1:-.}" -type f -exec rm {} \; ; }
 
 ##
 # Array helpers
