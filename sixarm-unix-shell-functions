@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 6.3.0
+#   * Version: 6.3.1
 #   * Created: 2017-08-22
-#   * Updated: 2019-08-08
+#   * Updated: 2019-08-19
 #   * License: GPL
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -77,7 +77,7 @@ cmd() { command -v "$1" >/dev/null 2>&1 ; }
 ##
 
 # dot_all: source all the executable files in a given directory and subdirectories
-dot_all() { find "$1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec . {} \; ; }
+dot_all() { find "${1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec . {} \; ; }
 
 # run_all: run all the executable commands in a given directory and subdirectories
 run_all() { find "${1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec {} \; ; }
