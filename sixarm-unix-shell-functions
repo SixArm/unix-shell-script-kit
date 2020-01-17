@@ -50,7 +50,7 @@ zid() { hexdump -n 16 -v -e '16/1 "%02x" "\n"' /dev/random ; }
 ##
 
 # now: get the current datetime using ISO standard format.
-now() { date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" "$*" ; }
+now() { date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" "$@" ; }
 
 # sec: get the current time in Unix seconds.
 sec() { date "+%s" ; }
@@ -113,8 +113,15 @@ assert_match() { [[ "$2" =~ $1 ]] || err $FUNCNAME "$@" ; }
 ##
 
 log_home() { out "${LOG_HOME:=$HOME/.log}" ; }
+temp_home() { out "${TEMP_HOME:=$HOME/.temp}" ; }
 data_home() { out "${XDG_DATA_HOME:=$HOME/.local/share}" ; }
 cache_home() { out "${XDG_CACHE_HOME:=$HOME/.cache}" ; }
-config_home() { out "${XDG_CONFIG_HOME:-$HOME/.config}" ; }
+config_home() { out "${XDG_CONFIG_HOME:=$HOME/.config}" ; }
 runtime_home() { out "${XDG_RUNTIME_HOME:=$HOME/.runtime}" ; }
-temp_home() { out "$(mktemp -d -t "${1:-$(zid)}")"; }
+
+##
+# Make temp helpers
+##
+
+mktemp_dir() { x=$(mktemp -d -t "${1:-$(zid)}") ; trap '{ rm -rf "$x"; }' EXIT ; out "$x" ; }
+mktemp_file() { x=$(mktemp -t "${1:-$(zid)}") ; trap '{ rm -f "$x"; }' EXIT ; out "$x" ; }
