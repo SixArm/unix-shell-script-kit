@@ -112,12 +112,12 @@ assert_match() { [[ "$2" =~ $1 ]] || err $FUNCNAME "$@" ; }
 # Home helpers
 ##
 
-log_home() { out "${LOG_HOME:=$HOME/.log}" ; }
-temp_home() { out "${TEMP_HOME:=$HOME/.temp}" ; }
-data_home() { out "${XDG_DATA_HOME:=$HOME/.local/share}" ; }
-cache_home() { out "${XDG_CACHE_HOME:=$HOME/.cache}" ; }
-config_home() { out "${XDG_CONFIG_HOME:=$HOME/.config}" ; }
-runtime_home() { out "${XDG_RUNTIME_HOME:=$HOME/.runtime}" ; }
+log_home() { out "${LOG_HOME:-$HOME/.log}" ; }
+temp_home() { out "${TEMP_HOME:-$HOME/.temp}" ; }
+data_home() { out "${XDG_DATA_HOME:-$HOME/.local/share}" ; }
+cache_home() { out "${XDG_CACHE_HOME:-$HOME/.cache}" ; }
+config_home() { out "${XDG_CONFIG_HOME:-$HOME/.config}" ; }
+runtime_home() { out "${XDG_RUNTIME_HOME:-$HOME/.runtime}" ; }
 
 ##
 # Make temp helpers
