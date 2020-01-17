@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 6.3.1
+#   * Version: 6.4.0
 #   * Created: 2017-08-22
-#   * Updated: 2019-08-19
+#   * Updated: 2020-01-16
 #   * License: GPL
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -37,7 +37,7 @@ err() { >&2 printf %s\\n "$*" ; }
 die() { >&2 printf %s\\n "$*" ; exit 1 ; }
 
 # big: print a big banner to stdout, good for human readability
-big() { printf \\n###\\n#\\n#\ %s\\n#\\n###\\n\\n "$*"; }
+big() { printf \\n###\\n#\\n#\ %s\\n#\\n###\\n\\n "$*" ; }
 
 # log: print the current datestamp, the process id, and a message
 log() { printf '%s %s %s\n' "$( now )" $$ "$*" ; }
@@ -50,7 +50,7 @@ zid() { hexdump -n 16 -v -e '16/1 "%02x" "\n"' /dev/random ; }
 ##
 
 # now: get the current datetime using ISO standard format.
-now() { date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" ; }
+now() { date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" "$*" ; }
 
 # sec: get the current time in Unix seconds.
 sec() { date "+%s" ; }
