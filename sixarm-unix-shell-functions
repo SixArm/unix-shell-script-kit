@@ -55,8 +55,11 @@ now() { date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" "$@" ; }
 # sec: get the current time in Unix seconds.
 sec() { date "+%s" ; }
 
-# aget: get the age of a given time in Unix secords.
+# age: get the age of a given time in Unix secords.
 age() { printf %s\\n "$(( $(date "+%s") - $1 ))"; }
+
+# old: is the age of a given time older than a given number of seconds?
+old() { [ "$(( $(date "+%s") - $1 ))" -gt "$2" ]; }
 
 ##
 # Number helpers
