@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 6.5.0
+#   * Version: 6.6.0
 #   * Created: 2017-08-22
-#   * Updated: 2020-01-24
+#   * Updated: 2020-01-25
 #   * License: GPL
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -118,12 +118,23 @@ assert_match() { [[ "$2" =~ $1 ]] || err $FUNCNAME "$@" ; }
 # Home helpers
 ##
 
-log_home() { out "${LOG_HOME:-$HOME/.log}" ; }
-temp_home() { out "${TEMP_HOME:-$HOME/.temp}" ; }
-data_home() { out "${XDG_DATA_HOME:-$HOME/.local/share}" ; }
-cache_home() { out "${XDG_CACHE_HOME:-$HOME/.cache}" ; }
-config_home() { out "${XDG_CONFIG_HOME:-$HOME/.config}" ; }
-runtime_home() { out "${XDG_RUNTIME_HOME:-$HOME/.runtime}" ; }
+# Directory for log files (analogous to system /var/log).
+log_home() { out "${LOG_HOME:-${XDG_LOG_HOME:-$HOME/.log}}" ; }
+
+# Directory for temporary files (analogous to system /tmp).
+temp_home() { out "${TEMP_HOME:-${XDG_LOG_HOME:-$HOME/.temp}}" ; }
+
+# Directory for data files (analogous to system /usr/share).
+data_home() { out "${DATA_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}}" ; }
+
+# Directory for cache files (analogous to system /var/cache).
+cache_home() { out "${CACHE_HOME:-${XDG_CACHE_HOME:-$HOME/.cache}}" ; }
+
+# Directory for configuration files (analogous to system /etc).
+config_home() { out "${CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}" ; }
+
+# Directory for runtime files such as sockets, named pipes, etc.
+runtime_home() { out "${RUNTIME_HOME:-${XDG_RUNTIME_HOME:-$HOME/.runtime}}" ; }
 
 ##
 # Make temp helpers
