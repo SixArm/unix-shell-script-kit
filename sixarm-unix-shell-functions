@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 6.6.0
+#   * Version: 6.7.0
 #   * Created: 2017-08-22
-#   * Updated: 2020-01-25
+#   * Updated: 2020-01-30
 #   * License: GPL
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -58,8 +58,11 @@ sec() { date "+%s" ; }
 # age: get the age of a given time in Unix secords.
 age() { printf %s\\n "$(( $(date "+%s") - $1 ))"; }
 
-# old: is the age of a given time older than a given number of seconds?
-old() { [ "$(( $(date "+%s") - $1 ))" -gt "$2" ]; }
+# newer: is the age of a given time newer than a given number of seconds?
+newer() { [ "$(( $(date "+%s") - $1 ))" -lt "$2" ]; }
+
+# older: is the age of a given time older than a given number of seconds?
+older() { [ "$(( $(date "+%s") - $1 ))" -gt "$2" ]; }
 
 ##
 # Number helpers
