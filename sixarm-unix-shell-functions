@@ -154,17 +154,17 @@ mktemp_file() { x=$(mktemp -t "${1:-$(zid)}") ; trap '{ rm -f "$x"; }' EXIT ; ou
 ##
 
 # Get a file's media type a.k.a. mime type such as "text/plain"
-media_type() { file --brief --mime "$1" }
+media_type() { file --brief --mime "$1" ; }
 
 # Get a file's media type type a.k.a. mime type such as "text"
-media_type_type() { file --brief --mime "$1" | sed 's#/.*##' }
+media_type_type() { file --brief --mime "$1" | sed 's#/.*##' ; }
 
 # Get a file's media type subtype a.k.a. mime type such as "plain"
-media_type_subtype() { file --brief --mime "$1" | sed 's#^[^/]*/##; s#;.*##' }
+media_type_subtype() { file --brief --mime "$1" | sed 's#^[^/]*/##; s#;.*##' ; }
 
 ##
 # Content helpers
 ##
 
 # File ends with newline?
-file_ends_with_newline() { [[ $(tail -c1 "$1" | wc -l) -gt 0 ]] }
+file_ends_with_newline() { [[ $(tail -c1 "$1" | wc -l) -gt 0 ]] ; }
