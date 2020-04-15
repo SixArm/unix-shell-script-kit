@@ -167,4 +167,4 @@ media_type_subtype() { file --brief --mime "$1" | sed 's#^[^/]*/##; s#;.*##' ; }
 ##
 
 # File ends with newline?
-file_ends_with_newline() { [[ $(tail -c1 "$1" | wc -l) -gt 0 ]] ; }
+file_ends_with_newline() { test $(tail -c1 "$1" | wc -l) -gt 0 ; }
