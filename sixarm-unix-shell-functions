@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 6.7.0
+#   * Version: 6.8.0
 #   * Created: 2017-08-22
-#   * Updated: 2020-01-30
+#   * Updated: 2020-04-15
 #   * License: GPL
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -148,3 +148,23 @@ runtime_home() { out "${RUNTIME_HOME:-${XDG_RUNTIME_HOME:-$HOME/.runtime}}" ; }
 
 mktemp_dir() { x=$(mktemp -d -t "${1:-$(zid)}") ; trap '{ rm -rf "$x"; }' EXIT ; out "$x" ; }
 mktemp_file() { x=$(mktemp -t "${1:-$(zid)}") ; trap '{ rm -f "$x"; }' EXIT ; out "$x" ; }
+
+##
+# Media helpers
+##
+
+# Get a file's media type a.k.a. mime type such as "text/plain"
+media_type() { file --brief --mime "$1" }
+
+# Get a file's media type type a.k.a. mime type such as "text"
+media_type_type() { file --brief --mime "$1" | sed 's#/.*##' }
+
+# Get a file's media type subtype a.k.a. mime type such as "plain"
+media_type_subtype() { file --brief --mime "$1" | sed 's#^[^/]*/##; s#;.*##' }
+
+##
+# Content helpers
+##
+
+# File ends with newline?
+file_ends_with_newline() { [[ $(tail -c1 "$1" | wc -l) -gt 0 ]] }
