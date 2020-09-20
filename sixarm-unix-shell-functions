@@ -125,6 +125,9 @@ array_n() { [ $# == 2 ] && awk -F "$2" "{print NF}"   <<< "$1" || awk "{print NF
 # Assert helpers
 ##
 
+# Assert a test utility command succeeds.
+assert_test() { test "$1" "$2" || err $FUNCNAME "$@" ; }
+
 # Assert an item is empty.
 assert_empty() { [ -z "$1" ] || err $FUNCNAME "$@" ; }
 
