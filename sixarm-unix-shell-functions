@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 6.10.0
+#   * Version: 6.11.1
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2020-08-11T21:35:39Z
+#   * Updated: 2020-09-20T02:09:58Z
 #   * License: GPL-2.0-only
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -126,16 +126,16 @@ array_n() { [ $# == 2 ] && awk -F "$2" "{print NF}"   <<< "$1" || awk "{print NF
 ##
 
 # Assert a test utility command succeeds.
-assert_test() { test "$1" "$2" || err $FUNCNAME "$@" ; }
+assert_test() { test "$1" "$2" || err assert_test "$@" ; }
 
 # Assert an item is empty.
-assert_empty() { [ -z "$1" ] || err $FUNCNAME "$@" ; }
+assert_empty() { [ -z "$1" ] || err assert_empty "$@" ; }
 
 # Assert an item is equal to another item.
-assert_equal() { [ "$1" = "$2" ] || err $FUNCNAME "$@" ; }
+assert_equal() { [ "$1" = "$2" ] || err assert_equal "$@" ; }
 
 # Assert an item matches a regular expression.
-assert_match() { [[ "$2" =~ $1 ]] || err $FUNCNAME "$@" ; }
+assert_match() { [[ "$2" =~ $1 ]] || err assert_match "$@" ; }
 
 ##
 # Home helpers
