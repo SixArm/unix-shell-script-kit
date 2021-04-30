@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 6.11.1
+#   * Version: 6.12.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2020-09-20T02:09:58Z
+#   * Updated: 2021-04-30T02:49:22Z
 #   * License: GPL-2.0-only
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -57,7 +57,6 @@ pushdx() { command pushd "$@" > /dev/null ; }
 
 # popdx: popd with silencer
 popdx() { command popd "$@" > /dev/null ; }
-
 
 ##
 # Time helpers
@@ -163,7 +162,10 @@ runtime_home() { out "${RUNTIME_HOME:-${XDG_RUNTIME_HOME:-$HOME/.runtime}}" ; }
 # Make temp helpers
 ##
 
+# Make a temporary directory path
 mktemp_dir() { x=$(mktemp -d -t "${1:-$(zid)}") ; trap '{ rm -rf "$x"; }' EXIT ; out "$x" ; }
+
+# Make a temporary file path
 mktemp_file() { x=$(mktemp -t "${1:-$(zid)}") ; trap '{ rm -f "$x"; }' EXIT ; out "$x" ; }
 
 ##
