@@ -49,6 +49,16 @@ zid() { hexdump -n 16 -v -e '16/1 "%02x" "\n"' /dev/random ; }
 ask() { read x ; echo "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' ; }
 
 ##
+# Die helpers
+##
+
+# die_cmd: print error message that a command is needed, then exit
+die_cmd() { die "Command needed: $1" ; }
+
+# die_var: print error message that a variable is needed, then exit
+die_var() { die "Variable needed: $1" ; }
+
+##
 # Directory helpers
 ##
 
