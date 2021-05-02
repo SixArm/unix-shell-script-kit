@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 6.12.0
+#   * Version: 7.0.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-04-30T02:49:22Z
+#   * Updated: 2021-05-02T22:18:41Z
 #   * License: GPL-2.0-only
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -47,16 +47,6 @@ zid() { hexdump -n 16 -v -e '16/1 "%02x" "\n"' /dev/random ; }
 
 # ask: prompt the user for a line of input, then return a trimmed string
 ask() { read x ; echo "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' ; }
-
-##
-# Die helpers
-##
-
-# die_cmd: print error message that a command is needed, then exit
-die_cmd() { die "Command needed: $1" ; }
-
-# die_var: print error message that a variable is needed, then exit
-die_var() { die "Variable needed: $1" ; }
 
 ##
 # Directory helpers
@@ -103,6 +93,15 @@ sum() { awk '{for(i=1; i<=NF; i++) sum+=$i; } END {print sum}' ; }
 
 # cmd: return true iff a command exists
 cmd() { command -v "$1" >/dev/null 2>&1 ; }
+
+# cmd_or_die: ensure a command exists, otherwise die with a help message
+cmd_or_die() { cmd "$1" || die "Command needed: $1" ; }
+
+# var: return true iff a variable exists
+var() { ! eval 'test -z ${'$1'+x}' ; }
+
+# var_or_die: ensure a variable exists, otherwise die with a help message
+var_or_die() { var "$1" || die "Variable needed: $1" ; }
 
 ##
 # Extensibility helpers
