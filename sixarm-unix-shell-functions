@@ -3,8 +3,9 @@
 ##
 # SixArm Unix shell functions
 #
-# We write lots of Unix shell functions for many kinds of scripts.
-# This file is our utility library of generally useful tiny functions.
+# SixArm is a consulting group that writes a lot of software,
+# and this file is our general purpose library of Unix functions,
+# with emphasis on short small functions that are easy to use.
 #
 # ## Known issues
 #
@@ -398,7 +399,7 @@ lower_format() { printf %s\\n "$*" | tr '[[:upper:]]' '[[:lower:]]' ; }
 # chain_format "**Foo** **Goo** **Hoo**"
 # => Foo-Goo-Hoo
 #```
-chain_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/-/g; s/--*/-/g; s/^-*//; s/-*$//;' ; }
+chain_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/-/g; s/-\{2,\}/-/g; s/^-\{1,\}//; s/-\{1,\}$//;' ; }
 
 # snake_format: convert a string from any characters to solely alphanumeric and single internal underscore characters.
 #
@@ -407,7 +408,7 @@ chain_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/-/g; s/--*/-/g; s/^-*//
 # snake_format "**Foo** **Goo** **Hoo**"
 # => Foo_Goo_Hoo
 #```
-snake_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/_/g; s/__*/_/g; s/^_*//; s/_*$//;' ; }
+snake_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/_/g; s/_\{2,\}/_/g; s/^_\{1,\}//; s/_\{1,\}$//;' ; }
 
 # space_format: convert a string from any characters to solely alphanumeric and single internal space characters.
 #
@@ -416,7 +417,7 @@ snake_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/_/g; s/__*/_/g; s/^_*//
 # space_format "**Foo** **Goo** **Hoo**"
 # => Foo Goo Hoo
 #```
-space_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/ /g; s/  */ /g; s/^ *//; s/ *$//;' ; }
+space_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/ /g; s/ \{2,\}/ /g; s/^ \{1,\}//; s/ \{1,\}$//;' ; }
 
 ##
 # Array helpers
