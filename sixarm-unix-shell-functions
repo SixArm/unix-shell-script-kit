@@ -373,6 +373,15 @@ upper_case() { printf %s\\n "$*" | tr '[[:lower:]]' '[[:upper:]]' ; }
 #```
 lower_case() { printf %s\\n "$*" | tr '[[:upper:]]' '[[:lower:]]' ; }
 
+# chain_case: convert a string from any characters to solely lowercase letters and single internal dash characters.
+#
+# Example:
+# ```
+# chain_case "**Foo** **Goo** **Hoo**"
+# => foo-goo-hoo
+#```
+chain_case() { printf %s\\n "$*" | tr '[[:upper:]]' '[[:lower:]]' | sed 's/[^[:alnum:]]/-/g; s/^-*//; s/-$//; s/--*/-/;' ; }
+
 ##
 # Array helpers
 ##
