@@ -391,23 +391,32 @@ upper_case() { printf %s\\n "$*" | tr '[[:lower:]]' '[[:upper:]]' ; }
 #```
 lower_case() { printf %s\\n "$*" | tr '[[:upper:]]' '[[:lower:]]' ; }
 
-# chain_case: convert a string from any characters to solely alphanumeric and single internal dash characters.
+# chain_text: convert a string from any characters to solely alphanumeric and single internal dash characters.
 #
 # Example:
 # ```
-# chain_case "**Foo** **Goo** **Hoo**"
+# chain_text "**Foo** **Goo** **Hoo**"
 # => Foo-Goo-Hoo
 #```
-chain_case() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/-/g; s/--*/-/g; s/^-*//; s/-*$//;' ; }
+chain_text() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/-/g; s/--*/-/g; s/^-*//; s/-*$//;' ; }
 
-# snake_case: convert a string from any characters to solely alphanumeric and single internal underscore characters.
+# snake_text: convert a string from any characters to solely alphanumeric and single internal underscore characters.
 #
 # Example:
 # ```
-# snake_case "**Foo** **Goo** **Hoo**"
+# snake_text "**Foo** **Goo** **Hoo**"
 # => Foo_Goo_Hoo
 #```
-snake_case() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/_/g; s/__*/_/g; s/^_*//; s/_*$//;' ; }
+snake_text() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/_/g; s/__*/_/g; s/^_*//; s/_*$//;' ; }
+
+# space_text: convert a string from any characters to solely alphanumeric and single internal space characters.
+#
+# Example:
+# ```
+# snake_text "**Foo** **Goo** **Hoo**"
+# => Foo Goo Hoo
+#```
+space_text() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/ /g; s/  */ /g; s/^ *//; s/ *$//;' ; }
 
 ##
 # Array helpers
