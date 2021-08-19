@@ -9,7 +9,7 @@ with emphasis on short small functions that are easy to use.
 * Package: sixarm-unix-shell-functions
 * Version: 8.0.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2021-08-19T14:12:26Z
+* Updated: 2021-08-20T00:00:00Z
 * License: GPL-2.0-only
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
