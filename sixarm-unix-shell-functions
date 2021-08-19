@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 7.0.0
+#   * Version: 8.0.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-05-02T22:18:41Z
+#   * Updated: 2021-05-04T23:23:28Z
 #   * License: GPL-2.0-only
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -28,24 +28,73 @@
 ##
 
 # out: print output message to stdout
+#
+# Example:
+# ```
+# out "my message"
+# => my message
+# ```
 out() { printf %s\\n "$*" ; }
 
 # err: print error message to stderr
+#
+# Example:
+# ```
+# err "my message"
+# STDERR=> my message
+# ````
 err() { >&2 printf %s\\n "$*" ; }
 
 # die: print error message to stderr, then exit with error code 1
+#
+# Example:
+# ```
+# die "my message"
+# STDERR=> my message
+# => exit 1
+# ```
 die() { >&2 printf %s\\n "$*" ; exit 1 ; }
 
 # big: print a big banner to stdout, good for human readability
+#
+# Example:
+# ```
+# big "my message"
+# =>
+# ###
+# #
+# # my message
+# #
+# ###
+# ```
+#
 big() { printf \\n###\\n#\\n#\ %s\\n#\\n###\\n\\n "$*" ; }
 
 # log: print the current datestamp, the process id, and a message
+#
+# Example:
+# ```
+# log "my message"
+# => 2021-05-04T22:57:54.N+00:00 4013 my message
+# ```
 log() { printf '%s %s %s\n' "$( now )" $$ "$*" ; }
 
 # zid: generate a 32-bit secure random lowercase hex identifier
+#
+# Example:
+# ```
+# zid
+# => 78577554e967951388b5907854b4c337
+# ```
 zid() { hexdump -n 16 -v -e '16/1 "%02x" "\n"' /dev/random ; }
 
 # ask: prompt the user for a line of input, then return a trimmed string
+#
+# Example:
+# ```
+# ask
+# => prompt
+# ```
 ask() { read x ; echo "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' ; }
 
 ##
@@ -53,70 +102,253 @@ ask() { read x ; echo "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' ; }
 ##
 
 # pushdx: pushd with silencer
+#
+# Example:
+# ```
+# pushdx tmp
+# => change to directory "tmp"
+# ```
 pushdx() { command pushd "$@" > /dev/null ; }
 
 # popdx: popd with silencer
+#
+# Example:
+# ```
+# popdx
+# => change to previous directory
+# ```
 popdx() { command popd "$@" > /dev/null ; }
+
+##
+# Home helpers
+##
+
+# Directory for log files (analogous to system /var/log).
+#
+# Example:
+# ```
+# log_home
+# => ~/.log
+# ```
+log_home() { out "${LOG_HOME:-${XDG_LOG_HOME:-$HOME/.log}}" ; }
+
+# Directory for temporary files (analogous to system /tmp).
+#
+# Example:
+# ```
+# temp_home
+# => ~/.temp
+# ```
+temp_home() { out "${TEMP_HOME:-${XDG_LOG_HOME:-$HOME/.temp}}" ; }
+
+# Directory for data files (analogous to system /usr/share).
+#
+# Example:
+# ```
+# data_home
+# => ~/.local/share
+# ```
+data_home() { out "${DATA_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}}" ; }
+
+# Directory for cache files (analogous to system /var/cache).
+#
+# Example:
+# ```
+# cache_home
+# => ~/.cache
+# ```
+cache_home() { out "${CACHE_HOME:-${XDG_CACHE_HOME:-$HOME/.cache}}" ; }
+
+# Directory for configuration files (analogous to system /etc).
+#
+# Example:
+# ```
+# config_home
+# => ~/.config
+# ```
+config_home() { out "${CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}" ; }
+
+# Directory for runtime files such as sockets, named pipes, etc.
+#
+# Example:
+# ```
+# runtime_home
+# => ~/.runtime
+# ```
+runtime_home() { out "${RUNTIME_HOME:-${XDG_RUNTIME_HOME:-$HOME/.runtime}}" ; }
 
 ##
 # Time helpers
 ##
 
 # now: get the current datetime using ISO standard format.
+#
+# Example:
+# ```
+# now
+# => 2021-05-04T22:59:28.N+00:00
+# ```
 now() { date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" "$@" ; }
 
 # sec: get the current time in Unix seconds.
+#
+# Example:
+# ```
+# sec
+# => 1620169178
+# ```
 sec() { date "+%s" ; }
 
 # age: get the age of a given time in Unix secords.
+#
+# Example:
+# ```
+# age 1620169178
+# => 19
+# ```
 age() { printf %s\\n "$(( $(date "+%s") - $1 ))"; }
 
 # newer: is the age of a given time newer than a given number of seconds?
+#
+# Example:
+# ```
+# newer 2000000000 && echo "true" || echo "false
+# => true
+# ```
 newer() { [ "$(( $(date "+%s") - $1 ))" -lt "$2" ]; }
 
 # older: is the age of a given time older than a given number of seconds?
+#
+# Example:
+# ```
+# older 1000000000 && echo "true" || echo "false"
+# => true
+# ```
 older() { [ "$(( $(date "+%s") - $1 ))" -gt "$2" ]; }
-
-##
-# Number helpers
-##
-
-# int: convert a number string to an integer number string.
-int() { awk '{ print int($1) }' ; }
-
-# sum: print the sum of numbers
-sum() { awk '{for(i=1; i<=NF; i++) sum+=$i; } END {print sum}' ; }
 
 ##
 # Validation helpers
 ##
 
 # cmd: return true iff a command exists
+#
+# Example:
+# ```
+# cmd grep
+# => true
+#
+# cmd curl
+# => false
+# ```
 cmd() { command -v "$1" >/dev/null 2>&1 ; }
 
 # cmd_or_die: ensure a command exists, otherwise die with a help message
+#
+# Example:
+# ```
+# cmd_or_die grep
+# => true
+#
+# cmd_or_die curl
+# STDERR=> Command needed: curl (using STDERR)
+# => exit 1
+# ```
 cmd_or_die() { cmd "$1" || die "Command needed: $1" ; }
 
 # var: return true iff a variable exists
+#
+# Example:
+# ```
+# var HOME
+# => true
+#
+# var FOO
+# => false
+# ```
 var() { ! eval 'test -z ${'$1'+x}' ; }
 
 # var_or_die: ensure a variable exists, otherwise die with a help message
+#
+# Example:
+# ```
+# var_or_die HOME
+# => true
+#
+# var_or_die FOO
+# STDERR=> Variable needed: FOO
+# => exit 1
+# ```
 var_or_die() { var "$1" || die "Variable needed: $1" ; }
+
+##
+# Number helpers
+##
+
+# int: convert a number string to an integer number string.
+#
+# Example:
+# ```
+# int 1.23
+# =>
+# 1
+# ```
+int() { awk '{ print int($1) }' ; }
+
+# sum: print the sum of numbers
+#
+# Example:
+# ```
+# sum 1 2 3
+# => 6
+# ```
+sum() { awk '{for(i=1; i<=NF; i++) sum+=$i; } END {print sum}' ; }
 
 ##
 # Extensibility helpers
 ##
 
 # dot_all: source all the executable files in a given directory and subdirectories
+#
+# Example:
+# ```
+# dot_all ~/tmp
+# => . ~/tmp/a.sh
+# => . ~/tmp/b.pl
+# => . ~/tmp/c.js
+# ```
 dot_all() { find "${1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec . {} \; ; }
 
 # run_all: run all the executable commands in a given directory and subdirectories
+#
+# Example:
+# ```
+# run_all ~/tmp
+# => ~/tmp/a.sh
+# => ~/tmp/b.pl
+# => ~/tmp/c.js
+# ```
 run_all() { find "${1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec {} \; ; }
 
 # sh_all: shell all the executable commands in a given directory and subdirectories
+#
+# Example:
+# ```
+# sh_all ~/tmp
+# => sh -c ~/tmp/a.sh
+# => sh -c ~/tmp/b.pl
+# => sh -c ~/tmp/c.js
+# ```
 sh_all() { find "${1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -print0 | xargs -0I{} -n1 sh -c "{}" ; }
 
 # rm_all: remove all files in a given directory and subdirectories-- use with caution
+#
+# Example:
+# ```
+# rm_all ~/tmp
+# => rm ~/tmp/a.sh
+# => rm ~/tmp/b.pl
+# => rm ~/tmp/c.js
+# ```
 rm_all() { find "${1:-.}" -type f -exec rm {} \; ; }
 
 ##
@@ -124,57 +356,95 @@ rm_all() { find "${1:-.}" -type f -exec rm {} \; ; }
 ##
 
 # array_i: get the array item at index `i`.
+#
+# Example:
+# ```
+# array_i
+# => TODO
+# ```
 array_i() { [ $# == 3 ] && awk -F "$2" "{print \$$3}" <<< "$1" || awk "{print \$$2}" <<< "$1" ; }
 
 # array_n: get the array number of fields a.k.a. length a.k.a. size.
-array_n() { [ $# == 2 ] && awk -F "$2" "{print NF}"   <<< "$1" || awk "{print NF}" <<< "$1" ; }
+#
+# Example:
+# ```
+# array_n
+# => TODO
+# ```
+array_n() { [ $# == 2 ] && awk -F "$2" "{print NF}" <<< "$1" || awk "{print NF}" <<< "$1" ; }
 
 ##
 # Assert helpers
 ##
 
 # Assert a test utility command succeeds.
+#
+# Example:
+# ```
+# assert_test -x program.sh
+# => success i.e. no output
+#
+# assert_test -x notes.txt
+# STDERR=> assert_test -x notes.txt  (because failure prints diagnostic info)
+# ```
 assert_test() { test "$1" "$2" || err assert_test "$@" ; }
 
 # Assert an item is empty.
+#
+# Example:
+# ```
+# assert_empty ""
+# => success i.e. no output
+#
+# assert_empty foo
+# STDERR=> assert_empty foo (because failure prints diagnostic info)
+# ```
 assert_empty() { [ -z "$1" ] || err assert_empty "$@" ; }
 
 # Assert an item is equal to another item.
+#
+# Example:
+# ```
+# assert_equal foo foo
+# => success i.e. no output
+#
+# assert_equal foo bar
+# STDERR=> assert_equal foo bar (because failure prints diagnostic info)
+# ```
 assert_equal() { [ "$1" = "$2" ] || err assert_equal "$@" ; }
 
-# Assert an item matches a regular expression.
+# Assert a regular expression matches an item
+#
+# Example:
+# ```
+# assert_match o foo
+# => success i.e. no output
+#
+# assert_match x foo
+# STDERR=> assert_match x foo
+# ```
 assert_match() { [[ "$2" =~ $1 ]] || err assert_match "$@" ; }
-
-##
-# Home helpers
-##
-
-# Directory for log files (analogous to system /var/log).
-log_home() { out "${LOG_HOME:-${XDG_LOG_HOME:-$HOME/.log}}" ; }
-
-# Directory for temporary files (analogous to system /tmp).
-temp_home() { out "${TEMP_HOME:-${XDG_LOG_HOME:-$HOME/.temp}}" ; }
-
-# Directory for data files (analogous to system /usr/share).
-data_home() { out "${DATA_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}}" ; }
-
-# Directory for cache files (analogous to system /var/cache).
-cache_home() { out "${CACHE_HOME:-${XDG_CACHE_HOME:-$HOME/.cache}}" ; }
-
-# Directory for configuration files (analogous to system /etc).
-config_home() { out "${CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}" ; }
-
-# Directory for runtime files such as sockets, named pipes, etc.
-runtime_home() { out "${RUNTIME_HOME:-${XDG_RUNTIME_HOME:-$HOME/.runtime}}" ; }
 
 ##
 # Make temp helpers
 ##
 
 # Make a temporary directory path
+#
+# Example:
+# ```
+# mktemp_dir
+# => /var/folders/4f7b65122b0fb65b0fdad568a65dc97d
+# ```
 mktemp_dir() { x=$(mktemp -d -t "${1:-$(zid)}") ; trap '{ rm -rf "$x"; }' EXIT ; out "$x" ; }
 
 # Make a temporary file path
+#
+# Example:
+# ```
+# mktemp_file
+# => /var/folders/4f7b65122b0fb65b0fdad568a65dc97d/1d9aafac5373be95d8b4c2dece0b1197
+# ```
 mktemp_file() { x=$(mktemp -t "${1:-$(zid)}") ; trap '{ rm -f "$x"; }' EXIT ; out "$x" ; }
 
 ##
@@ -182,12 +452,30 @@ mktemp_file() { x=$(mktemp -t "${1:-$(zid)}") ; trap '{ rm -f "$x"; }' EXIT ; ou
 ##
 
 # Get a file's media type a.k.a. mime type such as "text/plain"
+#
+# Example:
+# ```
+# media_type notes.txt
+# => text/plain
+# ```
 media_type() { file --brief --mime "$1" ; }
 
 # Get a file's media type type a.k.a. mime type such as "text"
-media_type_type() { file --brief --mime "$1" | sed 's#/.*##' ; }
+#
+# Example:
+# ```
+# media_type_supertype notes.txt
+# => text
+# ```
+media_type_supertype() { file --brief --mime "$1" | sed 's#/.*##' ; }
 
 # Get a file's media type subtype a.k.a. mime type such as "plain"
+#
+# Example:
+# ```
+# media_type_subtype notes.txt
+# => plain
+# ```
 media_type_subtype() { file --brief --mime "$1" | sed 's#^[^/]*/##; s#;.*##' ; }
 
 ##
@@ -195,4 +483,10 @@ media_type_subtype() { file --brief --mime "$1" | sed 's#^[^/]*/##; s#;.*##' ; }
 ##
 
 # File ends with newline?
+#
+# Example:
+# ```
+# file_ends_with_newline notes.txt
+# => true
+# ```
 file_ends_with_newline() { test $(tail -c1 "$1" | wc -l) -gt 0 ; }
