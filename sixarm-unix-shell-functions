@@ -373,50 +373,50 @@ trim() { printf %s\\n "$*" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' ; }
 #```
 slug() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/_/g; s/--*/-/; s/^-*//; s/-*$//;' | tr '[[:upper:]]' '[[:lower:]]' ; }
 
-# upper_case: convert text from any lowercase letters to uppercase letters.
+# upper_format: convert text from any lowercase letters to uppercase letters.
 #
 # Example:
 # ```
-# upper_case AbCdEf
+# upper_format AbCdEf
 # => ABCDEF
 #```
-upper_case() { printf %s\\n "$*" | tr '[[:lower:]]' '[[:upper:]]' ; }
+upper_format() { printf %s\\n "$*" | tr '[[:lower:]]' '[[:upper:]]' ; }
 
-# lower_case: convert text from any uppercase letters to lowercase letters.
+# lower_format: convert text from any uppercase letters to lowercase letters.
 #
 # Example:
 # ```
-# lower_case AbCdEf
+# lower_format AbCdEf
 # => abcdef
 #```
-lower_case() { printf %s\\n "$*" | tr '[[:upper:]]' '[[:lower:]]' ; }
+lower_format() { printf %s\\n "$*" | tr '[[:upper:]]' '[[:lower:]]' ; }
 
-# chain_text: convert a string from any characters to solely alphanumeric and single internal dash characters.
+# chain_format: convert a string from any characters to solely alphanumeric and single internal dash characters.
 #
 # Example:
 # ```
-# chain_text "**Foo** **Goo** **Hoo**"
+# chain_format "**Foo** **Goo** **Hoo**"
 # => Foo-Goo-Hoo
 #```
-chain_text() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/-/g; s/--*/-/g; s/^-*//; s/-*$//;' ; }
+chain_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/-/g; s/--*/-/g; s/^-*//; s/-*$//;' ; }
 
-# snake_text: convert a string from any characters to solely alphanumeric and single internal underscore characters.
+# snake_format: convert a string from any characters to solely alphanumeric and single internal underscore characters.
 #
 # Example:
 # ```
-# snake_text "**Foo** **Goo** **Hoo**"
+# snake_format "**Foo** **Goo** **Hoo**"
 # => Foo_Goo_Hoo
 #```
-snake_text() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/_/g; s/__*/_/g; s/^_*//; s/_*$//;' ; }
+snake_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/_/g; s/__*/_/g; s/^_*//; s/_*$//;' ; }
 
-# space_text: convert a string from any characters to solely alphanumeric and single internal space characters.
+# space_format: convert a string from any characters to solely alphanumeric and single internal space characters.
 #
 # Example:
 # ```
-# snake_text "**Foo** **Goo** **Hoo**"
+# space_format "**Foo** **Goo** **Hoo**"
 # => Foo Goo Hoo
 #```
-space_text() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/ /g; s/  */ /g; s/^ *//; s/ *$//;' ; }
+space_format() { printf %s\\n "$*" | sed 's/[^[:alnum:]]/ /g; s/  */ /g; s/^ *//; s/ *$//;' ; }
 
 ##
 # Array helpers
