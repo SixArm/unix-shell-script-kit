@@ -16,9 +16,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 8.0.0
+#   * Version: 8.1.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-05-04T23:23:28Z
+#   * Updated: 2021-08-19T14:12:26Z
 #   * License: GPL-2.0-only
 #   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
 ##
@@ -350,6 +350,28 @@ sh_all() { find "${1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -
 # => rm ~/tmp/c.js
 # ```
 rm_all() { find "${1:-.}" -type f -exec rm {} \; ; }
+
+##
+# Text helpers
+##
+
+# upper_case: convert text from any lowercase letters to uppercase letters
+#
+# Example:
+# ```
+# upper_case AbCdEf
+# => ABCDEF
+#```
+upper_case() { printf %s\\n "$*" | tr '[[:lower:]]' '[[:upper:]]' ; }
+
+# lower_case: convert text from any uppercase letters to lowercase letters
+#
+# Example:
+# ```
+# lower_case AbCdEf
+# => abcdef
+#```
+lower_case() { printf %s\\n "$*" | tr '[[:upper:]]' '[[:lower:]]' ; }
 
 ##
 # Array helpers
