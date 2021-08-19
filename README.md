@@ -257,22 +257,15 @@ runtime_home() {
 Example:
 ```
 now
-=> 2021-05-04T22:59:28.N+00:00
+=> 2021-05-04T22:59:28+00:00
 ```
 
 Source:
 ```
 now() {
-        date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" "$@"
+        date -u "+%Y-%m-%dT%H:%M:%S+00:00" "$@"
 }
 ```
-
-Known issue:
-
-* `now()`: on macOS and BSD, the default `date` command does not
-  currently support the nanosecond format, so the now() function
-  returns the letter "N" instead of nanoseconds. This is fine for
-  our typical purposes. A good solution is to install GNU date.
 
 ### sec: get the current time in Unix seconds
 
