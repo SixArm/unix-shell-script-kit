@@ -83,12 +83,12 @@ big() {
 }
 ```
 
-### log: print the current datestamp, the process id, and a message
+### log:  print the current datestamp, a unique random id, the process id, and a message
 
 Example:
 ```
 log "my message"
-=> 2021-05-04T22:57:54.N+00:00 4013 my message
+=> 2021-05-04T22:57:54+00:00 7e7151dc24bd511098ebb248771d8ffb 4013 my message
 ```
 
 Source:
