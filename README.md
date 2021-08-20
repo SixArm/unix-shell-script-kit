@@ -1,8 +1,10 @@
 # SixArm Unix shell functions
 
-SixArm is a consulting group that creates software and systens,
-and this file is our general purpose library of Unix functions,
-with emphasis on short small functions that are easy to use.
+SixArm is a consulting group that creates software and systens.
+
+`[sixarm-unix-shell-functions](sixarm-unix-shell-functions)` is 
+our file of general-purpose Unix functions, with emphasis on 
+small functions, clear examples, and POSIX compatibility.
 
 ## Tracking
 

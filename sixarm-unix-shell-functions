@@ -3,16 +3,18 @@
 ##
 # SixArm Unix shell functions
 #
-# SixArm is a consulting group that writes a lot of software,
-# and this file is our general purpose library of Unix functions,
-# with emphasis on short small functions that are easy to use.
+# SixArm is a consulting group that creates software and systens.
+#
+# `[sixarm-unix-shell-functions](sixarm-unix-shell-functions)` is 
+# our file of general-purpose Unix functions, with emphasis on 
+# small functions, clear examples, and POSIX compatibility.
 #
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
 #   * Version: 8.0.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-08-19T14:12:26Z
+#   * Updated: 2021-08-20T00:00:00Z
 #   * License: GPL-2.0-only
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 ##
