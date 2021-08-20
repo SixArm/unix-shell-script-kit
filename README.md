@@ -12,7 +12,7 @@ small functions, clear examples, and POSIX compatibility.
 * Version: 8.0.0
 * Created: 2017-08-22T00:00:00Z
 * Updated: 2021-08-20T00:00:00Z
-* License: GPL-2.0-only
+* License: GPL-2.0-only or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
 ## Input/output helpers
