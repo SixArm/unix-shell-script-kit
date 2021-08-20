@@ -83,18 +83,18 @@ big() {
 }
 ```
 
-### log:  print the current datestamp, a unique random id, the process id, and a message
+### log: print a datestamp, unique random id, hostname, process id, and message
 
 Example:
 ```
 log "my message"
-=> 2021-05-04T22:57:54+00:00 7e7151dc24bd511098ebb248771d8ffb 4013 my message
+=> 2021-05-04T22:57:54+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 my message
 ```
 
 Source:
 ```
 log() {
-        printf '%s %s %s\n' "$( now )" $$ "$*"
+        printf '%s %s %s %s\n' "$( now )" "$( zid )" "$( hostname )" $$ "$*"
 }
 ```
 
