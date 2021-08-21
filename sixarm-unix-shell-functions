@@ -5,7 +5,7 @@
 #
 # SixArm is a consulting group that creates software and systens.
 #
-# `[sixarm-unix-shell-functions](sixarm-unix-shell-functions)` is 
+# [`sixarm-unix-shell-functions`](sixarm-unix-shell-functions) is 
 # our file of general-purpose Unix functions, with emphasis on 
 # small functions, clear examples, and POSIX compatibility.
 #
@@ -14,7 +14,7 @@
 #   * Package: sixarm-unix-shell-functions
 #   * Version: 8.0.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-08-20T00:00:00Z
+#   * Updated: 2021-08-20T03:26:04Z
 #   * License: GPL-2.0-only or contact us for custom license
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 ##
@@ -30,6 +30,16 @@
 # out "my message"
 # => my message
 # ```
+#
+# We use `printf` instead of `echo` because `printf` is more consistent
+# on more systems, such a for escape sequence handling.
+#
+# Compare:
+#
+#   * Use the `out` function to print to STDOUT.
+#
+#   * Use the `err` function to print to STDERR.
+#
 out() {
     printf %s\\n "$*"
 }
@@ -41,6 +51,16 @@ out() {
 # err "my message"
 # STDERR=> my message
 # ````
+#
+# We use `printf` instead of `echo` because `printf` is more consistent
+# on more systems, such a for escape sequence handling.
+#
+# Compare:
+#
+#   * Use the `out` function to print to STDOUT.
+#
+#   * Use the `err` function to print to STDERR.
+#
 err() {
     >&2 printf %s\\n "$*"
 }
@@ -69,7 +89,6 @@ die() {
 # #
 # ###
 # ```
-#
 big() {
         printf \\n###\\n#\\n#\ %s\\n#\\n###\\n\\n "$*"
 }
@@ -79,8 +98,14 @@ big() {
 # Example:
 # ```
 # log "my message"
-# => 2021-05-04T22:57:54+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 my message
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 my message
 # ```
+#
+# We prefer this log file format for many of our scripts because we prefer
+# logging the additional diagnositc information that we use for our systems:
+# the datetime with nanosecond-friendly format and timezone-friendly format, 
+# unique random id a.k.a. zid, hostname, and process number.
+#
 log() {
         printf '%s %s %s %s\n' "$( now )" "$( zid )" "$( hostname )" $$ "$*"
 }
@@ -144,6 +169,15 @@ popdx() {
 # log_home
 # => ~/.log
 # ```
+#
+# This function chooses the first available of:
+#
+#   * $LOG_HOME: this can be set by the user, such as in a dot file.
+#
+#   * $XDG_LOG_HOME: this is the POSIX preferred directory location.
+#
+#   * $HOME/.log: this is our preferred fallback dot directory.
+#
 log_home() {
         out "${LOG_HOME:-${XDG_LOG_HOME:-$HOME/.log}}"
 }
@@ -155,6 +189,15 @@ log_home() {
 # temp_home
 # => ~/.temp
 # ```
+#
+# This function chooses the first available of:
+#
+#   * $TEMP_HOME: this can be set by the user, such as in a dot file.
+#
+#   * $XDG_TEMP_HOME: this is the POSIX preferred directory location.
+#
+#   * $HOME/.temp: this is our preferred fallback dot directory.
+#
 temp_home() {
         out "${TEMP_HOME:-${XDG_LOG_HOME:-$HOME/.temp}}"
 }
@@ -164,10 +207,19 @@ temp_home() {
 # Example:
 # ```
 # data_home
-# => ~/.local/share
+# => ~/.data
 # ```
+#
+# This function chooses the first available of:
+#
+#   * $DATA_HOME: this can be set by the user, such as in a dot file.
+#
+#   * $XDG_DATA_HOME: this is the POSIX preferred directory location.
+#
+#   * $HOME/.data: this is our preferred fallback dot directory.
+#
 data_home() {
-        out "${DATA_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}}"
+        out "${DATA_HOME:-${XDG_DATA_HOME:-$HOME/.data}}"
 }
 
 # cache_home: directory for cache files (analogous to system /var/cache).
@@ -177,6 +229,15 @@ data_home() {
 # cache_home
 # => ~/.cache
 # ```
+#
+# This function chooses the first available of:
+#
+#   * $CACHE_HOME: this can be set by the user, such as in a dot file.
+#
+#   * $XDG_CACHE_HOME: this is the POSIX preferred directory location.
+#
+#   * $HOME/.cache: this is our preferred fallback dot directory.
+#
 cache_home() {
         out "${CACHE_HOME:-${XDG_CACHE_HOME:-$HOME/.cache}}"
 }
@@ -188,6 +249,15 @@ cache_home() {
 # config_home
 # => ~/.config
 # ```
+#
+# This function chooses the first available of:
+#
+#   * $CONFIG_HOME: this can be set by the user, such as in a dot file.
+#
+#   * $XDG_CONFIG_HOME: this is the POSIX preferred directory location.
+#
+#   * $HOME/.config: this is our preferred fallback dot directory.
+#
 config_home() {
         out "${CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
 }
@@ -199,6 +269,15 @@ config_home() {
 # runtime_home
 # => ~/.runtime
 # ```
+#
+# This function chooses the first available of:
+#
+#   * $RUNTIME_HOME: this can be set by the user, such as in a dot file.
+#
+#   * $XDG_RUNTIME_HOME: this is the POSIX preferred directory location.
+#
+#   * $HOME/.runtime: this is our preferred fallback dot directory.
+#
 runtime_home() {
         out "${RUNTIME_HOME:-${XDG_RUNTIME_HOME:-$HOME/.runtime}}"
 }
@@ -212,11 +291,22 @@ runtime_home() {
 # Example:
 # ```
 # now
-# => 2021-05-04T22:59:28+00:00
+# => 2021-05-04T22:59:28.000000000+00:00
 # ```
 #
+# We prefer this date-time format for many of our scripts:
+#
+#   * We prefer ISO standard because it's well documented and supported.
+#     Specifically, we use ISO "YYYY-MM-DDTHH:MM:SS.NNNNNNNNN+00:00".
+#
+#   * We prefer nanosecond width because it aligns with high-speed systems.
+#     Specifically, we use GNU `date` and tools that print nanoseconds.
+#
+#   * We prefer timezone width because it aligns with localized systems.
+#     Specifically, we use some systems and tools that require timezones.
+#
 now() {
-        date -u "+%Y-%m-%dT%H:%M:%S+00:00" "$@"
+        date -u "+%Y-%m-%dT%H:%M:%S.000000000+00:00" "$@"
 }
 
 # sec: get the current time in Unix seconds.

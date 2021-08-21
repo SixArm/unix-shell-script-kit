@@ -2,7 +2,7 @@
 
 SixArm is a consulting group that creates software and systens.
 
-`[sixarm-unix-shell-functions](sixarm-unix-shell-functions)` is 
+[`sixarm-unix-shell-functions`](sixarm-unix-shell-functions) is 
 our file of general-purpose Unix functions, with emphasis on 
 small functions, clear examples, and POSIX compatibility.
 
@@ -11,7 +11,7 @@ small functions, clear examples, and POSIX compatibility.
 * Package: sixarm-unix-shell-functions
 * Version: 8.0.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2021-08-20T00:00:00Z
+* Updated: 2021-08-20T03:26:04Z
 * License: GPL-2.0-only or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -88,7 +88,7 @@ big() {
 Example:
 ```
 log "my message"
-=> 2021-05-04T22:57:54+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 my message
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 my message
 ```
 
 Source:
@@ -259,7 +259,7 @@ runtime_home() {
 Example:
 ```
 now
-=> 2021-05-04T22:59:28+00:00
+=> 2021-05-04T22:59:28.000000000+00:00
 ```
 
 Source:
