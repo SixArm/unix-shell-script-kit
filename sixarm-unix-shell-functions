@@ -701,7 +701,7 @@ mktemp_file() {
 # file_media_type notes.txt
 # => text/plain
 # ```
-media_type() {
+file_media_type() {
         file --brief --mime "$1"
 }
 
@@ -720,7 +720,7 @@ file_media_type_supertype() {
 #
 # Example:
 # ```
-# media_type_subtype notes.txt
+# file_media_type_subtype notes.txt
 # => plain
 # ```
 file_media_type_subtype() {
