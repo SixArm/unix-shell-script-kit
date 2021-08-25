@@ -309,7 +309,8 @@ newer 2000000000 && echo "true" || echo "false
 Source:
 ```
 newer() {
-        [ "$(( $(date "+%s") - $1 ))" -lt "$2" ]; }
+        [ "$(( $(date "+%s") - $1 ))" -lt "$2" ]
+}
 ```
 
 ### older: is the age of a given time older than a given number of seconds?
@@ -323,7 +324,8 @@ older 1000000000 && echo "true" || echo "false"
 Source:
 ```
 older() {
-        [ "$(( $(date "+%s") - $1 ))" -gt "$2" ]; }
+        [ "$(( $(date "+%s") - $1 ))" -gt "$2" ]
+}
 ```
 
 ## Validation helpers
