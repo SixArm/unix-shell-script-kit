@@ -9,10 +9,10 @@ small functions, clear examples, and POSIX compatibility.
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 8.0.0
+* Version: 8.1.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2021-08-20T03:26:04Z
-* License: GPL-2.0-only or contact us for custom license
+* Updated: 2021-09-28T18:22:15Z
+* License: GPL-2.0-or-later or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
 ## Input/output helpers
@@ -367,6 +367,25 @@ cmd_or_die() {
 }
 ```
 
+### cmd_ver_or_die: ensure a command exists and version is sufficient, otherwise die with a help message
+
+Example:
+```
+cmd_ver_or_die grep 1.1 2.2
+=> true
+
+cmd_ver_or_die grep 3.3 2.2
+STDERR=> Command version needed: grep >= 3.3 (not 2.2)
+=> exit 1
+```
+
+Source:
+```
+cmd_ver_or_die() {
+        cmd_ver "$1" "$2" "$3" || die "Command version needed: $1 >= $2 (not ${3:-?})"
+}
+```
+
 ### var: return true iff a variable exists
 
 Example:
@@ -404,6 +423,42 @@ var_or_die() {
 }
 ```
 
+### ver: return true iff a version is sufficient.
+
+Example:
+ ```
+ver 1.1 2.2
+=> true
+
+ver 3.3 2.2
+=> false
+```
+
+Source:
+```
+ver() {
+        [ "$(cmp_digits "$1" "$2")" -le 0 ]
+}
+```
+
+### ver_or_die: ensure a version is sufficient, otherwise die with a help message
+
+Example:
+ ```
+ver_or_die 1.1 2.2
+=> true
+
+ver_or_die 3.3 2.2
+STDERR=> Version needed: >= 3.3 (not 2.2)
+```
+
+Source:
+```
+ver_or_die() {
+        ver "$1" "$2" || die "Version needed: >= $1 (not ${2:-?})"
+}
+```
+
 ## Number helpers
 
 ### int: convert a number string to an integer number string
@@ -435,6 +490,29 @@ sum() {
         awk '{for(i=1; i<=NF; i++) sum+=$i; } END {print sum}'
 }
 ```
+
+## Comparison helpers
+
+### cmp_alnums: compare alnums as groups, such as for word version strings.
+
+Example:
+```
+cmp_alnums "a.b.c" "a.b.d"
+# => -1 (negative one means left < right)
+```
+
+Source: see file
+
+
+### cmp_digits: compare digits as groups, such as for number version strings.
+
+Example:
+```
+cmp_digits "1.2.3" "1.2.4"
+# => -1 (negative one means left < right)
+```
+
+Source: see file
 
 ## Extensibility helpers
 

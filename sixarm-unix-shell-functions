@@ -12,10 +12,10 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 8.0.0
+#   * Version: 8.1.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-08-20T03:26:04Z
-#   * License: GPL-2.0-only or contact us for custom license
+#   * Updated: 2021-09-28T18:22:15Z
+#   * License: GPL-2.0-or-later or contact us for custom license
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 ##
 
@@ -371,7 +371,7 @@ cmd() {
         command -v "$1" >/dev/null 2>&1
 }
 
-# cmd_or_die: ensure a command exists, otherwise die with a help message.
+# cmd_or_die: ensure a command exists.
 #
 # Example:
 # ```
@@ -384,6 +384,21 @@ cmd() {
 # ```
 cmd_or_die() {
         cmd "$1" || die "Command needed: $1"
+}
+
+# cmd_ver_or_die: ensure a command version exists.
+#
+# Example:
+# ```
+# cmd_ver_or_die grep 2.2 1.1
+# => true
+#
+# version_or_die grep 2.2 3.3
+# STDERR=> Command version needed: grep >= 3.x ((using STDERR)
+# => exit 1
+# ```
+cmd_ver_or_die() {
+        cmd "$1" && ver "$2" "$3" || die "Command version needed: $1 >= $2 (not ${3:-?})"
 }
 
 # var: return true iff a variable exists.
@@ -400,7 +415,7 @@ var() {
         ! eval 'test -z ${'$1'+x}'
 }
 
-# var_or_die: ensure a variable exists, otherwise die with a help message.
+# var_or_die: ensure a variable exists.
 #
 # Example:
 # ```
@@ -413,6 +428,34 @@ var() {
 # ```
 var_or_die() {
         var "$1" || die "Variable needed: $1"
+}
+
+# ver: return true iff a version is sufficient.
+#
+# Example:
+# ```
+# ver 1.1 2.2
+# => true
+#
+# ver 3.3 2.2
+# => false
+# ```
+ver() {
+        [ "$(cmp_digits "$1" "$2")" -le 0 ]
+}
+
+# ver_or_die: ensure a version is sufficient.
+#
+# Example:
+# ```
+# ver_or_die 1.1 2.2
+# => true
+#
+# ver_or_die 3.3 2.2
+# STDERR=> Version needed: >= 3.3 (not 2.2)
+# ```
+ver_or_die() {
+        ver "$1" "$2" || die "Version needed: >= $1 (not ${2:-?})"
 }
 
 ##
@@ -439,6 +482,86 @@ int() {
 # ```
 sum() {
         awk '{for(i=1; i<=NF; i++) sum+=$i; } END {print sum}'
+}
+
+##
+# Comparison helpers
+##
+
+# cmp_alnums: compare alnums as groups, such as for word version strings.
+#
+# Example:
+#
+# ```
+# cmp_alnums "a.b.c" "a.b.c"
+# => 0 (zero means left == right)
+#
+# cmp_alnums "a.b.c" "a.b.d"
+# => -1 (negative one means left < right)
+#
+# cmp_alnums "a.b.d" "a.b.c"
+# => 1 (positive one means left > right)
+# ```
+#
+cmp_alnums() {
+        if [[ "$1" == "$2" ]]; then
+                echo "0"; return 0
+        fi
+	a=$(printf %s\\n "$1" | sed 's/^[^[:alnum:]]*//')
+	b=$(printf %s\\n "$2" | sed 's/^[^[:alnum:]]*//')
+	while true; do
+		x=$(printf %s\\n "$a" | sed 's/[^[:alnum:]].*//')
+		y=$(printf %s\\n "$b" | sed 's/[^[:alnum:]].*//')
+		if [[ "$x" == "" && "$y" == "" ]]; then
+			echo "0"; return 0
+		fi
+		if [[ "$x" == "" || $x < $y ]]; then
+			echo "-1"; return 0
+		fi
+		if [[ "$y" == "" || $x > $y ]]; then
+			echo "1"; return 0
+		fi
+		a=$(printf %s\\n "$a" | sed 's/^[[:alnum:]]*[^[:alnum:]]*//')
+		b=$(printf %s\\n "$b" | sed 's/^[[:alnum:]]*[^[:alnum:]]*//')
+	done
+}
+
+# cmp_digits: compare digits as groups, such as for numeric version strings.
+#
+# Example:
+#
+# ```
+# cmp_digits 1.2.3 1.2.3
+# => 0 (zero means left == right)
+#
+# cmp_digits 1.2.3 1.2.4
+# => -1 (negative one means left < right)
+#
+# cmp_digits 1.2.4 1.2.3
+# => 1 (positive one means left > right)
+# ```
+#
+cmp_digits() {
+        if [[ "$1" == "$2" ]]; then
+                echo "0"; return 0
+        fi
+	a=$(printf %s\\n "$1" | sed 's/^[^[:digit:]]*//')
+	b=$(printf %s\\n "$2" | sed 's/^[^[:digit:]]*//')
+	while true; do
+		x=$(printf %s\\n "$a" | sed 's/[^[:digit:]].*//')
+		y=$(printf %s\\n "$b" | sed 's/[^[:digit:]].*//')
+		if [[ "$x" == "" && "$y" == "" ]]; then
+			echo "0"; return 0
+		fi
+		if [[ "$x" == "" || $x -lt $y ]]; then
+			echo "-1"; return 0
+		fi
+		if [[ "$y" == "" || $x -gt $y ]]; then
+			echo "1"; return 0
+		fi
+		a=$(printf %s\\n "$a" | sed 's/^[[:digit:]]*[^[:digit:]]*//')
+		b=$(printf %s\\n "$b" | sed 's/^[[:digit:]]*[^[:digit:]]*//')
+	done
 }
 
 ##
