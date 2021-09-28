@@ -9,6 +9,12 @@
 # our file of general-purpose Unix functions, with emphasis on 
 # small functions, clear examples, and POSIX compatibility.
 #
+# To download this file:
+#
+# ```sh
+# curl -O "https://raw.githubusercontent.com/SixArm/sixarm-unix-shell-functions/main/sixarm-unix-shell-functions"
+# ```
+#
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
