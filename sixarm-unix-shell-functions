@@ -649,7 +649,7 @@ trim() {
 # => foo-goo-hoo
 #```
 slug() {
-        printf %s\\n "$*" | sed 's/[^[:alnum:]]/_/g; s/--*/-/; s/^-*//; s/-*$//;' | tr '[[:upper:]]' '[[:lower:]]'
+        printf %s\\n "$*" | sed 's/[^[:alnum:]]/-/g; s/--*/-/; s/^-*//; s/-*$//;' | tr '[[:upper:]]' '[[:lower:]]'
 }
 
 # upper_format: convert text from any lowercase letters to uppercase letters.
