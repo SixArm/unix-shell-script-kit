@@ -18,9 +18,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 8.1.0
+#   * Version: 8.2.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-09-28T18:22:15Z
+#   * Updated: 2021-10-21T11:58:43Z
 #   * License: GPL-2.0-or-later or contact us for custom license
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 ##
@@ -650,6 +650,17 @@ trim() {
 #```
 slug() {
         printf %s\\n "$*" | sed 's/[^[:alnum:]]/-/g; s/--*/-/g; s/^-*//; s/-*$//;' | tr '[[:upper:]]' '[[:lower:]]'
+}
+
+# slugs: convert a string from any characters to solely lowercase and single internal dash characters and slash characters.
+#
+# Example:
+# ```
+# slugs "**Foo** / **Goo** / **Hoo**"
+# => foo/goo/hoo
+#```
+slugs(){
+        printf %s\\n "$*" | sed 's/[^[:alnum:]\/]/-/g; s/--*/-/g; s/^-*//; s/-*$//; s/-*\/-*/\//g' | tr '[[:upper:]]' '[[:lower:]]'
 }
 
 # upper_format: convert text from any lowercase letters to uppercase letters.
