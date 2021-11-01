@@ -18,9 +18,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 8.2.0
+#   * Version: 8.3.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-10-21T11:58:43Z
+#   * Updated: 2021-11-01T16:02:13Z
 #   * License: GPL-2.0-or-later or contact us for custom license
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 ##
@@ -137,6 +137,84 @@ zid() {
 ask() {
         read x ; echo "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
 }
+
+##
+# Exit codes
+##
+
+# It is good practice to call exit with a value that indicates success (0) 
+# or a failure condition when ending a program. The pre-defined exit codes
+# from sysexits can be used, so the caller of the process can get a rough
+# estimation about the failure class without looking up the source code.
+#
+# The successful exit is always indicated by a status of 0. 
+#
+# Error numbers begin at EX__BASE to reduce the possibility of clashing with
+# other exit statuses that random programs may already return. The meaning of
+# the codes is approximately as follows.
+EX_OK=0
+
+# The command was used incorrectly, e.g., with the wrong numberof arguments,
+# a bad flag, a bad syntax in a parameter, or whatever.
+EX_USAGE=64
+
+# The input data was incorrectin someway. This should only be used for user's
+# data and not system files.
+EX_DATAERR=65
+
+# An input file-- not a system file-- did not exist or was not readable.  This
+# could also include errors like "No message" to a mailer-- if it cared to catch
+# it.
+EX_NOINPUT=66
+
+# The user specified did not exist. This might be used for mail addresses or
+# remote logins.
+EX_NOUSER=67
+
+# The host specified did not exist. This is used in mail addresses or network
+# requests.
+EX_NOHOST=68
+
+# A service is unavailable. This can occur if a support program or file does not
+# exist. This can also be used as a catchall message when something you wanted
+# to do does not work, but you do not know why.
+EX_UNAVAILABLE=69
+
+# An internal software error has been detected. This should be limited to
+# non-operating system related errors as possible.
+EX_SOFTWARE=70
+
+# An operating system error has been detected. This is intended to be used for
+# such things as "cannot fork", "cannot create pipe", or the like.  It includes
+# things like getuid returning a user that does not exist in the passwd file.
+EX_OSERR=71
+
+# Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does not exist,
+# cannot be opened, or has some sort of error (e.g. syntax error).
+EX_OSFILE=72
+
+# A user-specified output file cannot be created.
+EX_CANTCREAT=73
+
+# An error occurred while doing I/O on some file.
+EX_IOERR=74
+
+# Temporary failure, indicating something that is not really an error.  In
+# sendmail, this means that a mailer (e.g. could not create a connection) and
+# the request should be reattempted later.
+EX_TEMPFAIL=75
+
+# The remote system returned something that was "not possible" during a protocol
+# exchange.
+EX_PROTOCOL=76
+
+# You did not have sufficient permission to perform the operation.  This is not
+# intended for file system problems, which should use EX_NOINPUT or
+# EX_CANTCREAT, but rather for higher level permissions.
+EX_NOPERM=77
+
+# Something was found in an unconfigured or misconfigured state.
+EX_CONFIG=78
 
 ##
 # Directory helpers
