@@ -9,7 +9,7 @@ small functions, clear examples, and POSIX compatibility.
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 8.3.0
+* Version: 9.0.0
 * Created: 2017-08-22T00:00:00Z
 * Updated: 2021-11-01T16:02:13Z
 * License: GPL-2.0-or-later or contact us for custom license
@@ -56,7 +56,7 @@ err() {
 Example:
 
 ```sh
-die "my message"
+die 1 "my message"
 STDERR=> my message
 => exit 1
 ```
@@ -65,7 +65,7 @@ Source:
 
 ```sh
 die() {
-        >&2 printf %s\\n "$*" ; exit 1
+        n="$1"; shift; >&2 printf %s\\n "$*" ; exit "$n"
 }
 ```
 
@@ -140,6 +140,134 @@ Example:
 ```sh
 ask
 => prompt
+```
+
+
+## Exit codes
+
+It is good practice to call exit with a value that indicates success (0) 
+or a failure condition when ending a program. The pre-defined exit codes
+from sysexits can be used, so the caller of the process can get a rough
+estimation about the failure class without looking up the source code.
+
+The successful exit is always indicated by a status of 0. 
+
+Error numbers begin at EX__BASE to reduce the possibility of clashing with
+other exit statuses that random programs may already return. The meaning of
+the codes is approximately as follows.
+
+Success:
+
+```sh
+EX_OK=0
+```
+
+Usage: The command was used incorrectly, e.g., with the wrong number of
+arguments, a bad flag, a bad syntax in a parameter, or whatever.
+
+```sh
+EX_USAGE=64
+```
+
+Data error: The input data was incorrectin someway. This should only be used for
+user's data and not system files.
+
+```sh
+EX_DATAERR=65
+```
+
+No input: An input file-- not a system file-- did not exist or was not readable.
+This could include errors like "No message" to a mailer-- if it cared to catch
+it.
+
+```sh
+EX_NOINPUT=66
+```
+
+No user: The user specified did not exist. This might be used for mail addresses
+or remote logins.
+
+```sh
+EX_NOUSER=67
+```
+
+No host: The host specified did not exist. This is used in mail addresses or
+network requests.
+
+```sh
+EX_NOHOST=68
+```
+
+Unavailable: A service is unavailable. This can occur if a support program or
+file does not exist. This can also be used as a catchall message when something
+you wanted to do does not work, but you do not know why.
+
+```sh
+EX_UNAVAILABLE=69
+```
+
+Software: An internal software error has been detected. This should be limited
+to non-operating system related errors as possible.
+
+```sh
+EX_SOFTWARE=70
+```
+
+OS error: An operating system error has been detected. This is intended to be
+used for such things as "cannot fork", "cannot create pipe", or the like.  It
+includes things like getuid returning a user that does not exist in the passwd
+file.
+
+```sh
+EX_OSERR=71
+```
+
+OS file: Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does not
+exist, cannot be opened, or has some sort of error (e.g. syntax error).
+
+```sh
+EX_OSFILE=72
+```
+
+Can't create: A user-specified output file cannot be created.
+
+```sh
+EX_CANTCREAT=73
+```
+
+IO error: An error occurred while doing I/O on some file.
+
+```sh
+EX_IOERR=74
+```
+
+Temp fail: Temporary failure, indicating something that is not really an error.
+In sendmail, this means that a mailer (e.g. could not create a connection) and
+the request should be reattempted later.
+
+```sh
+EX_TEMPFAIL=75
+```
+
+Protocol: The remote system returned something that was "not possible" during a
+protocol exchange.
+
+```sh
+EX_PROTOCOL=76
+```
+
+No perm: You did not have sufficient permission to perform the operation.  This
+is not intended for file system problems, which should use EX_NOINPUT or
+EX_CANTCREAT, but rather for higher level permissions.
+
+```sh
+EX_NOPERM=77
+```
+
+Config: Something was found in an unconfigured or misconfigured state.
+
+```sh
+EX_CONFIG=78
 ```
 
 ## Directory helpers
@@ -408,7 +536,7 @@ Source:
 
 ```sh
 cmd_or_die() {
-        cmd "$1" || die "Command needed: $1"
+        cmd "$1" || die "$EX_UNAVAILABLE" "Command needed: $1"
 }
 ```
 
@@ -429,7 +557,7 @@ Source:
 
 ```sh
 cmd_ver_or_die() {
-        cmd_ver "$1" "$2" "$3" || die "Command version needed: $1 >= $2 (not ${3:-?})"
+        cmd "$1" && ver "$2" "$3" || die "$EX_UNAVAILABLE" "Command version needed: $1 >= $2 (not ${3:-?})"
 }
 ```
 
@@ -470,7 +598,7 @@ Source:
 
 ```sh
 var_or_die() {
-        var "$1" || die "Variable needed: $1"
+        var "$1" || die "$EX_CONFIG" "Variable needed: $1"
 }
 ```
 
@@ -508,7 +636,7 @@ Source:
 
 ```sh
 ver_or_die() {
-        ver "$1" "$2" || die "Version needed: >= $1 (not ${2:-?})"
+        ver "$1" "$2" || die "$EX_CONFIG" "Version needed: >= $1 (not ${2:-?})"
 }
 ```
 
@@ -1014,132 +1142,4 @@ Source:
 file_ends_with_newline() {
         test $(tail -c1 "$1" | wc -l) -gt 0
 }
-```
-
-
-## Exit codes
-
-It is good practice to call exit with a value that indicates success (0) 
-or a failure condition when ending a program. The pre-defined exit codes
-from sysexits can be used, so the caller of the process can get a rough
-estimation about the failure class without looking up the source code.
-
-The successful exit is always indicated by a status of 0. 
-
-Error numbers begin at EX__BASE to reduce the possibility of clashing with
-other exit statuses that random programs may already return. The meaning of
-the codes is approximately as follows.
-
-Success:
-
-```sh
-EX_OK=0
-```
-
-Usage: The command was used incorrectly, e.g., with the wrong numberof
-arguments, a bad flag, a bad syntax in a parameter, or whatever.
-
-```sh
-EX_USAGE=64
-```
-
-Data error: The input data was incorrectin someway. This should only be used for
-user's data and not system files.
-
-```sh
-EX_DATAERR=65
-```
-
-No input: An input file-- not a system file-- did not exist or was not readable.
-This could also include errors like "No message" to a mailer-- if it cared to
-catch it.
-
-```sh
-EX_NOINPUT=66
-```
-
-No user: The user specified did not exist. This might be used for mail addresses
-or remote logins.
-
-```sh
-EX_NOUSER=67
-```
-
-No host: The host specified did not exist. This is used in mail addresses or
-network requests.
-
-```sh
-EX_NOHOST=68
-```
-
-Unavailable: A service is unavailable. This can occur if a support program or
-file does not exist. This can also be used as a catchall message when something
-you wanted to do does not work, but you do not know why.
-
-```sh
-EX_UNAVAILABLE=69
-```
-
-Software: An internal software error has been detected. This should be limited
-to non-operating system related errors as possible.
-
-```sh
-EX_SOFTWARE=70
-```
-
-OS error: An operating system error has been detected. This is intended to be
-used for such things as "cannot fork", "cannot create pipe", or the like.  It
-includes things like getuid returning a user that does not exist in the passwd
-file.
-
-```sh
-EX_OSERR=71
-```
-
-OS file: Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does not
-exist, cannot be opened, or has some sort of error (e.g. syntax error).
-
-```sh
-EX_OSFILE=72
-```
-
-Can't create: A user-specified output file cannot be created.
-
-```sh
-EX_CANTCREAT=73
-```
-
-IO error: An error occurred while doing I/O on some file.
-
-```sh
-EX_IOERR=74
-```
-
-Temp fail: Temporary failure, indicating something that is not really an error.
-In sendmail, this means that a mailer (e.g. could not create a connection) and
-the request should be reattempted later.
-
-```sh
-EX_TEMPFAIL=75
-```
-
-Protocol: The remote system returned something that was "not possible" during a
-protocol exchange.
-
-```sh
-EX_PROTOCOL=76
-```
-
-No perm: You did not have sufficient permission to perform the operation.  This
-is not intended for file system problems, which should use EX_NOINPUT or
-EX_CANTCREAT, but rather for higher level permissions.
-
-```sh
-EX_NOPERM=77
-```
-
-Config: Something was found in an unconfigured or misconfigured state.
-
-```sh
-EX_CONFIG=78
 ```

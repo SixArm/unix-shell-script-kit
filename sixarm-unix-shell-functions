@@ -47,7 +47,7 @@
 #   * Use the `err` function to print to STDERR.
 #
 out() {
-    printf %s\\n "$*"
+        printf %s\\n "$*"
 }
 
 # err: print error message to stderr.
@@ -68,19 +68,19 @@ out() {
 #   * Use the `err` function to print to STDERR.
 #
 err() {
-    >&2 printf %s\\n "$*"
+        >&2 printf %s\\n "$*"
 }
 
-# die: print error message to stderr, then exit with error code 1.
+# die: print error message to stderr, then exit with error code.
 #
 # Example:
 # ```
-# die "my message"
+# die 1 "my message"
 # STDERR=> my message
 # => exit 1
 # ```
 die() {
-    >&2 printf %s\\n "$*" ; exit 1
+        n="$1" ; shift ; >&2 printf %s\\n "$*" ; exit "$n"
 }
 
 # big: print a big banner to stdout, good for human readability.
@@ -154,17 +154,16 @@ ask() {
 # the codes is approximately as follows.
 EX_OK=0
 
-# The command was used incorrectly, e.g., with the wrong numberof arguments,
+# The command was used incorrectly, e.g., with the wrong number of arguments,
 # a bad flag, a bad syntax in a parameter, or whatever.
 EX_USAGE=64
 
-# The input data was incorrectin someway. This should only be used for user's
+# The input data was incorrect in some way. This should only be used for user's
 # data and not system files.
 EX_DATAERR=65
 
 # An input file-- not a system file-- did not exist or was not readable.  This
-# could also include errors like "No message" to a mailer-- if it cared to catch
-# it.
+# could include errors like "No message" to a mailer-- if it cared to catch it.
 EX_NOINPUT=66
 
 # The user specified did not exist. This might be used for mail addresses or
@@ -467,7 +466,7 @@ cmd() {
 # => exit 1
 # ```
 cmd_or_die() {
-        cmd "$1" || die "Command needed: $1"
+        cmd "$1" || die "$EX_UNAVAILABLE" "Command needed: $1"
 }
 
 # cmd_ver_or_die: ensure a command version exists.
@@ -482,7 +481,7 @@ cmd_or_die() {
 # => exit 1
 # ```
 cmd_ver_or_die() {
-        cmd "$1" && ver "$2" "$3" || die "Command version needed: $1 >= $2 (not ${3:-?})"
+        cmd "$1" && ver "$2" "$3" || die "$EX_UNAVAILABLE" "Command version needed: $1 >= $2 (not ${3:-?})"
 }
 
 # var: return true iff a variable exists.
@@ -511,7 +510,7 @@ var() {
 # => exit 1
 # ```
 var_or_die() {
-        var "$1" || die "Variable needed: $1"
+        var "$1" || die "$EX_CONFIG" "Variable needed: $1"
 }
 
 # ver: return true iff a version is sufficient.
@@ -539,7 +538,7 @@ ver() {
 # STDERR=> Version needed: >= 3.3 (not 2.2)
 # ```
 ver_or_die() {
-        ver "$1" "$2" || die "Version needed: >= $1 (not ${2:-?})"
+        ver "$1" "$2" || die "$EX_CONFIG" "Version needed: >= $1 (not ${2:-?})"
 }
 
 ##
