@@ -18,9 +18,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 8.3.0
+#   * Version: 9.0.1
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-11-01T16:02:13Z
+#   * Updated: 2021-11-11T21:02:26Z
 #   * License: GPL-2.0-or-later or contact us for custom license
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 ##
@@ -282,7 +282,7 @@ log_home() {
 #   * $HOME/.temp: this is our preferred fallback dot directory.
 #
 temp_home() {
-        out "${TEMP_HOME:-${XDG_LOG_HOME:-$HOME/.temp}}"
+        out "${TEMP_HOME:-${XDG_TEMP_HOME:-$HOME/.temp}}"
 }
 
 # data_home: directory for data files (analogous to system /usr/share).

@@ -11,7 +11,7 @@ small functions, clear examples, and POSIX compatibility.
 * Package: sixarm-unix-shell-functions
 * Version: 9.0.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2021-11-01T16:02:13Z
+* Updated: 2021-11-11T21:02:26Z
 * License: GPL-2.0-or-later or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
