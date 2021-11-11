@@ -18,7 +18,7 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 9.0.1
+#   * Version: 9.0.0
 #   * Created: 2017-08-22T00:00:00Z
 #   * Updated: 2021-11-11T21:02:26Z
 #   * License: GPL-2.0-or-later or contact us for custom license
@@ -241,128 +241,70 @@ popdx() {
         command popd "$@" > /dev/null
 }
 
-##
-# Home helpers
-##
-
-# log_home: directory for log files (analogous to system /var/log).
+# user_dir: get user-specific directory via env var or XDG setting or HOME.
 #
 # Example:
 # ```
-# log_home
-# => ~/.log
+# user_dir foo => $FOO_DIR || $FOO_HOME || $XDG_FOO_DIR || $XDG_FOO_HOME || $HOME/foo
 # ```
 #
-# This function chooses the first available of:
+# Conventions:
 #
-#   * $LOG_HOME: this can be set by the user, such as in a dot file.
+#   * `user_dir bin` => binary executable directory
+#   * `user_dir cache` => cache directory
+#   * `user_dir config` => configuration directory
+#   * `user_dir data` => data directory
+#   * `user_dir desktop` => desktop directory
+#   * `user_dir doscuments` => documents directory
+#   * `user_dir download` => download directory
+#   * `user_dir log` => logging directory
+#   * `user_dir music` => music directory
+#   * `user_dir pictures` => pictures directory
+#   * `user_dir publicshare` => public share directory
+#   * `user_dir runtime` => runtime directory
+#   * `user_dir state` => state directory
+#   * `user_dir temp` => temporary directory
+#   * `user_dir templates` => templates directory
+#   * `user_dir videos` => videos directory
 #
-#   * $XDG_LOG_HOME: this is the POSIX preferred directory location.
-#
-#   * $HOME/.log: this is our preferred fallback dot directory.
-#
-log_home() {
-        out "${LOG_HOME:-${XDG_LOG_HOME:-$HOME/.log}}"
-}
-
-# temp_home: directory for temporary files (analogous to system /tmp).
-#
-# Example:
+# POSIX conventions:
 # ```
-# temp_home
-# => ~/.temp
-# ```
-#
-# This function chooses the first available of:
-#
-#   * $TEMP_HOME: this can be set by the user, such as in a dot file.
-#
-#   * $XDG_TEMP_HOME: this is the POSIX preferred directory location.
-#
-#   * $HOME/.temp: this is our preferred fallback dot directory.
-#
-temp_home() {
-        out "${TEMP_HOME:-${XDG_TEMP_HOME:-$HOME/.temp}}"
-}
-
-# data_home: directory for data files (analogous to system /usr/share).
-#
-# Example:
-# ```
-# data_home
-# => ~/.data
+# XDG_BIN_HOME: user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
+# XDG_LOG_HOME: user-specific log files, analogous to system /var/log or $HOME/.local/log.
+# XDG_TEMP_HOME: user-specific temporary files, analogous to system /tmp or $HOME/.tmp.
+# XDG_DATA_HOME: user-specific data files, analogous to system /usr/share or $HOME/.local/share.
+# XDG_CACHE_HOME: user-specific cache files, analogous to system /var/cache or $HOME/.cache.
+# XDG_STATE_HOME: user-specific cache files, analogous to system /var/state or $HOME/.local/state.
+# XDG_CONFIG_HOME: user-specific configuration files, analogous to system /etc or $HOME/.config.
+# XDG_RUNTIME_HOME: user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
 # ```
 #
-# This function chooses the first available of:
-#
-#   * $DATA_HOME: this can be set by the user, such as in a dot file.
-#
-#   * $XDG_DATA_HOME: this is the POSIX preferred directory location.
-#
-#   * $HOME/.data: this is our preferred fallback dot directory.
-#
-data_home() {
-        out "${DATA_HOME:-${XDG_DATA_HOME:-$HOME/.data}}"
-}
-
-# cache_home: directory for cache files (analogous to system /var/cache).
-#
-# Example:
+# User directory conventions:
 # ```
-# cache_home
-# => ~/.cache
+# XDG_DESKTOP_DIR: user-specific desktop, such as frequent apps and files.
+# XDG_DOCUMENTS_DIR: user-specific documents, such as typical working files.
+# XDG_DOWNLOAD_DIR: user-specific downloads, such as internet file downloads.
+# XDG_MUSIC_DIR: user-specific music files, such as songs.
+# XDG_PICTURES_DIR: user-specific pictures, such as photos.
+# XDG_PUBLICSHARE_DIR: user-specific public share, such as file sharing.
+# XDG_TEMPLATES_DIR: user-specific templates.
+# XDG_VIDEOS_DIR: user-specific videos, such as movies.
 # ```
 #
-# This function chooses the first available of:
+# See also:
 #
-#   * $CACHE_HOME: this can be set by the user, such as in a dot file.
+#   * https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 #
-#   * $XDG_CACHE_HOME: this is the POSIX preferred directory location.
+#   * https://wiki.archlinux.org/title/XDG_user_directories
 #
-#   * $HOME/.cache: this is our preferred fallback dot directory.
-#
-cache_home() {
-        out "${CACHE_HOME:-${XDG_CACHE_HOME:-$HOME/.cache}}"
-}
-
-# config_home: directory for configuration files (analogous to system /etc).
-#
-# Example:
-# ```
-# config_home
-# => ~/.config
-# ```
-#
-# This function chooses the first available of:
-#
-#   * $CONFIG_HOME: this can be set by the user, such as in a dot file.
-#
-#   * $XDG_CONFIG_HOME: this is the POSIX preferred directory location.
-#
-#   * $HOME/.config: this is our preferred fallback dot directory.
-#
-config_home() {
-        out "${CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
-}
-
-# runtime_home: directory for runtime files such as sockets, named pipes, etc.
-#
-# Example:
-# ```
-# runtime_home
-# => ~/.runtime
-# ```
-#
-# This function chooses the first available of:
-#
-#   * $RUNTIME_HOME: this can be set by the user, such as in a dot file.
-#
-#   * $XDG_RUNTIME_HOME: this is the POSIX preferred directory location.
-#
-#   * $HOME/.runtime: this is our preferred fallback dot directory.
-#
-runtime_home() {
-        out "${RUNTIME_HOME:-${XDG_RUNTIME_HOME:-$HOME/.runtime}}"
+user_dir(){
+	upper=$(printf %s\\n "$1" | tr '[:lower:]' '[:upper:]')
+	lower=$(printf %s\\n "$1" | tr '[:upper:]' '[:lower:]')
+	a=$(eval printf "%s\\\\n" \$${upper}_DIR)
+	b=$(eval printf "%s\\\\n" \$${upper}_HOME)
+	c=$(eval printf "%s\\\\n" \$XDG_${upper}_DIR)
+	d=$(eval printf "%s\\\\n" \$XDG_${upper}_HOME)
+        printf %s\\n "${a:=${b:=${c:=${d:=$HOME/$lower}}}}"
 }
 
 ##

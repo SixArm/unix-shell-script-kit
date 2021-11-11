@@ -306,108 +306,17 @@ popdx() {
 }
 ```
 
-## Home helpers
-
-### log_home: directory for log files (analogous to system /var/log)
+### user_dir: get user-specific directory via env var or XDG setting or HOME.
 
 Example:
 
 ```sh
-log_home
-=> ~/.log
-```
-
-Source:
-
-```sh
-log_home() {
-        out "${LOG_HOME:-${XDG_LOG_HOME:-$HOME/.log}}"
-}
-```
-
-### temp_home: directory for temporary files (analogous to system /tmp)
-
-Example:
-
-```sh
-temp_home
-=> ~/.temp
-```
-
-Source:
-
-```sh
-temp_home() {
-        out "${TEMP_HOME:-${XDG_LOG_HOME:-$HOME/.temp}}"
-}
-```
-
-### data_home: directory for data files (analogous to system /usr/share)
-
-Example:
-
-```sh
-data_home
-=> ~/.local/share
-```
-
-Source:
-
-```sh
-data_home() {
-        out "${DATA_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}}"
-}
-```
-
-### cache_home: directory for cache files (analogous to system /var/cache)
-
-Example:
-
-```sh
-cache_home
-=> ~/.cache
-```
-
-Source:
-
-```sh
-cache_home() {
-        out "${CACHE_HOME:-${XDG_CACHE_HOME:-$HOME/.cache}}"
-}
-```
-
-### config_home: directory for configuration files (analogous to system /etc)
-
-Example:
-
-```sh
-config_home
-=> ~/.config
-```
-
-Source:
-
-```sh
-config_home() {
-        out "${CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
-}
-```
-
-### runtime_home: directory for runtime files such as sockets, named pipes, etc
-
-Example:
-
-```sh
-runtime_home
-=> ~/.runtime
-```
-
-Source:
-
-```sh
-runtime_home() {
-        out "${RUNTIME_HOME:-${XDG_RUNTIME_HOME:-$HOME/.runtime}}"
-}
+user_dir log
+=> $FOO_DIR
+=> $FOO_HOME
+=> $XDG_FOO_DIR
+=> $XDG_FOO_HOME
+=> $HOME/foo
 ```
 
 ## Time helpers
