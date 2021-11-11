@@ -277,8 +277,8 @@ EX_CONFIG=78
 Example:
 
 ```sh
-pushdx tmp
-=> change to directory "tmp"
+pushdx temp
+=> change to directory "temp"
 ```
 
 Source:
@@ -617,10 +617,10 @@ Source: see file
 Example:
 
 ```sh
-dot_all ~/tmp
-=> . ~/tmp/a.sh
-=> . ~/tmp/b.pl
-=> . ~/tmp/c.js
+dot_all ~/temp
+=> . ~/temp/a.sh
+=> . ~/temp/b.pl
+=> . ~/temp/c.js
 ```
 
 Source:
@@ -636,10 +636,10 @@ dot_all() {
 Example:
 
 ```sh
-run_all ~/tmp
-=> ~/tmp/a.sh
-=> ~/tmp/b.pl
-=> ~/tmp/c.js
+run_all ~/temp
+=> ~/temp/a.sh
+=> ~/temp/b.pl
+=> ~/temp/c.js
 ```
 
 Source:
@@ -655,10 +655,10 @@ run_all() {
 Example:
 
 ```sh
-sh_all ~/tmp
-=> sh -c ~/tmp/a.sh
-=> sh -c ~/tmp/b.pl
-=> sh -c ~/tmp/c.js
+sh_all ~/temp
+=> sh -c ~/temp/a.sh
+=> sh -c ~/temp/b.pl
+=> sh -c ~/temp/c.js
 ```
 
 Source:
@@ -674,10 +674,10 @@ sh_all() {
 Example:
 
 ```sh
-rm_all ~/tmp
-=> rm ~/tmp/a.sh
-=> rm ~/tmp/b.pl
-=> rm ~/tmp/c.js
+rm_all ~/temp
+=> rm ~/temp/a.sh
+=> rm ~/temp/b.pl
+=> rm ~/temp/c.js
 ```
 
 Source:

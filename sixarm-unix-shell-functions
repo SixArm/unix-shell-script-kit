@@ -223,8 +223,8 @@ EX_CONFIG=78
 #
 # Example:
 # ```
-# pushdx tmp
-# => change to directory "tmp"
+# pushdx temp
+# => change to directory "temp"
 # ```
 pushdx() {
         command pushd "$@" > /dev/null
@@ -271,7 +271,7 @@ popdx() {
 # ```
 # XDG_BIN_HOME: user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
 # XDG_LOG_HOME: user-specific log files, analogous to system /var/log or $HOME/.local/log.
-# XDG_TEMP_HOME: user-specific temporary files, analogous to system /tmp or $HOME/.tmp.
+# XDG_TEMP_HOME: user-specific temporary files, analogous to system /temp or $HOME/.temp.
 # XDG_DATA_HOME: user-specific data files, analogous to system /usr/share or $HOME/.local/share.
 # XDG_CACHE_HOME: user-specific cache files, analogous to system /var/cache or $HOME/.cache.
 # XDG_STATE_HOME: user-specific cache files, analogous to system /var/state or $HOME/.local/state.
@@ -597,10 +597,10 @@ cmp_digits() {
 #
 # Example:
 # ```
-# dot_all ~/tmp
-# => . ~/tmp/a.sh
-# => . ~/tmp/b.pl
-# => . ~/tmp/c.js
+# dot_all ~/temp
+# => . ~/temp/a.sh
+# => . ~/temp/b.pl
+# => . ~/temp/c.js
 # ```
 dot_all() {
         find "${1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec . {} \;
@@ -610,10 +610,10 @@ dot_all() {
 #
 # Example:
 # ```
-# run_all ~/tmp
-# => ~/tmp/a.sh
-# => ~/tmp/b.pl
-# => ~/tmp/c.js
+# run_all ~/temp
+# => ~/temp/a.sh
+# => ~/temp/b.pl
+# => ~/temp/c.js
 # ```
 run_all() {
         find "${1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -exec {} \;
@@ -623,10 +623,10 @@ run_all() {
 #
 # Example:
 # ```
-# sh_all ~/tmp
-# => sh -c ~/tmp/a.sh
-# => sh -c ~/tmp/b.pl
-# => sh -c ~/tmp/c.js
+# sh_all ~/temp
+# => sh -c ~/temp/a.sh
+# => sh -c ~/temp/b.pl
+# => sh -c ~/temp/c.js
 # ```
 sh_all() {
         find "${1:-.}" -type f \( -perm -u=x -o -perm -g=x -o -perm -o=x \) -exec test -x {} \; -print0 | xargs -0I{} -n1 sh -c "{}"
@@ -636,10 +636,10 @@ sh_all() {
 #
 # Example:
 # ```
-# rm_all ~/tmp
-# => rm ~/tmp/a.sh
-# => rm ~/tmp/b.pl
-# => rm ~/tmp/c.js
+# rm_all ~/temp
+# => rm ~/temp/a.sh
+# => rm ~/temp/b.pl
+# => rm ~/temp/c.js
 # ```
 rm_all() {
         find "${1:-.}" -type f -exec rm {} \;
