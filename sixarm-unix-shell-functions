@@ -215,6 +215,12 @@ EX_NOPERM=77
 # Something was found in an unconfigured or misconfigured state.
 EX_CONFIG=78
 
+# GNU bash: If a command is found but is not executable, then return 126. 
+EX_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
+
+# GNU bash: If a command is not found, then return 127. 
+EX_COMMAND_NOT_FOUND=127
+
 ##
 # Directory helpers
 ##
