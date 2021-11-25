@@ -9,9 +9,9 @@ small functions, clear examples, and POSIX compatibility.
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 9.0.0
+* Version: 9.1.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2021-11-11T21:02:26Z
+* Updated: 2021-11-25T06:35:45Z
 * License: GPL-2.0-or-later or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -268,6 +268,30 @@ Config: Something was found in an unconfigured or misconfigured state.
 
 ```sh
 EX_CONFIG=78
+```
+
+Git bisect: The special exit code 125 should be used when the current source
+code cannot be tested. If the script exits with this code, the current
+revision will be skipped (see git bisect skip above). 125 was chosen as the
+highest sensible value to use for this purpose, because 126 and 127 are used
+by POSIX shells to signal specific error status (127 is for command not found,
+126 is for command found but not executable—​these details do not matter, as
+they are normal errors in the script, as far as bisect run is concerned).
+
+```sh
+EX_GIT_BISECT_SKIP=125
+```
+
+GNU bash: If a command is found but is not executable, then return 126. 
+
+```sh
+EX_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
+```
+
+GNU bash: If a command is not found, then return 127. 
+
+```sh
+EX_COMMAND_NOT_FOUND=127
 ```
 
 ## Directory helpers
