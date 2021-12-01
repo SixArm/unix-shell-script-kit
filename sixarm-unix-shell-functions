@@ -18,9 +18,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 9.1.0
+#   * Version: 9.2.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-11-25T06:35:45Z
+#   * Updated: 2021-12-01T18:31:31Z
 #   * License: GPL-2.0-or-later or contact us for custom license
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 ##
@@ -326,12 +326,18 @@ user_dir(){
 # Time helpers
 ##
 
-# now: get the current datetime using ISO standard format.
+# now: get a datetime using our preferred ISO standard format.
 #
-# Example:
+# Example with the current datetime:
 # ```
 # now
 # => 2021-05-04T22:59:28.000000000+00:00
+# ```
+#
+# Example with a custom datetime:
+# ```
+# now -d "2021-01-01" 
+# => 2021-01-01T00:00:00.000000000+00:00
 # ```
 #
 # We prefer this date-time format for many of our scripts:
@@ -344,6 +350,10 @@ user_dir(){
 #
 #   * We prefer timezone width because it aligns with localized systems.
 #     Specifically, we use some systems and tools that require timezones.
+#
+# Note: the custom datetime capabilty relies on the system "date" command,
+# because this script sends the args along to the system "date" command.
+# For example Linux GNU "date" handles this, but macOS BSD "date" doesn't.
 #
 now() {
         date -u "+%Y-%m-%dT%H:%M:%S.000000000+00:00" "$@"
@@ -750,6 +760,56 @@ snake_format() {
 #```
 space_format() {
         printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/ /g; s/ \{2,\}/ /g; s/^ \{1,\}//; s/ \{1,\}$//;'
+}
+
+# select_character_class: get a string's characters that match a class, with optional offset and length.
+#
+# Syntax: select_character_class <string> <class> [offset [length]]
+#
+# Example:
+# ```
+# select_character_class foo123goo456 alpha
+# => foogoo
+# ```
+#
+# Example with substring offset:
+# ```
+# select_character_class foo123goo456 alpha 3
+# => goo
+# ```
+#
+# Example with substring offset and length:
+# ```
+# select_character_class foo123goo456 alpha 3 1
+# => g
+# ```
+select_character_class() {
+	printf %s\\n ${${1//[^[:$2:]]/}:${3:-0}:${4:-${#1}}}
+}
+
+# reject_character_class: get a string's characters that don't match a class, with optional offset and length.
+#
+# Syntax: reject_character_class <string> <class> [offset [length]]
+#
+# Example:
+# ```
+# reject_character_class foo123goo456 alpha
+# => -123--456
+# ```
+#
+# Example with substring offset:
+# ```
+# reject_character_class foo123goo456 alpha 6
+# => 456
+# ```
+#
+# Example with substring offset and length:
+# ```
+# reject_character_class foo123goo456 alpha 6 1
+# => 4
+# ```
+reject_character_class() {
+	printf %s\\n ${${1//[[:$2:]]/}:${3:-0}:${4:-${#1}}}
 }
 
 ##

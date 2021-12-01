@@ -9,9 +9,9 @@ small functions, clear examples, and POSIX compatibility.
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 9.1.0
+* Version: 9.2.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2021-11-25T06:35:45Z
+* Updated: 2021-12-01T18:31:31Z
 * License: GPL-2.0-or-later or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -345,13 +345,37 @@ user_dir log
 
 ## Time helpers
 
-### now: get the current datetime using ISO standard format
+### now: get a datetime using our preferred ISO standard format
 
 Example:
 
 ```sh
 now
 => 2021-05-04T22:59:28.000000000+00:00
+```
+
+Example with a custom datetime:
+
+```sh
+now -d "2021-01-01" 
+=> 2021-01-01T00:00:00.000000000+00:00
+```
+
+Source:
+
+```sh
+now() {
+        date -u "+%Y-%m-%dT%H:%M:%S+00:00" "$@"
+}
+```
+
+### now_date: get a date using our preferred ISO standard format
+
+Example:
+
+```sh
+now_date
+=> 2021-05-04
 ```
 
 Source:
@@ -731,6 +755,7 @@ trim() {
 }
 ```
 
+
 ### slug: convert a string from any characters to solely lowercase and single internal dash characters
 
 Example:
@@ -848,6 +873,70 @@ Source:
 ```sh
 space_format() {
         printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/ /g; s/ \{2,\}/ /g; s/^ \{1,\}//; s/ \{1,\}$//;'
+}
+```
+
+### select_character_class: get a string's characters that match a class, with optional offset and length
+
+Syntax: select_character_class <string> <class> [offset [length]]
+
+Example:
+
+```sh
+select_character_class foo123goo456 alpha
+=> foogoo
+```
+
+Example with substring offset:
+
+```sh
+select_character_class foo123goo456 alpha 3
+=> goo
+```
+
+Example with substring offset and length:
+
+```sh
+select_character_class foo123goo456 alpha 3 1
+=> g
+```
+
+Source:
+
+```sh
+select_character_class() {
+	printf %s\\n ${${1//[^[:$2:]]/}:${3:-0}:${4:-${#1}}}
+}
+```
+
+### reject_character_class: get a string's characters that don't match a class, with optional offset and length
+
+Example:
+
+```sh
+reject_character_class foo123goo456 alpha
+=> 123456
+```
+
+Example with substring offset:
+
+```sh
+reject_character_class foo123goo456 alpha 3
+=> 456
+```
+
+Example with substring offset and length:
+
+```sh
+reject_character_class foo123goo456 alpha 3 1
+=> 4
+```
+
+Source:
+
+```sh
+reject_character_class() {
+	printf %s\\n ${${1//[[:$2:]]/}:${3:-0}:${4:-${#1}}}
 }
 ```
 
