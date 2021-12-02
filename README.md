@@ -9,9 +9,9 @@ small functions, clear examples, and POSIX compatibility.
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 9.2.0
+* Version: 9.2.1
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2021-12-01T18:31:31Z
+* Updated: 2021-12-02T01:14:23Z
 * License: GPL-2.0-or-later or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -905,7 +905,10 @@ Source:
 
 ```sh
 select_character_class() {
-	printf %s\\n ${${1//[^[:$2:]]/}:${3:-0}:${4:-${#1}}}
+	string=${1//[^[:$2:]]/}
+	offset=${3:-0}
+	length=${4:-${#string}}
+	printf %s\\n ${string:$offset:$length}
 }
 ```
 
@@ -936,7 +939,10 @@ Source:
 
 ```sh
 reject_character_class() {
-	printf %s\\n ${${1//[[:$2:]]/}:${3:-0}:${4:-${#1}}}
+	string=${1//[[:$2:]]/}
+	offset=${3:-0}
+	length=${4:-${#string}}
+	printf %s\\n ${string:$offset:$length}
 }
 ```
 
