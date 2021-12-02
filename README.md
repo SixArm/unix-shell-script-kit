@@ -9,9 +9,9 @@ small functions, clear examples, and POSIX compatibility.
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 9.2.1
+* Version: 9.3.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2021-12-02T01:14:23Z
+* Updated: 2021-12-02T23:47:32Z
 * License: GPL-2.0-or-later or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -873,6 +873,23 @@ Source:
 ```sh
 space_format() {
         printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/ /g; s/ \{2,\}/ /g; s/^ \{1,\}//; s/ \{1,\}$//;'
+}
+```
+
+### touch_format: convert a string from any characters to solely a command "touch -t" timestamp format
+
+Example:
+
+```sh
+touch_format "Foo  2021-05-04 22:57:54 Goo"
+=> 202105042257.54
+```
+
+Source:
+
+```sh
+touch_format() {
+        printf %s\\n "$*" | sed 's/[^[:digit:]]//g; s/^\([[:digit:]]\{12\}\)\([[:digit:]]\{2\}\)/\1.\2/;'
 }
 ```
 
