@@ -9,9 +9,9 @@ small functions, clear examples, and POSIX compatibility.
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 9.3.0
+* Version: 9.4.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2021-12-02T23:47:32Z
+* Updated: 2022-02-17T11:53:53Z
 * License: GPL-2.0-or-later or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -141,7 +141,6 @@ Example:
 ask
 => prompt
 ```
-
 
 ## Exit codes
 
@@ -965,38 +964,64 @@ reject_character_class() {
 
 ## Array helpers
 
-### array_i: get the array item at index `i`
-
-Example:
-
-```sh
-array_i
-=> TODO
-```
-
-Source:
-
-```sh
-array_i() {
-        [ $# == 3 ] && awk -F "$2" "{print \$$3}" <<< "$1" || awk "{print \$$2}" <<< "$1"
-}
-```
-
 ### array_n: get the array number of fields a.k.a. length a.k.a. size
 
 Example:
 
 ```sh
-array_n
-=> TODO
+set -- a b c d
+array_n "$@"
+=> 4
 ```
 
-Source:
+### array_i: get the array item at index `i` which is 1-based.
+
+Example:
 
 ```sh
-array_n() {
-        [ $# == 2 ] && awk -F "$2" "{print NF}" <<< "$1" || awk "{print NF}" <<< "$1"
-}
+set -- a b c d
+array_i  "$@" 3
+=> c
+```
+
+### array_first: return the array's first item.
+
+Example:
+
+```
+set -- a b c d
+array_first "$@"
+=> a
+```
+
+### array_last: return the array's last item.
+
+Example:
+
+```
+set -- a b c d
+array_last "$@"
+=> d
+```
+
+### array_car: return the array's car item a.k.a. first item.
+
+Example:
+
+```
+set -- a b c d
+array_car "$@"
+=> a
+```
+
+### array_cdr: return the array's cdr items a.k.a. everything after the first item.
+
+Example:
+
+```
+set -- a b c d
+array_car "$@"
+=> b c d
 ```
 
 ## Assert helpers

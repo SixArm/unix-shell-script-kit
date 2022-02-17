@@ -18,7 +18,7 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 9.3.0
+#   * Version: 9.4.0
 #   * Created: 2017-08-22T00:00:00Z
 #   * Updated: 2021-12-02T23:47:32Z
 #   * License: GPL-2.0-or-later or contact us for custom license
@@ -833,26 +833,99 @@ reject_character_class() {
 # Array helpers
 ##
 
-# array_i: get the array item at index `i`.
-#
-# Example:
-# ```
-# array_i
-# => TODO
-# ```
-array_i() {
-        [ $# == 3 ] && awk -F "$2" "{print \$$3}" <<< "$1" || awk "{print \$$2}" <<< "$1"
-}
-
 # array_n: get the array number of fields a.k.a. length a.k.a. size.
 #
 # Example:
 # ```
-# array_n
-# => TODO
+# set -- a b c d
+# array_n "$@"
+# => 4
 # ```
 array_n() {
-        [ $# == 2 ] && awk -F "$2" "{print NF}" <<< "$1" || awk "{print NF}" <<< "$1"
+        printf %s "$#"
+}
+
+# array_i: get the array item at index `i` which is 1-based.
+#
+# Example:
+# ```
+# set -- a b c d
+# array_i "$@" 3
+# => c
+# ```
+#
+# POSIX syntax uses an array index that starts at 1.
+#
+# Bash syntax uses an array index that starts at 0.
+#
+# Bash syntax can have more power this way if you prefer it:
+#
+# ```
+# [ $# == 3 ] && awk -F "$2" "{print \$$3}" <<< "$1" || awk "{print \$$2}" <<< "$1"
+# ```
+array_i() {
+        for __array_i_i in "$@"; do true; done
+        if [ "$__array_i_i" -ge 1 -a "$__array_i_i" -lt $# ]; then
+                __array_i_j=1
+                for __array_i_x in "$@"; do 
+                        if [ "$__array_i_j" -eq "$__array_i_i" ]; then
+                                printf %s "$__array_i_x"
+                                return
+                        fi
+                        __array_i_j=$((__array_i_j+1))
+                done
+        fi
+        exit $EX_USAGE
+}
+
+# array_first: return the array's first item.
+#
+# Example:
+# ```
+# set -- a b c d
+# array_first "$@"
+# => a
+# ```
+array_first() {
+        printf %s "$1"
+}
+
+# array_last: return the array's last item.
+#
+# Example:
+# ```
+# set -- a b c d
+# array_last "$@"
+# => d
+# ```
+array_last() {
+        for __array_last_x in "$@"; do true; done
+        printf %s "$__array_last_x"
+}
+
+# array_car: return the array's car item a.k.a. first item.
+#
+# Example:
+# ```
+# set -- a b c d
+# array_car "$@"
+# => a
+# ```
+array_car() {
+        printf %s "$1"
+}
+
+# array_cdr: return the array's cdr items a.k.a. everything after the first item.
+#
+# Example:
+# ```
+# set -- a b c
+# array_cdr "$@"
+# => b c d
+# ```
+array_cdr() {
+        shift
+        printf %s "$*"
 }
 
 ##
