@@ -1,4 +1,4 @@
-# SixArm Unix shell functions
+# SixArm.com → Unix → shell functions
 
 SixArm is a consulting group that creates software and systens.
 
