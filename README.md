@@ -10,9 +10,9 @@ and POSIX compatibility when plausible.
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 9.4.0
+* Version: 9.5.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2022-02-17T11:53:53Z
+* Updated: 2022-09-08T19:58:04Z
 * License: GPL-2.0-or-later or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -1193,6 +1193,49 @@ Source:
 ```sh
 file_media_type_subtype() {
         file --brief --mime "$1" | sed 's#^[^/]*/##; s#;.*##'
+}
+```
+
+## Font helpers
+
+### font_exists: does a font name exist on this system?
+
+Example:
+
+```sh
+font_exists Arial
+=> true
+
+font_exists Foo
+=> false
+```
+
+Source:
+
+```sh
+font_exists() {
+        fc-list | grep -q ": $1:"
+}
+```
+
+### font_exists_or_die: ensure a font name exists.
+
+Example:
+
+```sh
+font_exists_or_die Arial
+=> true
+
+font_exists_or_die Foo
+STDERR=> Font needed: Foo
+=> exit 1
+```
+
+Source:
+
+```sh
+font_exists_or_die() {
+        font_exists "$1" || die "$EX_UNAVAILABLE" "Font needed: $1" 
 }
 ```
 

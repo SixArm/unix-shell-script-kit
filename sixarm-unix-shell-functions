@@ -18,9 +18,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 9.4.0
+#   * Version: 9.5.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2021-12-02T23:47:32Z
+#   * Updated: 2022-09-08T19:58:04Z
 #   * License: GPL-2.0-or-later or contact us for custom license
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 ##
@@ -429,7 +429,7 @@ cmd() {
 # => true
 #
 # cmd_or_die curl
-# STDERR=> Command needed: curl (using STDERR)
+# STDERR=> Command needed: curl
 # => exit 1
 # ```
 cmd_or_die() {
@@ -444,7 +444,7 @@ cmd_or_die() {
 # => true
 #
 # version_or_die grep 2.2 3.3
-# STDERR=> Command version needed: grep >= 3.x ((using STDERR)
+# STDERR=> Command version needed: grep >= 3.x
 # => exit 1
 # ```
 cmd_ver_or_die() {
@@ -1049,6 +1049,41 @@ file_media_type_supertype() {
 # ```
 file_media_type_subtype() {
         file --brief --mime "$1" | sed 's#^[^/]*/##; s#;.*##'
+}
+
+##
+# Font helpers
+##
+
+# font_exists: does a font name exist on this system?
+# 
+# Example:
+# ```
+# font_exists Arial
+# => true
+#
+# font_exists Foo
+# => false
+# ```
+#
+font_exists() {
+        fc-list | grep -q ": $1:"
+}
+
+# font_exists_or_die: ensure a font name exists.
+# 
+# Example:
+# ```
+# font_exists_or_die Arial
+# => true
+#
+# font_exists_or_die Foo
+# STDERR=> Font needed: Foo
+# => exit 1
+# ```
+#
+font_exists_or_die() {
+        font_exists "$1" || die "$EX_UNAVAILABLE" "Font needed: $1" 
 }
 
 ##
