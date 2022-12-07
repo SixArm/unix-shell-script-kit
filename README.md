@@ -10,9 +10,9 @@ and POSIX compatibility when plausible.
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 9.5.0
+* Version: 9.5.1
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2022-09-08T19:58:04Z
+* Updated: 2022-12-07T18:43:04Z
 * License: GPL-2.0-or-later or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -612,7 +612,7 @@ Source:
 
 ```sh
 int() {
-        awk '{ print int($1) }'
+        printf %s\\n "$1" | awk '{ print int($0); exit }'
 }
 ```
 
