@@ -303,40 +303,6 @@ EX_COMMAND_NOT_FOUND=127
 
 ## Directory helpers
 
-### pushdx: pushd with silencer
-
-Example:
-
-```sh
-pushdx temp
-=> change to directory "temp"
-```
-
-Source:
-
-```sh
-pushdx() {
-        command pushd "$@" > /dev/null
-}
-```
-
-### popdx: popd with silencer
-
-Example:
-
-```sh
-popdx
-=> change to previous directory
-```
-
-Source:
-
-```sh
-popdx() {
-        command popd "$@" > /dev/null
-}
-```
-
 ### user_dir: get user-specific directory via env var or XDG setting or HOME.
 
 Example:
