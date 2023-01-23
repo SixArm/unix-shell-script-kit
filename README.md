@@ -1192,26 +1192,6 @@ assert_str_ends_with() {
 }
 ```
 
-### assert_match: assert a regular expression matches an item
-
-Example:
-
-```sh
-assert_match o foo
-=> success i.e. no output
-
-assert_match x foo
-STDERR=> assert_match x foo
-```
-
-Source:
-
-```sh
-assert_match() {
-        [[ "$2" =~ $1 ]] || err assert_match "$@"
-}
-```
-
 ## Make temp helpers
 
 ### mktemp_dir: make a temporary directory path
