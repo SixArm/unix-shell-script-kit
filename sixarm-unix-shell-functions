@@ -339,6 +339,18 @@ now() {
         date -u "+%Y-%m-%dT%H:%M:%S.000000000+00:00" "$@"
 }
 
+# now_date: get a date using our preferred ISO standard format
+#
+# Example:
+#
+# ```sh
+# now_date
+# => 2021-05-04
+# ```
+now_date() {
+        date -u "+%Y-%m-%d" "$@"
+}
+
 # sec: get the current time in Unix seconds.
 #
 # Example:
