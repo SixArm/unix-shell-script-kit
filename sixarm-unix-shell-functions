@@ -359,7 +359,7 @@ now_date() {
 # => 1620169178
 # ```
 sec() {
-        date "+%s"
+        date "+%s" "$@"
 }
 
 # age: get the age of a given time in Unix secords.
