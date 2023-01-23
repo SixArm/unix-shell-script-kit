@@ -3,11 +3,13 @@
 ##
 # SixArm Unix shell functions
 #
-# SixArm is a consulting group that creates software and systens.
+# SixArm is a consulting group that creates software and systems.
 #
-# [`sixarm-unix-shell-functions`](sixarm-unix-shell-functions) is 
-# our file of general-purpose Unix functions, with emphasis on 
-# small functions, clear examples, and POSIX compatibility.
+# This is our POSIX shell script file of general-purpose functions.
+#
+# We aim to emphasize is small functions and clear examples.
+#
+# Constructive feedback is welcome and appreciated.
 #
 # To download this file:
 #
