@@ -18,9 +18,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 9.5.1
+#   * Version: 10.0.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2022-12-07T18:43:04Z
+#   * Updated: 2023-01-23T19:24:54Z
 #   * License: GPL-2.0-or-later or contact us for custom license
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 ##
@@ -940,7 +940,7 @@ array_cdr() {
 # => success i.e. no output
 #
 # assert_test -x notes.txt
-# STDERR=> assert_test -x notes.txt  (because failure prints diagnostic info)
+# STDERR=> assert_test -x notes.txt 
 # ```
 assert_test() {
         test "$1" "$2" || err assert_test "$@"
@@ -954,38 +954,220 @@ assert_test() {
 # => success i.e. no output
 #
 # assert_empty foo
-# STDERR=> assert_empty foo (because failure prints diagnostic info)
+# STDERR=> assert_empty foo
 # ```
 assert_empty() {
         [ -z "$1" ] || err assert_empty "$@"
 }
 
-# assert_empty: assert an item is equal to another item.
+# assert_not_empty: assert an item is not empty.
 #
 # Example:
 # ```
-# assert_equal foo foo
+# assert_not_empty foo
 # => success i.e. no output
 #
-# assert_equal foo bar
-# STDERR=> assert_equal foo bar (because failure prints diagnostic info)
+# assert_not_empty ""
+# STDERR=> assert_not_empty
 # ```
-assert_equal() {
-        [ "$1" = "$2" ] || err assert_equal "$@"
+assert_not_empty() {
+        [ -z "$1" ] || err assert_empty "$@"
 }
 
-# assert_match: assert a regular expression matches an item.
+# assert_int_eq: assert an integer is equal to another integer.
 #
 # Example:
 # ```
-# assert_match o foo
+# assert_int_eq 1 1
 # => success i.e. no output
 #
-# assert_match x foo
-# STDERR=> assert_match x foo
+# assert_int_eq 1 2
+# STDERR=> assert_int_eq 1 2
 # ```
-assert_match() {
-        [[ "$2" =~ $1 ]] || err assert_match "$@"
+assert_int_eq() {
+        [ "$1" -eq "$2" ] || err assert_int_eq "$@"
+}
+
+# assert_int_ne: assert an integer is not equal to another integer.
+#
+# Example:
+# ```
+# assert_int_eq 1 2
+# => success i.e. no output
+#
+# assert_int_eq 1 1
+# STDERR=> assert_int_ne 1 1
+# ```
+assert_int_ne() {
+        [ "$1" -ne "$2" ] || err assert_int_equal "$@"
+}
+
+# assert_int_ge: assert an integer is greater than or equal to another integer.
+#
+# Example:
+# ```
+# assert_int_ge 2 1
+# => success i.e. no output
+#
+# assert_int_ge 1 2
+# STDERR=> assert_int_ge 1 2
+# ```
+assert_int_ge() {
+        [ "$1" -ge "$2" ] || err assert_int_ge "$@"
+}
+
+# assert_int_gt: assert an integer is greater than another integer.
+#
+# Example:
+# ```
+# assert_int_gt 2 1
+# => success i.e. no output
+#
+# assert_int_gt 1 2
+# STDERR=> assert_int_gt 1 2
+# ```
+assert_int_gt() {
+        [ "$1" -gt "$2" ] || err assert_int_gt "$@"
+}
+
+# assert_int_le: assert an integer is less than or equal to another integer.
+#
+# Example:
+# ```
+# assert_int_le 1 2
+# => success i.e. no output
+#
+# assert_int_le 2 1
+# STDERR=> assert_int_le 2 1
+# ```
+assert_int_le() {
+        [ "$1" -le "$2" ] || err assert_int_le "$@"
+}
+
+# assert_int_lt: assert an integer is less than to another integer.
+#
+# Example:
+# ```
+# assert_int_lt 1 2
+# => success i.e. no output
+#
+# assert_int_lt 2 1
+# STDERR=> assert_int_lt 2 1
+# ```
+assert_int_lt() {
+        [ "$1" -lt "$2" ] || err assert_int_lt "$@"
+}
+
+# assert_str_eq: assert a string is equal to another string.
+#
+# Example:
+# ```
+# assert_str_eq 1 1
+# => success i.e. no output
+#
+# assert_str_eq 1 2
+# STDERR=> assert_str_eq 1 2
+# ```
+assert_str_eq() {
+        [ "$1" -eq "$2" ] || err assert_str_eq "$@"
+}
+
+# assert_str_ne: assert a string is not equal to another string.
+#
+# Example:
+# ```
+# assert_str_eq 1 2
+# => success i.e. no output
+#
+# assert_str_eq 1 1
+# STDERR=> assert_str_ne 1 1
+# ```
+assert_str_ne() {
+        [ "$1" -ne "$2" ] || err assert_str_equal "$@"
+}
+
+# assert_str_ge: assert a string is greater than or equal to another string.
+#
+# Example:
+# ```
+# assert_str_ge 2 1
+# => success i.e. no output
+#
+# assert_str_ge 1 2
+# STDERR=> assert_str_ge 1 2
+# ```
+assert_str_ge() {
+        [ "$1" -ge "$2" ] || err assert_str_ge "$@"
+}
+
+# assert_str_gt: assert a string is greater than another string.
+#
+# Example:
+# ```
+# assert_str_gt 2 1
+# => success i.e. no output
+#
+# assert_str_gt 1 2
+# STDERR=> assert_str_gt 1 2
+# ```
+assert_str_gt() {
+        [ "$1" -gt "$2" ] || err assert_str_gt "$@"
+}
+
+# assert_str_le: assert a string is less than or equal to another string.
+#
+# Example:
+# ```
+# assert_str_le 1 2
+# => success i.e. no output
+#
+# assert_str_le 2 1
+# STDERR=> assert_str_le 2 1
+# ```
+assert_str_le() {
+        [ "$1" -le "$2" ] || err assert_str_le "$@"
+}
+
+# assert_str_lt: assert a string is less than to another string.
+#
+# Example:
+# ```
+# assert_str_lt 1 2
+# => success i.e. no output
+#
+# assert_str_lt 2 1
+# STDERR=> assert_str_lt 2 1
+# ```
+assert_str_lt() {
+        [ "$1" -lt "$2" ] || err assert_str_lt "$@"
+}
+
+# assert_str_starts_with: assert a string starts with a substring.
+#
+# Example:
+# ```
+# assert_str_starts_with foobar foo
+# => success i.e. no output
+#
+# assert_str_starts_with foobar xxx
+# STDERR=> assert_str_starts_with foobar xxx
+# ```
+assert_str_starts_with() {
+        [ "$1" != "${1#"$2"}" ] || err assert_str_starts_with "$@"
+}
+
+# assert_str_ends_with: assert a string ends with with a substring.
+#
+# Example:
+# ```
+# assert_str_ends_with foobar bar
+# => success i.e. no output
+#
+# assert_str_ends_with foobar xxx
+# STDERR=> assert_str_ends_with foobar xxx
+# ```
+assert_str_ends_with() {
+        [ "$1" != "${1%"$2"}" ] || err assert_str_ends_with "$@"
 }
 
 ##

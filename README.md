@@ -6,13 +6,12 @@ and this is our repository general-purpose Unix functions.
 The emphasis is on small functions, clear examples, 
 and POSIX compatibility when plausible.
 
-
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 9.5.1
+* Version: 10.0.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2022-12-07T18:43:04Z
+* Updated: 2023-01-23T19:24:54Z
 * License: GPL-2.0-or-later or contact us for custom license
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -1036,7 +1035,7 @@ assert_test -x program.sh
 => success i.e. no output
 
 assert_test -x notes.txt
-STDERR=> assert_test -x notes.txt  (because failure prints diagnostic info)
+STDERR=> assert_test -x notes.txt 
 ```
 
 Source:
@@ -1047,7 +1046,7 @@ assert_test() {
 }
 ```
 
-### assert_empty: assert an item is empty
+### assert_empty: assert an item is empty i.e. null
 
 Example:
 
@@ -1056,7 +1055,7 @@ assert_empty ""
 => success i.e. no output
 
 assert_empty foo
-STDERR=> assert_empty foo (because failure prints diagnostic info)
+STDERR=> assert_empty foo
 ```
 
 Source:
@@ -1067,23 +1066,121 @@ assert_empty() {
 }
 ```
 
-### assert_equal: assert an item is equal to another item
+### assert_not_empty: assert an item is not empty i.e. not null
 
 Example:
 
 ```sh
-assert_equal foo foo
+assert_not_empty foo
 => success i.e. no output
 
-assert_equal foo bar
-STDERR=> assert_equal foo bar (because failure prints diagnostic info)
+assert_not_empty ""
+STDERR=> assert_not_empty
 ```
 
 Source:
 
 ```sh
-assert_equal() {
-        [ "$1" = "$2" ] || err assert_equal "$@"
+assert_not_empty() {
+        [ -n "$1" ] || err assert_not_empty "$@"
+}
+```
+
+### assert_int_(eq|ne|ge|gt|le|lt): assert an integer or string versus another
+
+Example:
+
+```sh
+assert_int_eq 1 1
+=> success i.e. no output
+
+assert_int_eq 1 2
+STDERR=> assert_int_eq 1 2
+```
+
+Source:
+
+```sh
+assert_int_eq() {
+        [ "$1" -eq "$2" ] || err assert_int_eq "$@"
+}
+```
+
+There are comparison assertions for integers:
+
+* `assert_int_eq` is equal to
+* `assert_int_ne` is not equal to 
+* `assert_int_ge` is greater than or equal to
+* `assert_int_gt` is greater than
+* `assert_int_le` is less than or equal to
+* `assert_int_lt` is less than
+
+### assert_str_(eq|ne|ge|gt|le|lt): assert a string versus another string
+
+Example:
+
+```sh
+assert_str_eq foo foo
+=> success i.e. no output
+
+assert_str_eq foo bar
+STDERR=> assert_str_eq foo bar
+```
+
+Source:
+
+```sh
+assert_str_eq() {
+        [ "$1" = "$2" ] || err assert_str_eq "$@"
+}
+```
+
+There are comparison assertions for strings:
+
+* `assert_str_eq` is equal to
+* `assert_str_ne` is not equal to 
+* `assert_str_ge` is greater than or equal to
+* `assert_str_gt` is greater than
+* `assert_str_le` is less than or equal to
+* `assert_str_lt` is less than
+
+### assert_str_starts_with: assert a string starts with a substring
+
+Example:
+
+```sh
+assert_str_starts_with foobar foo
+=> success i.e. no output
+
+assert_str_starts_with foobar xxx
+STDERR=> assert_str_starts_with foobar xxx
+```
+
+Source:
+
+```sh
+assert_str_starts_with() {
+        [ "$1" != "${1#"$2"}" ] || err assert_str_starts_with "$@"
+}
+```
+
+### assert_str_ends_with: assert a string ends with with a substring
+
+Example:
+
+```sh
+assert_str_ends_with foobar foo
+=> success i.e. no output
+
+assert_str_ends_with foobar xxx
+STDERR=> assert_str_ends_with foobar xxx
+```
+
+Source:
+
+```sh
+assert_str_ends_with() {
+        [ "$1" != "${1%"$2"}" ] || err assert_str_ends_with "$@"
 }
 ```
 
