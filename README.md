@@ -354,8 +354,8 @@ now_date
 Source:
 
 ```sh
-now() {
-        date -u "+%Y-%m-%dT%H:%M:%S+00:00" "$@"
+now_date() {
+        date -u "+%Y-%m-%d" "$@"
 }
 ```
 
