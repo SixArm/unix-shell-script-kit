@@ -17,7 +17,7 @@ curl -O "https://raw.githubusercontent.com/SixArm/sixarm-unix-shell-functions/ma
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 11.0.0
+* Version: 11.0.1
 * Created: 2017-08-22T00:00:00Z
 * Updated: 2023-03-16T00:48:07Z
 * License: GPL-2.0 or GPL-3.0 or contact us for more
@@ -27,16 +27,12 @@ curl -O "https://raw.githubusercontent.com/SixArm/sixarm-unix-shell-functions/ma
 
 ### out: print output message to stdout
 
-Example:
-
 ```sh
 out "my message"
 STDOUT=> my message
 ```
 
 ### err: print error message to stderr
-
-Example:
 
 ```sh
 err "my message"
@@ -45,8 +41,6 @@ STDERR=> my message
 
 ### die: print error message to stderr, then exit with error code 1
 
-Example:
-
 ```sh
 die 1 "my message"
 STDERR=> my message
@@ -54,8 +48,6 @@ STDERR=> my message
 ```
 
 ### big: print a big banner to stdout, good for human readability
-
-Example:
 
 ```sh
 big "my message"
@@ -69,8 +61,6 @@ big "my message"
 
 ### log: print a datestamp, unique random id, hostname, process id, and message
 
-Example:
-
 ```sh
 log "my message"
 => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 my message
@@ -78,16 +68,12 @@ log "my message"
 
 ### zid: generate a 32-bit secure random lowercase hex identifier
 
-Example:
-
 ```sh
 zid
 => 78577554e967951388b5907854b4c337
 ```
 
 ### ask: prompt the user for a line of input, then return a trimmed string
-
-Example:
 
 ```sh
 ask
@@ -97,8 +83,6 @@ ask
 ## Directory helpers
 
 ### user_dir: get user-specific directory via env var or XDG setting or HOME.
-
-Example:
 
 ```sh
 user_dir log
@@ -112,8 +96,6 @@ user_dir log
 ## Time helpers
 
 ### now: get a datetime using our preferred ISO standard format
-
-Example:
 
 ```sh
 now
@@ -129,16 +111,12 @@ now -d "2021-01-01"
 
 ### now_date: get a date using our preferred ISO standard format
 
-Example:
-
 ```sh
 now_date
 => 2021-05-04
 ```
 
 ### sec: get the current time in Unix seconds
-
-Example:
 
 ```sh
 sec
@@ -147,8 +125,6 @@ sec
 
 ### age: get the age of a given time in Unix secords
 
-Example:
-
 ```sh
 age 1620169178
 => 19
@@ -156,16 +132,12 @@ age 1620169178
 
 ### newer: is the age of a given time newer than a given number of seconds?
 
-Example:
-
 ```sh
 newer 2000000000 && echo "true" || echo "false
 => true
 ```
 
 ### older: is the age of a given time older than a given number of seconds?
-
-Example:
 
 ```sh
 older 1000000000 && echo "true" || echo "false"
@@ -176,8 +148,6 @@ older 1000000000 && echo "true" || echo "false"
 
 ### command_exists: return true iff a command exists
 
-Example:
-
 ```sh
 command_exists grep
 => true
@@ -187,8 +157,6 @@ command_exists curl
 ```
 
 ### command_exists_or_die: ensure a command exists, otherwise die with a help message
-
-Example:
 
 ```sh
 command_exists_or_die grep
@@ -201,8 +169,6 @@ STDERR=> Command needed: curl
 
 ### command_version_or_die: ensure a command exists and version is sufficient, otherwise die with a help message
 
-Example:
-
 ```sh
 command_version_or_die grep 1.1 2.2
 => true
@@ -214,8 +180,6 @@ STDERR=> Command version needed: grep >= 3.3 (not 2.2)
 
 ### var_exists: return true iff a variable exists
 
-Example:
-
 ```sh
 var_exists HOME
 => true
@@ -225,8 +189,6 @@ var_exists FOO
 ```
 
 ### var_exists_or_die: ensure a variable exists, otherwise die with a help message
-
-Example:
 
 ```sh
 var_exists_or_die HOME
@@ -239,8 +201,7 @@ STDERR=> Variable needed: FOO
 
 ### version: return true iff a version is sufficient.
 
-Example:
- ```
+```sh
 version 1.1 2.2
 => true
 
@@ -250,8 +211,7 @@ version 3.3 2.2
 
 ### version_or_die: ensure a version is sufficient, otherwise die with a help message
 
-Example:
- ```
+```sh
 version_or_die 1.1 2.2
 => true
 
@@ -263,16 +223,12 @@ STDERR=> Version needed: >= 3.3 (not 2.2)
 
 ### int: convert a number string to an integer number string
 
-Example:
-
 ```sh
 int 1.23
 => 1
 ```
 
 ### sum: print the sum of numbers
-
-Example:
 
 ```sh
 sum 1 2 3
@@ -283,16 +239,12 @@ sum 1 2 3
 
 ### cmp_alnums: compare alnums as groups, such as for word version strings.
 
-Example:
-
 ```sh
 cmp_alnums "a.b.c" "a.b.d"
 # => -1 (negative one means left < right)
 ```
 
 ### cmp_digits: compare digits as groups, such as for number version strings.
-
-Example:
 
 ```sh
 cmp_digits "1.2.3" "1.2.4"
@@ -303,8 +255,6 @@ cmp_digits "1.2.3" "1.2.4"
 
 ### dot_all: source all the executable files in a given directory and subdirectories
 
-Example:
-
 ```sh
 dot_all ~/temp
 => . ~/temp/a.sh
@@ -313,8 +263,6 @@ dot_all ~/temp
 ```
 
 ### run_all: run all the executable commands in a given directory and subdirectories
-
-Example:
 
 ```sh
 run_all ~/temp
@@ -325,8 +273,6 @@ run_all ~/temp
 
 ### sh_all: shell all the executable commands in a given directory and subdirectories
 
-Example:
-
 ```sh
 sh_all ~/temp
 => sh -c ~/temp/a.sh
@@ -335,8 +281,6 @@ sh_all ~/temp
 ```
 
 ### rm_all: remove all files in a given directory and subdirectories-- use with caution
-
-Example:
 
 ```sh
 rm_all ~/temp
@@ -349,16 +293,12 @@ rm_all ~/temp
 
 ### trim: remove any space characters at the text's start or finish
 
-Example:
-
 ```sh
 trim "  foo  "
 => foo
 ```
 
 ### slug: convert a string from any characters to solely lowercase and single internal dash characters
-
-Example:
 
 ```sh
 slug "**Foo** **Goo** **Hoo**"
@@ -367,16 +307,12 @@ slug "**Foo** **Goo** **Hoo**"
 
 ### slugs: convert a string from any characters to solely lowercase and single internal dash characters and slash characters.
 
-Example:
-
 ```sh
 slugs "**Foo** / **Goo** / **Hoo**"
 => foo/goo/hoo
 ```
 
 ### upper_format: convert text from any lowercase letters to uppercase letters
-
-Example:
 
 ```sh
 upper_format AbCdEf
@@ -385,16 +321,12 @@ upper_format AbCdEf
 
 ### lower_format: convert text from any uppercase letters to lowercase letters
 
-Example:
-
 ```sh
 lower_format AbCdEf
 => abcdef
 ```
 
 ### chain_format: convert a string from any characters to solely alphanumeric and single internal dash characters
-
-Example:
 
 ```sh
 chain_format "**Foo** **Goo** **Hoo**"
@@ -403,8 +335,6 @@ chain_format "**Foo** **Goo** **Hoo**"
 
 ### snake_format: convert a string from any characters to solely alphanumeric and single internal underscore characters
 
-Example:
-
 ```sh
 snake_format "**Foo** **Goo** **Hoo**"
 => Foo_Goo_Hoo
@@ -412,16 +342,12 @@ snake_format "**Foo** **Goo** **Hoo**"
 
 ### space_format: convert a string from any characters to solely alphanumeric and single internal space characters
 
-Example:
-
 ```sh
 space_format "**Foo** **Goo** **Hoo**"
 => Foo Goo Hoo
 ```
 
 ### touch_format: convert a string from any characters to solely a command "touch -t" timestamp format
-
-Example:
 
 ```sh
 touch_format "Foo  2021-05-04 22:57:54 Goo"
@@ -432,21 +358,21 @@ touch_format "Foo  2021-05-04 22:57:54 Goo"
 
 Syntax: select_character_class <string> <class> [offset [length]]
 
-Example:
+Example with character class:
 
 ```sh
 select_character_class foo123goo456 alpha
 => foogoo
 ```
 
-Example with substring offset:
+Example with character class and substring offset:
 
 ```sh
 select_character_class foo123goo456 alpha 3
 => goo
 ```
 
-Example with substring offset and length:
+Example with character class and substring offset and length:
 
 ```sh
 select_character_class foo123goo456 alpha 3 1
@@ -456,21 +382,23 @@ select_character_class foo123goo456 alpha 3 1
 
 ### reject_character_class: get a string's characters that don't match a class, with optional offset and length
 
-Example:
+Syntax: reject_character_class <string> <class> [offset [length]]
+
+Exapmle with character class:
 
 ```sh
 reject_character_class foo123goo456 alpha
 => 123456
 ```
 
-Example with substring offset:
+Example with character class and substring offset:
 
 ```sh
 reject_character_class foo123goo456 alpha 3
 => 456
 ```
 
-Example with substring offset and length:
+Example with character class and substring offset and length:
 
 ```sh
 reject_character_class foo123goo456 alpha 3 1
@@ -481,8 +409,6 @@ reject_character_class foo123goo456 alpha 3 1
 
 ### array_n: get the array number of fields a.k.a. length a.k.a. size
 
-Example:
-
 ```sh
 set -- a b c d
 array_n "$@"
@@ -490,8 +416,6 @@ array_n "$@"
 ```
 
 ### array_i: get the array item at index `i` which is 1-based.
-
-Example:
 
 ```sh
 set -- a b c d
@@ -501,8 +425,6 @@ array_i  "$@" 3
 
 ### array_first: return the array's first item.
 
-Example:
-
 ```
 set -- a b c d
 array_first "$@"
@@ -510,8 +432,6 @@ array_first "$@"
 ```
 
 ### array_last: return the array's last item.
-
-Example:
 
 ```
 set -- a b c d
@@ -521,8 +441,6 @@ array_last "$@"
 
 ### array_car: return the array's car item a.k.a. first item.
 
-Example:
-
 ```
 set -- a b c d
 array_car "$@"
@@ -530,8 +448,6 @@ array_car "$@"
 ```
 
 ### array_cdr: return the array's cdr items a.k.a. everything after the first item.
-
-Example:
 
 ```
 set -- a b c d
@@ -543,8 +459,6 @@ array_car "$@"
 
 ### assert_test: assert a test utility command succeeds
 
-Example:
-
 ```sh
 assert_test -x program.sh
 => success i.e. no output
@@ -554,8 +468,6 @@ STDERR=> assert_test -x notes.txt
 ```
 
 ### assert_empty: assert an item is empty i.e. null
-
-Example:
 
 ```sh
 assert_empty ""
@@ -567,8 +479,6 @@ STDERR=> assert_empty foo
 
 ### assert_not_empty: assert an item is not empty i.e. not null
 
-Example:
-
 ```sh
 assert_not_empty foo
 => success i.e. no output
@@ -578,8 +488,6 @@ STDERR=> assert_not_empty
 ```
 
 ### assert_int_(eq|ne|ge|gt|le|lt): assert an integer or string versus another
-
-Example:
 
 ```sh
 assert_int_eq 1 1
@@ -600,8 +508,6 @@ There are comparison assertions for integers:
 
 ### assert_str_(eq|ne|ge|gt|le|lt): assert a string versus another string
 
-Example:
-
 ```sh
 assert_str_eq foo foo
 => success i.e. no output
@@ -621,8 +527,6 @@ There are comparison assertions for strings:
 
 ### assert_str_starts_with: assert a string starts with a substring
 
-Example:
-
 ```sh
 assert_str_starts_with foobar foo
 => success i.e. no output
@@ -632,8 +536,6 @@ STDERR=> assert_str_starts_with foobar xxx
 ```
 
 ### assert_str_ends_with: assert a string ends with with a substring
-
-Example:
 
 ```sh
 assert_str_ends_with foobar foo
@@ -647,16 +549,12 @@ STDERR=> assert_str_ends_with foobar xxx
 
 ### mktemp_dir: make a temporary directory path
 
-Example:
-
 ```sh
 mktemp_dir
 => /var/folders/4f7b65122b0fb65b0fdad568a65dc97d
 ```
 
 ### mktemp_file: make a temporary file path
-
-Example:
 
 ```sh
 mktemp_file
@@ -667,8 +565,6 @@ mktemp_file
 
 ### file_media_type: get a file's media type a.k.a. mime type such as "text/plain"
 
-Example:
-
 ```sh
 file_media_type notes.txt
 => text/plain
@@ -676,16 +572,12 @@ file_media_type notes.txt
 
 ### file_media_type_supertype: get a file's media type type a.k.a. mime type such as "text"
 
-Example:
-
 ```sh
 file_media_type_supertype notes.txt
 => text
 ```
 
 ### file_media_type_subtype: get a file's media type subtype a.k.a. mime type such as "plain"
-
-Example:
 
 ```sh
 file_media_type_subtype notes.txt
@@ -696,8 +588,6 @@ file_media_type_subtype notes.txt
 
 ### font_exists: does a font name exist on this system?
 
-Example:
-
 ```sh
 font_exists Arial
 => true
@@ -707,8 +597,6 @@ font_exists Foo
 ```
 
 ### font_exists_or_die: ensure a font name exists.
-
-Example:
 
 ```sh
 font_exists_or_die Arial
@@ -722,8 +610,6 @@ STDERR=> Font needed: Foo
 ## Content helpers
 
 ### file_ends_with_newline: file ends with newline?
-
-Example:
 
 ```sh
 file_ends_with_newline notes.txt
@@ -743,15 +629,14 @@ Error numbers begin at EXIT__BASE to reduce the possibility of clashing with
 other exit statuses that random programs may already return. The meaning of
 the codes is approximately as follows.
 
-
-SUCCESS e.g. the program succeeded, as defined by the program. 
+SUCCESS: the program succeeded, as defined by the program. 
 Exit 0 meaning SUCCESS is a widespread convention as a catch-all code.
 
 ```sh
 EXIT_SUCCESS=0
 ```
 
-FAILURE e.g. the program failed, as defined by the program.
+FAILURE: the program failed, as defined by the program.
 Exit 1 meaning FAILURE is a widespread convention as a catch-all code.
 E.g. an error, an abort, found no results, lack of data, etc.
 
@@ -759,7 +644,7 @@ E.g. an error, an abort, found no results, lack of data, etc.
 EXIT_FAILURE=1
 ```
 
-USAGE e.g. when a command is used incorrectly.
+USAGE: a command is used incorrectly.
 Exit 2 meaning USAGE is a widespread convention as a catch-all CLI code.
 E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
 This code supersedes sysexists EXIT_USAGE=64, which is old and seldom used.
@@ -768,7 +653,7 @@ This code supersedes sysexists EXIT_USAGE=64, which is old and seldom used.
 EXIT_USAGE=2
 ```
 
-CANCEL e.g. when a user chooses to cancel, or declines to continue, etc.
+CANCEL: when a user chooses to cancel, such as declines to continue, etc.
 Exit 3 meaning CANCEL is a SixArm convention, because it's common for us.
 E.g. a prompt says "Continue? yes/no", then the user types "n" for no.
 

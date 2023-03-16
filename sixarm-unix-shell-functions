@@ -20,7 +20,7 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 11.0.0
+#   * Version: 11.0.1
 #   * Created: 2017-08-22T00:00:00Z
 #   * Updated: 2023-03-16T00:48:07Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
@@ -166,22 +166,22 @@ ask() {
 # The exit code list below is subject to change oversion time,
 # as we learn more about Unix conventions and developer needs.
 
-# SUCCESS e.g. the program succeeded, as defined by the program.
+# SUCCESS: the program succeeded, as defined by the program.
 # Exit 0 meaning SUCCESS is a widespread convention as a catch-all code.
 EXIT_SUCCESS=0
 
-# FAILURE e.g. the program failed, as defined by the program.
+# FAILURE: the program failed, as defined by the program.
 # Exit 1 meaning FAILURE is a widespread convention as a catch-all code.
 # E.g. an error, an abort, found no results, lack of data, etc.
 EXIT_FAILURE=1
 
-# USAGE e.g. when a command is used incorrectly.
+# USAGE: a command is used incorrectly.
 # Exit 2 meaning USAGE is a widespread convention as a catch-all CLI code.
 # E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
 # This code supersedes sysexists EXIT_USAGE=64, which is old and seldom used.
 EXIT_USAGE=2
 
-# CANCEL e.g. when a user chooses to cancel, or declines to continue, etc.
+# CANCEL: when a user chooses to cancel e.g. declines to continue, etc.
 # Exit 3 meaning CANCEL is a SixArm convention, because it's common for us.
 # E.g. a prompt says "Continue? yes/no", then the user types "n" for no.
 EXIT_CANCEL=3
@@ -572,7 +572,7 @@ sum() {
 # ```
 #
 cmp_alnums() {
-        if [[ "$1" == "$2" ]]; then
+        if [ "$1" = "$2" ]; then
                 echo "0"; return 0
         fi
 	a=$(printf %s\\n "$1" | sed 's/^[^[:alnum:]]*//')
@@ -580,13 +580,13 @@ cmp_alnums() {
 	while true; do
 		x=$(printf %s\\n "$a" | sed 's/[^[:alnum:]].*//')
 		y=$(printf %s\\n "$b" | sed 's/[^[:alnum:]].*//')
-		if [[ "$x" == "" && "$y" == "" ]]; then
+		if [ "$x" = "" ] && [ "$y" = "" ]; then
 			echo "0"; return 0
 		fi
-		if [[ "$x" == "" || $x < $y ]]; then
+		if [ "$x" = "" ] || [ "$(expr "$x" \< "$y")" = 1 ]; then
 			echo "-1"; return 0
 		fi
-		if [[ "$y" == "" || $x > $y ]]; then
+		if [ "$y" = "" ] || [ "$(expr "$x" \> "$y")" = 1 ]; then
 			echo "1"; return 0
 		fi
 		a=$(printf %s\\n "$a" | sed 's/^[[:alnum:]]*[^[:alnum:]]*//')
@@ -610,7 +610,7 @@ cmp_alnums() {
 # ```
 #
 cmp_digits() {
-        if [[ "$1" == "$2" ]]; then
+        if [ "$1" = "$2" ]; then
                 echo "0"; return 0
         fi
 	a=$(printf %s\\n "$1" | sed 's/^[^[:digit:]]*//')
@@ -618,13 +618,13 @@ cmp_digits() {
 	while true; do
 		x=$(printf %s\\n "$a" | sed 's/[^[:digit:]].*//')
 		y=$(printf %s\\n "$b" | sed 's/[^[:digit:]].*//')
-		if [[ "$x" == "" && "$y" == "" ]]; then
+		if [ "$x" = "" ] && [ "$y" = "" ]; then
 			echo "0"; return 0
 		fi
-		if [[ "$x" == "" || $x -lt $y ]]; then
+		if [ "$x" = "" ] || [ $x -lt $y ]; then
 			echo "-1"; return 0
 		fi
-		if [[ "$y" == "" || $x -gt $y ]]; then
+		if [ "$y" = "" ] || [ $x -gt $y ]; then
 			echo "1"; return 0
 		fi
 		a=$(printf %s\\n "$a" | sed 's/^[[:digit:]]*[^[:digit:]]*//')
@@ -795,19 +795,19 @@ touch_format() {
 #
 # Syntax: select_character_class <string> <class> [offset [length]]
 #
-# Example:
+# Example with character class:
 # ```
 # select_character_class foo123goo456 alpha
 # => foogoo
 # ```
 #
-# Example with substring offset:
+# Example with character class and substring offset:
 # ```
 # select_character_class foo123goo456 alpha 3
 # => goo
 # ```
 #
-# Example with substring offset and length:
+# Example with character class and substring offset and length:
 # ```
 # select_character_class foo123goo456 alpha 3 1
 # => g
@@ -823,19 +823,19 @@ select_character_class() {
 #
 # Syntax: reject_character_class <string> <class> [offset [length]]
 #
-# Example:
+# Example with character class:
 # ```
 # reject_character_class foo123goo456 alpha
 # => -123--456
 # ```
 #
-# Example with substring offset:
+# Example with character class and substring offset:
 # ```
 # reject_character_class foo123goo456 alpha 6
 # => 456
 # ```
 #
-# Example with substring offset and length:
+# Example with character class and substring offset and length:
 # ```
 # reject_character_class foo123goo456 alpha 6 1
 # => 4
