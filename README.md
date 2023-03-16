@@ -321,7 +321,7 @@ EXIT_COMMAND_NOT_FOUND=127
 
 ## Directory helpers
 
-### user_dir: get user-specific directory via env var or XDG setting or HOME.
+### user_dir: get user-specific directory via env var  or XDG setting or HOME.
 
 Example:
 
@@ -446,57 +446,56 @@ older() {
 
 ## Validation helpers
 
-### cmd: return true iff a command exists
+### command_exists: return true iff a command exists
 
 Example:
 
 ```sh
-cmd grep
+command_exists grep
 => true
 
-cmd curl
+command_exists curl
 => false
 ```
 
 Source:
 
 ```sh
-cmd() {
+command_exists() {
         command -v "$1" >/dev/null 2>&1
 }
 ```
 
-### cmd_or_die: ensure a command exists, otherwise die with a help message
+### command_exists_or_die: ensure a command exists, otherwise die with a help message
 
 Example:
 
 ```sh
-cmd_or_die grep
+command_exists_or_die grep
 => true
 
-cmd_or_die curl
+command_exists_or_die curl
 STDERR=> Command needed: curl
 => exit 1
 ```
 
-
 Source:
 
 ```sh
-cmd_or_die() {
-        cmd "$1" || die "$EXIT_UNAVAILABLE" "Command needed: $1"
+command_exists_or_die() {
+        command_exists "$1" || die "$EXIT_UNAVAILABLE" "Command needed: $1"
 }
 ```
 
-### cmd_ver_or_die: ensure a command exists and version is sufficient, otherwise die with a help message
+### command_version_or_die: ensure a command exists and version is sufficient, otherwise die with a help message
 
 Example:
 
 ```sh
-cmd_ver_or_die grep 1.1 2.2
+command_version_or_die grep 1.1 2.2
 => true
 
-cmd_ver_or_die grep 3.3 2.2
+command_version_or_die grep 3.3 2.2
 STDERR=> Command version needed: grep >= 3.3 (not 2.2)
 => exit 1
 ```
@@ -504,20 +503,20 @@ STDERR=> Command version needed: grep >= 3.3 (not 2.2)
 Source:
 
 ```sh
-cmd_ver_or_die() {
-        cmd "$1" && ver "$2" "$3" || die "$EXIT_UNAVAILABLE" "Command version needed: $1 >= $2 (not ${3:-?})"
+command_version_or_die() {
+        command_exists "$1" && version "$2" "$3" || die "$EXIT_UNAVAILABLE" "Command version needed: $1 >= $2 (not ${3:-?})"
 }
 ```
 
-### var: return true iff a variable exists
+### var_exists: return true iff a variable exists
 
 Example:
 
 ```sh
-var HOME
+var_exists HOME
 => true
 
-var FOO
+var_exists FOO
 => false
 ```
 
@@ -529,15 +528,15 @@ var() {
 }
 ```
 
-### var_or_die: ensure a variable exists, otherwise die with a help message
+### var_exists_or_die: ensure a variable exists, otherwise die with a help message
 
 Example:
 
 ```sh
-var_or_die HOME
+var_exists_or_die HOME
 => true
 
-var_or_die FOO
+var_exists_or_die FOO
 STDERR=> Variable needed: FOO
 => exit 1
 ```
@@ -545,46 +544,46 @@ STDERR=> Variable needed: FOO
 Source:
 
 ```sh
-var_or_die() {
-        var "$1" || die "$EXIT_CONFIG" "Variable needed: $1"
+var_exists_or_die() {
+        var_exists "$1" || die "$EXIT_CONFIG" "Variable needed: $1"
 }
 ```
 
-### ver: return true iff a version is sufficient.
+### version: return true iff a version is sufficient.
 
 Example:
  ```
-ver 1.1 2.2
+version 1.1 2.2
 => true
 
-ver 3.3 2.2
+version 3.3 2.2
 => false
 ```
 
 Source:
 
 ```sh
-ver() {
+version() {
         [ "$(cmp_digits "$1" "$2")" -le 0 ]
 }
 ```
 
-### ver_or_die: ensure a version is sufficient, otherwise die with a help message
+### version_or_die: ensure a version is sufficient, otherwise die with a help message
 
 Example:
  ```
-ver_or_die 1.1 2.2
+version_or_die 1.1 2.2
 => true
 
-ver_or_die 3.3 2.2
+version_or_die 3.3 2.2
 STDERR=> Version needed: >= 3.3 (not 2.2)
 ```
 
 Source:
 
 ```sh
-ver_or_die() {
-        ver "$1" "$2" || die "$EXIT_CONFIG" "Version needed: >= $1 (not ${2:-?})"
+version_or_die() {
+        version "$1" "$2" || die "$EXIT_CONFIG" "Version needed: >= $1 (not ${2:-?})"
 }
 ```
 
@@ -636,7 +635,6 @@ cmp_alnums "a.b.c" "a.b.d"
 ```
 
 Source: see file
-
 
 ### cmp_digits: compare digits as groups, such as for number version strings.
 

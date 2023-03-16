@@ -163,7 +163,7 @@ ask() {
 #
 #  * Old BSD sysexits, such as 65+, renamed from EXIT_* to EXIT_* for clarity.
 #
-# The exit code list below is subject to change over time,
+# The exit code list below is subject to change oversion time,
 # as we learn more about Unix conventions and developer needs.
 
 # SUCCESS e.g. the program succeeded, as defined by the program.
@@ -262,7 +262,7 @@ EXIT_COMMAND_NOT_FOUND=127
 # Directory helpers
 ##
 
-# user_dir: get user-specific directory via env var or XDG setting or HOME.
+# user_dir: get user-specific directory via env var  or XDG setting or HOME.
 #
 # Example:
 # ```
@@ -425,105 +425,105 @@ older() {
 # Validation helpers
 ##
 
-# cmd: return true iff a command exists.
+# command_exists: return true iff a command exists.
 #
 # Example:
 # ```
-# cmd grep
+# command_exists grep
 # => true
 #
-# cmd curl
+# command_exists curl
 # => false
 # ```
-cmd() {
+command_exists() {
         command -v "$1" >/dev/null 2>&1
 }
 
-# cmd_or_die: ensure a command exists.
+# command_exists_or_die: ensure a command exists.
 #
 # Example:
 # ```
-# cmd_or_die grep
+# command_exists_or_die grep
 # => true
 #
-# cmd_or_die curl
+# command_exists_or_die curl
 # STDERR=> Command needed: curl
 # => exit 1
 # ```
-cmd_or_die() {
-        cmd "$1" || die "$EXIT_UNAVAILABLE" "Command needed: $1"
+command_exists_or_die() {
+        command_exists "$1" || die "$EXIT_UNAVAILABLE" "Command needed: $1"
 }
 
-# cmd_ver_or_die: ensure a command version exists.
+# command_version_or_die: ensure a command version exists.
 #
 # Example:
 # ```
-# cmd_ver_or_die grep 2.2 1.1
+# command_version_or_die grep 2.2 1.1
 # => true
 #
 # version_or_die grep 2.2 3.3
 # STDERR=> Command version needed: grep >= 3.x
 # => exit 1
 # ```
-cmd_ver_or_die() {
-        cmd "$1" && ver "$2" "$3" || die "$EXIT_UNAVAILABLE" "Command version needed: $1 >= $2 (not ${3:-?})"
+command_version_or_die() {
+        command_exists "$1" && version "$2" "$3" || die "$EXIT_UNAVAILABLE" "Command version needed: $1 >= $2 (not ${3:-?})"
 }
 
-# var: return true iff a variable exists.
+# var_exists: return true iff a variable exists.
 #
 # Example:
 # ```
-# var HOME
+# var_exists HOME
 # => true
 #
-# var FOO
+# var_exists FOO
 # => false
 # ```
 var() {
         ! eval 'test -z ${'$1'+x}'
 }
 
-# var_or_die: ensure a variable exists.
+# var_exists_or_die: ensure a variable exists.
 #
 # Example:
 # ```
-# var_or_die HOME
+# var_exists_or_die HOME
 # => true
 #
-# var_or_die FOO
+# var_exists_or_die FOO
 # STDERR=> Variable needed: FOO
 # => exit 1
 # ```
-var_or_die() {
-        var "$1" || die "$EXIT_CONFIG" "Variable needed: $1"
+var_exists_or_die() {
+        var_exists "$1" || die "$EXIT_CONFIG" "Variable needed: $1"
 }
 
-# ver: return true iff a version is sufficient.
+# version: return true iff a version is sufficient.
 #
 # Example:
 # ```
-# ver 1.1 2.2
+# version 1.1 2.2
 # => true
 #
-# ver 3.3 2.2
+# version 3.3 2.2
 # => false
 # ```
-ver() {
+version() {
         [ "$(cmp_digits "$1" "$2")" -le 0 ]
 }
 
-# ver_or_die: ensure a version is sufficient.
+# version_or_die: ensure a version is sufficient.
 #
 # Example:
 # ```
-# ver_or_die 1.1 2.2
+# version_or_die 1.1 2.2
 # => true
 #
-# ver_or_die 3.3 2.2
+# version_or_die 3.3 2.2
 # STDERR=> Version needed: >= 3.3 (not 2.2)
 # ```
-ver_or_die() {
-        ver "$1" "$2" || die "$EXIT_CONFIG" "Version needed: >= $1 (not ${2:-?})"
+version_or_die() {
+        version "$1" "$2" || die "$EXIT_CONFIG" "Version needed: >= $1 (not ${2:-?})"
 }
 
 ##
