@@ -17,10 +17,10 @@ curl -O "https://raw.githubusercontent.com/SixArm/sixarm-unix-shell-functions/ma
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 10.0.0
+* Version: 11.0.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2023-01-23T19:24:54Z
-* License: GPL-2.0-or-later or contact us for custom license
+* Updated: 2023-03-16T00:48:07Z
+* License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
 ## Input/output helpers
@@ -159,122 +159,140 @@ estimation about the failure class without looking up the source code.
 
 The successful exit is always indicated by a status of 0. 
 
-Error numbers begin at EX__BASE to reduce the possibility of clashing with
+Error numbers begin at EXIT__BASE to reduce the possibility of clashing with
 other exit statuses that random programs may already return. The meaning of
 the codes is approximately as follows.
 
-Success:
+
+SUCCESS e.g. the program succeeded, as defined by the program. 
+Exit 0 meaning SUCCESS is a widespread convention as a catch-all code.
 
 ```sh
-EX_OK=0
+EXIT_SUCCESS=0
 ```
 
-Usage: The command was used incorrectly, e.g., with the wrong number of
-arguments, a bad flag, a bad syntax in a parameter, or whatever.
+FAILURE e.g. the program failed, as defined by the program.
+Exit 1 meaning FAILURE is a widespread convention as a catch-all code.
+E.g. an error, an abort, found no results, lack of data, etc.
 
 ```sh
-EX_USAGE=64
+EXIT_FAILURE=1
 ```
 
-Data error: The input data was incorrectin someway. This should only be used for
-user's data and not system files.
+USAGE e.g. when a command is used incorrectly.
+Exit 2 meaning USAGE is a widespread convention as a catch-all CLI code.
+E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
+This code supersedes sysexists EXIT_USAGE=64, which is old and seldom used.
 
 ```sh
-EX_DATAERR=65
+EXIT_USAGE=2
 ```
 
-No input: An input file-- not a system file-- did not exist or was not readable.
-This could include errors like "No message" to a mailer-- if it cared to catch
-it.
+CANCEL e.g. when a user chooses to cancel, or declines to continue, etc.
+Exit 3 meaning CANCEL is a SixArm convention, because it's common for us.
+E.g. a prompt says "Continue? yes/no", then the user types "n" for no.
 
 ```sh
-EX_NOINPUT=66
+EXIT_CANCEL=3
 ```
 
-No user: The user specified did not exist. This might be used for mail addresses
-or remote logins.
+The input data was incorrect in some way. This should only be used for user's
+data and not system files.
 
 ```sh
-EX_NOUSER=67
+EXIT_DATAERR=65
 ```
 
-No host: The host specified did not exist. This is used in mail addresses or
-network requests.
+An input file-- not a system file-- did not exist or was not readable.  This
+could include errors like "No message" to a mailer-- if it cared to catch it.
 
 ```sh
-EX_NOHOST=68
+EXIT_NOINPUT=66
 ```
 
-Unavailable: A service is unavailable. This can occur if a support program or
-file does not exist. This can also be used as a catchall message when something
-you wanted to do does not work, but you do not know why.
+The user specified did not exist. This might be used for mail addresses or
+remote logins.
 
 ```sh
-EX_UNAVAILABLE=69
+EXIT_NOUSER=67
 ```
 
-Software: An internal software error has been detected. This should be limited
-to non-operating system related errors as possible.
+The host specified did not exist. This is used in mail addresses or network
+requests.
 
 ```sh
-EX_SOFTWARE=70
+EXIT_NOHOST=68
 ```
 
-OS error: An operating system error has been detected. This is intended to be
-used for such things as "cannot fork", "cannot create pipe", or the like.  It
-includes things like getuid returning a user that does not exist in the passwd
-file.
+A service is unavailable. This can occur if a support program or file does not
+exist. This can also be used as a catchall message when something you wanted
+to do does not work, but you do not know why.
 
 ```sh
-EX_OSERR=71
+EXIT_UNAVAILABLE=69
 ```
 
-OS file: Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does not
-exist, cannot be opened, or has some sort of error (e.g. syntax error).
+An internal software error has been detected. This should be limited to
+non-operating system related errors as possible.
 
 ```sh
-EX_OSFILE=72
+EXIT_SOFTWARE=70
 ```
 
-Can't create: A user-specified output file cannot be created.
+An operating system error has been detected. This is intended to be used for
+such things as "cannot fork", "cannot create pipe", or the like.  It includes
+things like getuid returning a user that does not exist in the passwd file.
 
 ```sh
-EX_CANTCREAT=73
+EXIT_OSERR=71
 ```
 
-IO error: An error occurred while doing I/O on some file.
+Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does not exist,
+cannot be opened, or has some sort of error (e.g. syntax error).
 
 ```sh
-EX_IOERR=74
+EXIT_OSFILE=72
 ```
 
-Temp fail: Temporary failure, indicating something that is not really an error.
-In sendmail, this means that a mailer (e.g. could not create a connection) and
+A user-specified output file cannot be created.
+
+```sh
+EXIT_CANTCREAT=73
+```
+
+An error occurred while doing I/O on some file.
+
+```sh
+EXIT_IOERR=74
+```
+
+Temporary failure, indicating something that is not really an error.  In
+sendmail, this means that a mailer (e.g. could not create a connection) and
 the request should be reattempted later.
 
 ```sh
-EX_TEMPFAIL=75
+EXIT_TEMPFAIL=75
 ```
 
-Protocol: The remote system returned something that was "not possible" during a
-protocol exchange.
+The remote system returned something that was "not possible" during a protocol
+exchange.
 
 ```sh
-EX_PROTOCOL=76
+EXIT_PROTOCOL=76
 ```
 
-No perm: You did not have sufficient permission to perform the operation.  This
-is not intended for file system problems, which should use EX_NOINPUT or
-EX_CANTCREAT, but rather for higher level permissions.
+You did not have sufficient permission to perform the operation.  This is not
+intended for file system problems, which should use EXIT_NOINPUT or
+EXIT_CANTCREAT, but rather for higher level permissions.
 
 ```sh
-EX_NOPERM=77
+EXIT_NOPERM=77
 ```
 
-Config: Something was found in an unconfigured or misconfigured state.
+Something was found in an unconfigured or misconfigured state.
 
 ```sh
-EX_CONFIG=78
+EXIT_CONFIG=78
 ```
 
 Git bisect: The special exit code 125 should be used when the current source
@@ -286,19 +304,19 @@ by POSIX shells to signal specific error status (127 is for command not found,
 they are normal errors in the script, as far as bisect run is concerned).
 
 ```sh
-EX_GIT_BISECT_SKIP=125
+EXIT_GIT_BISECT_SKIP=125
 ```
 
 GNU bash: If a command is found but is not executable, then return 126. 
 
 ```sh
-EX_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
+EXIT_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
 ```
 
 GNU bash: If a command is not found, then return 127. 
 
 ```sh
-EX_COMMAND_NOT_FOUND=127
+EXIT_COMMAND_NOT_FOUND=127
 ```
 
 ## Directory helpers
@@ -466,7 +484,7 @@ Source:
 
 ```sh
 cmd_or_die() {
-        cmd "$1" || die "$EX_UNAVAILABLE" "Command needed: $1"
+        cmd "$1" || die "$EXIT_UNAVAILABLE" "Command needed: $1"
 }
 ```
 
@@ -487,7 +505,7 @@ Source:
 
 ```sh
 cmd_ver_or_die() {
-        cmd "$1" && ver "$2" "$3" || die "$EX_UNAVAILABLE" "Command version needed: $1 >= $2 (not ${3:-?})"
+        cmd "$1" && ver "$2" "$3" || die "$EXIT_UNAVAILABLE" "Command version needed: $1 >= $2 (not ${3:-?})"
 }
 ```
 
@@ -528,7 +546,7 @@ Source:
 
 ```sh
 var_or_die() {
-        var "$1" || die "$EX_CONFIG" "Variable needed: $1"
+        var "$1" || die "$EXIT_CONFIG" "Variable needed: $1"
 }
 ```
 
@@ -566,7 +584,7 @@ Source:
 
 ```sh
 ver_or_die() {
-        ver "$1" "$2" || die "$EX_CONFIG" "Version needed: >= $1 (not ${2:-?})"
+        ver "$1" "$2" || die "$EXIT_CONFIG" "Version needed: >= $1 (not ${2:-?})"
 }
 ```
 
@@ -1286,7 +1304,7 @@ Source:
 
 ```sh
 font_exists_or_die() {
-        font_exists "$1" || die "$EX_UNAVAILABLE" "Font needed: $1" 
+        font_exists "$1" || die "$EXIT_UNAVAILABLE" "Font needed: $1" 
 }
 ```
 
