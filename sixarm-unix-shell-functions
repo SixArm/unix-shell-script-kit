@@ -262,7 +262,7 @@ EXIT_COMMAND_NOT_FOUND=127
 # Directory helpers
 ##
 
-# user_dir: get user-specific directory via env var  or XDG setting or HOME.
+# user_dir: get user-specific directory via env var or XDG setting or HOME.
 #
 # Example:
 # ```
