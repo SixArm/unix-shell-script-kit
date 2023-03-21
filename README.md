@@ -4,7 +4,7 @@ SixArm is a consulting group that creates software and systems.
 
 This is our POSIX shell script file of general-purpose functions.
 
-We aim to emphasize is small functions and clear examples.
+We aim to emphasize small functions and clear examples.
 
 Constructive feedback is welcome and appreciated.
 
@@ -17,9 +17,10 @@ curl -O "https://raw.githubusercontent.com/SixArm/sixarm-unix-shell-functions/ma
 ## Tracking
 
 * Package: sixarm-unix-shell-functions
-* Version: 11.0.1
+* Version: 11.0.2
 * Created: 2017-08-22T00:00:00Z
 * Updated: 2023-03-16T00:48:07Z
+* Website: https://github.com/sixarm/sixarm-unix-shell-functions
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -95,25 +96,25 @@ user_dir log
 
 ## Time helpers
 
-### now: get a datetime using our preferred ISO standard format
+### now_date: get a date as our preferred ISO format
 
 ```sh
-now
+now_date
+=> 2021-05-04
+```
+
+### now_nano: get a datetime as our preferred ISO format with nanoseconds
+
+```sh
+now_nano
 => 2021-05-04T22:59:28.000000000+00:00
 ```
 
 Example with a custom datetime:
 
 ```sh
-now -d "2021-01-01" 
+now_nano -d "2021-01-01" 
 => 2021-01-01T00:00:00.000000000+00:00
-```
-
-### now_date: get a date using our preferred ISO standard format
-
-```sh
-now_date
-=> 2021-05-04
 ```
 
 ### sec: get the current time in Unix seconds

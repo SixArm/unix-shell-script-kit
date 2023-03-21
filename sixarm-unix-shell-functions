@@ -7,7 +7,7 @@
 #
 # This is our POSIX shell script file of general-purpose functions.
 #
-# We aim to emphasize is small functions and clear examples.
+# We aim to emphasize small functions and clear examples.
 #
 # Constructive feedback is welcome and appreciated.
 #
@@ -20,12 +20,137 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 11.0.1
+#   * Version: 11.0.2
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2023-03-16T00:48:07Z
+#   * Updated: 2023-03-21T22:45:59Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
+#   * Website: https://github.com/sixarm/sixarm-unix-shell-functions
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 ##
+
+##
+# Exit codes
+##
+
+# It is good practice to call exit with a value that indicates success (0) or
+# failure (any non-0 number) when ending a program. The pre-defined exit codes
+# from sysexits can be used, so the caller of the process can get a rough
+# estimation about the failure class without looking up the source code.
+#
+# See https://man.openbsd.org/sysexits.3
+#
+# Error numbers begin at EXIT__BASE to reduce the possibility of clashing with
+# other exit statuses that random programs may already return. The meaning of
+# the codes is approximately as follows.
+#
+# The exit code list below is our preferred mix of codes from various sources:
+#
+#  * Popular conventions, such as EXIT_USAGE=2 meaning a command usage error.
+#
+#  * Our SixArm conventions, such as EXIT_CANCELED=3 meaning a user canceled.
+#
+#  * Old BSD sysexits, such as 65+, renamed from EXIT_* to EXIT_* for clarity.
+#
+# The exit code list below is subject to change oversion time,
+# as we learn more about Unix conventions and developer needs.
+
+# SUCCESS: the program succeeded, as defined by the program.
+# Exit 0 SUCCESS is a widespread convention as a catch-all code.
+EXIT_SUCCESS=0
+
+# FAILURE: the program failed, as defined by the program.
+# Exit 1 FAILURE is a widespread convention as a catch-all code.
+# E.g. an error, an abort, found no results, lack of data, etc.
+EXIT_FAILURE=1
+
+# USAGE: a command is used incorrectly.
+# Exit 2 USAGE is a widespread convention as a catch-all CLI code.
+# E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
+# This code supersedes sysexists EXIT_USAGE=64, which is old and seldom used.
+EXIT_USAGE=2
+
+##
+# Exit codes 3-63 are by convention the range that each program uses,
+# for program-specific exits.
+##
+
+##
+# Exit codes 64-78 are based on sysexits documentation from the 1980's.
+# We deliberately replace EXIT_USAGE=64 with EXIT_USAGE=2, because we
+# favor modern popular conventions over older unpopular conventions.
+##
+
+# The input data was incorrect in some way. This should only be used for user's
+# data and not system files.
+EXIT_DATAERR=65
+
+# An input file-- not a system file-- did not exist or was not readable.  This
+# could include errors like "No message" to a mailer-- if it cared to catch it.
+EXIT_NOINPUT=66
+
+# The user specified did not exist. This might be used for mail addresses or
+# remote logins.
+EXIT_NOUSER=67
+
+# The host specified did not exist. This is used in mail addresses or network
+# requests.
+EXIT_NOHOST=68
+
+# A service is unavailable. This can occur if a support program or file does not
+# exist. This can also be used as a catchall message when something you wanted
+# to do does not work, but you do not know why.
+EXIT_UNAVAILABLE=69
+
+# An internal software error has been detected. This should be limited to
+# non-operating system related errors as possible.
+EXIT_SOFTWARE=70
+
+# An operating system error has been detected. This is intended to be used for
+# such things as "cannot fork", "cannot create pipe", or the like.  It includes
+# things like getuid returning a user that does not exist in the passwd file.
+EXIT_OSERR=71
+
+# Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does not exist,
+# cannot be opened, or has some sort of error (e.g. syntax error).
+EXIT_OSFILE=72
+
+# A user-specified output file cannot be created.
+EXIT_CANTCREAT=73
+
+# An error occurred while doing I/O on some file.
+EXIT_IOERR=74
+
+# Temporary failure, indicating something that is not really an error.  In
+# sendmail, this means that a mailer (e.g. could not create a connection) and
+# the request should be reattempted later.
+EXIT_TEMPFAIL=75
+
+# The remote system returned something that was "not possible" during a protocol
+# exchange.
+EXIT_PROTOCOL=76
+
+# You did not have sufficient permission to perform the operation.  This is not
+# intended for file system problems, which should use EXIT_NOINPUT or
+# EXIT_CANTCREAT, but rather for higher level permissions.
+EXIT_NOPERM=77
+
+# Something was found in an unconfigured or misconfigured state.
+EXIT_CONFIG=78
+
+# Git bisect: The special exit code 125 should be used when the current source
+# code cannot be tested. If the script exits with this code, the current
+# revision will be skipped (see git bisect skip above). 125 was chosen as the
+# highest sensible value to use for this purpose, because 126 and 127 are used
+# by POSIX shells to signal specific error status (127 is for command not found,
+# 126 is for command found but not executable—​these details do not matter, as
+# they are normal errors in the script, as far as bisect run is concerned).
+EXIT_GIT_BISECT_SKIP=125
+
+# GNU bash: If a command is found but is not executable, then return 126. 
+EXIT_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
+
+# GNU bash: If a command is not found, then return 127. 
+EXIT_COMMAND_NOT_FOUND=127
 
 ##
 # Input/output helpers
@@ -115,7 +240,7 @@ big() {
 # unique random id a.k.a. zid, hostname, and process number.
 #
 log() {
-        printf '%s %s %s %s\n' "$( now )" "$( zid )" "$( hostname )" $$ "$*"
+        printf '%s %s %s %s\n' "$( now_nano )" "$( zid )" "$( hostname )" $$ "$*"
 }
 
 # zid: generate a 32-bit secure random lowercase hex identifier.
@@ -139,124 +264,6 @@ zid() {
 ask() {
         read x ; echo "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
 }
-
-##
-# Exit codes
-##
-
-# It is good practice to call exit with a value that indicates success (0) or
-# failure (any non-0 number) when ending a program. The pre-defined exit codes
-# from sysexits can be used, so the caller of the process can get a rough
-# estimation about the failure class without looking up the source code.
-#
-# See https://man.openbsd.org/sysexits.3
-#
-# Error numbers begin at EXIT__BASE to reduce the possibility of clashing with
-# other exit statuses that random programs may already return. The meaning of
-# the codes is approximately as follows.
-#
-# The exit code list below is our preferred mix of codes from various sources:
-#
-#  * Popular conventions, such as EXIT_USAGE=2 meaning a command usage error.
-#
-#  * Our SixArm conventions, such as EXIT_CANCEL=3 meaning a user canceled.
-#
-#  * Old BSD sysexits, such as 65+, renamed from EXIT_* to EXIT_* for clarity.
-#
-# The exit code list below is subject to change oversion time,
-# as we learn more about Unix conventions and developer needs.
-
-# SUCCESS: the program succeeded, as defined by the program.
-# Exit 0 meaning SUCCESS is a widespread convention as a catch-all code.
-EXIT_SUCCESS=0
-
-# FAILURE: the program failed, as defined by the program.
-# Exit 1 meaning FAILURE is a widespread convention as a catch-all code.
-# E.g. an error, an abort, found no results, lack of data, etc.
-EXIT_FAILURE=1
-
-# USAGE: a command is used incorrectly.
-# Exit 2 meaning USAGE is a widespread convention as a catch-all CLI code.
-# E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
-# This code supersedes sysexists EXIT_USAGE=64, which is old and seldom used.
-EXIT_USAGE=2
-
-# CANCEL: when a user chooses to cancel e.g. declines to continue, etc.
-# Exit 3 meaning CANCEL is a SixArm convention, because it's common for us.
-# E.g. a prompt says "Continue? yes/no", then the user types "n" for no.
-EXIT_CANCEL=3
-
-# The input data was incorrect in some way. This should only be used for user's
-# data and not system files.
-EXIT_DATAERR=65
-
-# An input file-- not a system file-- did not exist or was not readable.  This
-# could include errors like "No message" to a mailer-- if it cared to catch it.
-EXIT_NOINPUT=66
-
-# The user specified did not exist. This might be used for mail addresses or
-# remote logins.
-EXIT_NOUSER=67
-
-# The host specified did not exist. This is used in mail addresses or network
-# requests.
-EXIT_NOHOST=68
-
-# A service is unavailable. This can occur if a support program or file does not
-# exist. This can also be used as a catchall message when something you wanted
-# to do does not work, but you do not know why.
-EXIT_UNAVAILABLE=69
-
-# An internal software error has been detected. This should be limited to
-# non-operating system related errors as possible.
-EXIT_SOFTWARE=70
-
-# An operating system error has been detected. This is intended to be used for
-# such things as "cannot fork", "cannot create pipe", or the like.  It includes
-# things like getuid returning a user that does not exist in the passwd file.
-EXIT_OSERR=71
-
-# Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does not exist,
-# cannot be opened, or has some sort of error (e.g. syntax error).
-EXIT_OSFILE=72
-
-# A user-specified output file cannot be created.
-EXIT_CANTCREAT=73
-
-# An error occurred while doing I/O on some file.
-EXIT_IOERR=74
-
-# Temporary failure, indicating something that is not really an error.  In
-# sendmail, this means that a mailer (e.g. could not create a connection) and
-# the request should be reattempted later.
-EXIT_TEMPFAIL=75
-
-# The remote system returned something that was "not possible" during a protocol
-# exchange.
-EXIT_PROTOCOL=76
-
-# You did not have sufficient permission to perform the operation.  This is not
-# intended for file system problems, which should use EXIT_NOINPUT or
-# EXIT_CANTCREAT, but rather for higher level permissions.
-EXIT_NOPERM=77
-
-# Something was found in an unconfigured or misconfigured state.
-EXIT_CONFIG=78
-
-# Git bisect: The special exit code 125 should be used when the current source
-# code cannot be tested. If the script exits with this code, the current
-# revision will be skipped (see git bisect skip above). 125 was chosen as the
-# highest sensible value to use for this purpose, because 126 and 127 are used
-# by POSIX shells to signal specific error status (127 is for command not found,
-# 126 is for command found but not executable—​these details do not matter, as
-# they are normal errors in the script, as far as bisect run is concerned).
-EXIT_GIT_BISECT_SKIP=125
-
-# GNU bash: If a command is found but is not executable, then return 126. 
-EXIT_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
-
-# GNU bash: If a command is not found, then return 127. 
-EXIT_COMMAND_NOT_FOUND=127
 
 ##
 # Directory helpers
@@ -332,17 +339,29 @@ user_dir(){
 # Time helpers
 ##
 
-# now: get a datetime using our preferred ISO standard format.
+# now_date: get a date as our preferred ISO format
+#
+# Example:
+#
+# ```sh
+# now_date
+# => 2021-05-04
+# ```
+now_date() {
+        date -u "+%Y-%m-%d" "$@"
+}
+
+# now_nano: get a datetime as our preferred ISO format with nanoseconds
 #
 # Example with the current datetime:
 # ```
-# now
+# now_nano
 # => 2021-05-04T22:59:28.000000000+00:00
 # ```
 #
 # Example with a custom datetime:
 # ```
-# now -d "2021-01-01" 
+# now_nano -d "2021-01-01" 
 # => 2021-01-01T00:00:00.000000000+00:00
 # ```
 #
@@ -361,20 +380,8 @@ user_dir(){
 # because this script sends the args along to the system "date" command.
 # For example Linux GNU "date" handles this, but macOS BSD "date" doesn't.
 #
-now() {
+now_nano() {
         date -u "+%Y-%m-%dT%H:%M:%S.000000000+00:00" "$@"
-}
-
-# now_date: get a date using our preferred ISO standard format
-#
-# Example:
-#
-# ```sh
-# now_date
-# => 2021-05-04
-# ```
-now_date() {
-        date -u "+%Y-%m-%d" "$@"
 }
 
 # sec: get the current time in Unix seconds.
