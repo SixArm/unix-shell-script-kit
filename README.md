@@ -1085,7 +1085,7 @@ EXIT_TIMEOUT=101
 
 A process is intentionally blocked as a danger, hazard, risk, etc.
 
-This is for lockout-tagout (LOGO) safety, or protecting users or data, etc.
+This is for lockout-tagout (LOTO) safety, or protecting users or data, etc.
 
 ```sh
 EXIT_LOCKOUT=102
