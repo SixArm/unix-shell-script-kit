@@ -1,10 +1,10 @@
-# POSIX shell functions
+# SixArm POSIX shell functions
 
 SixArm is a consulting group that creates software and systems.
 
-This is our POSIX shell script file of general-purpose functions.
+This is our POSIX shell script file of functions for general use.
 
-We aim to emphasize small functions and clear examples.
+This script emphasizes small functions, helper variables, and clear examples.
 
 Constructive feedback is welcome and appreciated.
 
