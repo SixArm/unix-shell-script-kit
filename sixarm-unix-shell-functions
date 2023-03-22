@@ -42,11 +42,11 @@
 #
 # * 2 = failure due to a usage problem
 #
-# * 3 = failure due to a cancel counterorder
-#
 # * 3-63 are for a program's progam-specific exit codes.
 #
 # * 64-78 are based on sysexits documentation from the 1980's.
+#
+# * 80-90 are SixArm conventions that we find useful in many programs.
 #
 # * 126 is for the shell and indicates command found but not executable.
 #
@@ -71,19 +71,14 @@
 EXIT_SUCCESS=0
 
 # Failure: the program failed, as defined by the program.
-# Exit 1 meaning failure is a widespread convention as a catch-all code.
 # E.g. an error, an abort, found no results, lack of data, etc.
+# Exit 1 meaning failure is a widespread convention as a catch-all code.
 EXIT_FAILURE=1
 
-# Usage: a command is used incorrectly, as defined by the program.
-# Exit 2 meaning usage is a widespread convention as a catch-all CLI code.
+# Usage: the program is used incorrectly, as defined by the program.
 # E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
+# Exit 2 meaning usage is a widespread convention as a catch-all CLI code.
 EXIT_USAGE=2
-
-# Cancel: a command is canceled, as defined by the program.
-# Exit 3 meaning cancel is our own convention as a catch-all CLI code.
-# E.g. user chooses to cancel, user declines to continue, etc.
-EXIT_CANCEL=3
 
 # The input data was incorrect in some way. This should only be used for user's
 # data and not system files.
@@ -141,6 +136,72 @@ EXIT_NOPERM=77
 
 # Something was found in an unconfigured or misconfigured state.
 EXIT_CONFIG=78
+
+# Exit codes 80-99 are for our own SixArm conventions.
+# We propose these are generally useful to many kinds of programs.
+#
+# Caution: these exit codes and their values are work in progress, 
+# draft only, as a request for comments, in version 11.x of this file.
+# These exit codes will be set in version 12.x when it's released.
+#
+# * 95-97 process runtime issues
+# * 98-99 expected ability changes
+
+# Exit codes for user interactions...
+
+# Quit: the user chose to quit, or cancel, or abort, or not continue, etc.
+EXIT_QUIT=80
+
+# KYC Issue: Know Your Customer means the program needs more user information.
+# E.g. email validation, age verification, terms of service agreement, etc.
+EXIT_KYC_ISSUE=81
+
+# Legal Issue: e.g. prohibited due to law, or restricted by court order, etc.
+# Akin to HTTP status code 451 Unavailable For Legal Reasons (RFC 7725).
+EXIT_LEGAL_ISSUE=82
+
+# Payment Issue: e.g. needs money, or credit card, or invoice, etc.
+# Akin to HTTP status code 402 Payment Required.
+EXIT_PAYMENT_ISSUE=83
+
+# Update: the program or its dependencies need an update, or upgrade, etc.
+EXIT_UPDATE_ISSUE=84
+
+# Exit codes for access control...
+
+# Lock: an item cannot be used because it has a lock.
+# Akin to HTTP status code 423 Locked (WebDAV; RFC 4918).
+EXIT_LOCK=85
+
+# Conflict: an item has a conflict e.g. edit collision, or merge error, etc.
+# Akin to HTTP status code 409 Conflict.
+EXIT_CONFLICT=86
+
+# Exit codes for process runtime issues...
+
+# Busy: a process is too busy, or overloaded, or throttled, or breakered, etc.
+# Akin to HTTP status code 503 Service Unavailable; always means overloaded.
+EXIT_BUSY=95
+
+# Timeout: a process is too slow, or estimated to take too long, etc.
+# Akin to HTTP status code 408 Request Timeout.
+EXIT_TIMEOUT=96
+
+# Loop: a process has detected an infinite loop, so is aborting.
+# Akin to HTTP status code 508 Loop Detected.
+EXIT_LOOP=97
+
+# Exit codes for expected ability changes...
+
+# Gone: an expected ability has been intentionally removed, or deleted, etc.
+# Akin to HTTP status code 410 Gone; the ability should be purged.
+EXIT_GONE=98
+
+# Todo: an expected ability is not yet implemented, or work in progress, etc.
+# Akin to HTTP status code 501 Not Implemented; implies future availability.
+EXIT_TODO=99
+
+# Exit codes 100 and higher...
 
 # Git bisect: The special exit code 125 should be used when the current source
 # code cannot be tested. If the script exits with this code, the current
