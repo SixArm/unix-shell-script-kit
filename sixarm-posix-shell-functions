@@ -20,9 +20,9 @@
 # ## Tracking
 #
 #   * Package: sixarm-posix-shell-functions
-#   * Version: 11.0.3
+#   * Version: 11.0.4
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2023-03-21T22:45:59Z
+#   * Updated: 2023-03-22T15:32:10Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/sixarm-posix-shell-functions
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -409,25 +409,12 @@ user_dir(){
 # Time helpers
 ##
 
-# now_date: get a date as our preferred ISO format
-#
-# Example:
-#
-# ```sh
-# now_date
-# => 2021-05-04
-# ```
-now_date() {
-        # shellcheck disable=SC2120
-        date -u "+%Y-%m-%d" "$@"
-}
-
-# now: get a datetime as our preferred ISO format with nanoseconds
+# now: get a datetime as our preferred ISO format.
 #
 # Example with the current datetime:
 # ```
 # now
-# => 2021-05-04T22:59:28.000000000+00:00
+# => 2021-05-04T22:59:28.769653000+00:00
 # ```
 #
 # Example with a custom datetime:
@@ -453,7 +440,20 @@ now_date() {
 #
 now() {
         # shellcheck disable=SC2120        
-        date -u "+%Y-%m-%dT%H:%M:%S.000000000+00:00" "$@"
+        date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" "$@" | sed 's/N/000000000/'
+}
+
+# now_date: get a date as our preferred ISO format
+#
+# Example:
+#
+# ```sh
+# now_date
+# => 2021-05-04
+# ```
+now_date() {
+        # shellcheck disable=SC2120
+        date -u "+%Y-%m-%d" "$@"
 }
 
 # sec: get the current time in POSIX seconds.

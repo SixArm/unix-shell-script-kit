@@ -17,9 +17,9 @@ curl -O "https://raw.githubusercontent.com/SixArm/sixarm-posix-shell-functions/m
 ## Tracking
 
 * Package: sixarm-posix-shell-functions
-* Version: 11.0.2
+* Version: 11.0.4
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2023-03-16T00:48:07Z
+* Updated: 2023-03-22T15:32:10Z
 * Website: https://github.com/sixarm/sixarm-posix-shell-functions
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -107,7 +107,7 @@ now_date
 
 ```sh
 now
-=> 2021-05-04T22:59:28.000000000+00:00
+=> 2021-05-04T22:59:28.769653000+00:00
 ```
 
 Example with a custom datetime:
