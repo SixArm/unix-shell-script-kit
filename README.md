@@ -103,17 +103,17 @@ now_date
 => 2021-05-04
 ```
 
-### now_nano: get a datetime as our preferred ISO format with nanoseconds
+### now: get a datetime as our preferred ISO format with nanoseconds
 
 ```sh
-now_nano
+now
 => 2021-05-04T22:59:28.000000000+00:00
 ```
 
 Example with a custom datetime:
 
 ```sh
-now_nano -d "2021-01-01" 
+now -d "2021-01-01" 
 => 2021-01-01T00:00:00.000000000+00:00
 ```
 

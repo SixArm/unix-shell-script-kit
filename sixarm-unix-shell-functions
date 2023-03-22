@@ -20,7 +20,7 @@
 # ## Tracking
 #
 #   * Package: sixarm-unix-shell-functions
-#   * Version: 11.0.2
+#   * Version: 11.0.3
 #   * Created: 2017-08-22T00:00:00Z
 #   * Updated: 2023-03-21T22:45:59Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
@@ -32,53 +32,58 @@
 # Exit codes
 ##
 
-# It is good practice to call exit with a value that indicates success (0) or
-# failure (any non-0 number) when ending a program. The pre-defined exit codes
-# from sysexits can be used, so the caller of the process can get a rough
-# estimation about the failure class without looking up the source code.
+# It is good practice for a program to call "exit" with an exit code value.
+#
+# Conventions:
+#
+# * 0 = success, and non-zero indicates any other issue.
+#
+# * 1 = failure
+#
+# * 2 = failure due to a usage problem
+#
+# * 3 = failure due to a cancel counterorder
+#
+# * 3-63 are for a program's progam-specific exit codes.
+#
+# * 64-78 are based on sysexits documentation from the 1980's.
+#
+# * 126 is for the shell and indicates command found but not executable.
+#
+# * 127 is for the shell and indicate command not found.
+#
+# The pre-defined exit codes from sysexits can be used, so the caller of the
+# process can get a rough estimation about the failure class without looking up
+# the source code.
 #
 # See https://man.openbsd.org/sysexits.3
 #
-# Error numbers begin at EXIT__BASE to reduce the possibility of clashing with
-# other exit statuses that random programs may already return. The meaning of
-# the codes is approximately as follows.
+# We recommend:
 #
-# The exit code list below is our preferred mix of codes from various sources:
+# * Authentication issues: EXIT_NOUSER
 #
-#  * Popular conventions, such as EXIT_USAGE=2 meaning a command usage error.
+# * Authoriziation issues: EXIT_NOPERM
 #
-#  * Our SixArm conventions, such as EXIT_CANCELED=3 meaning a user canceled.
-#
-#  * Old BSD sysexits, such as 65+, renamed from EXIT_* to EXIT_* for clarity.
-#
-# The exit code list below is subject to change oversion time,
-# as we learn more about Unix conventions and developer needs.
+# The exit code list below is subject to change over time, as we learn more.
 
-# SUCCESS: the program succeeded, as defined by the program.
-# Exit 0 SUCCESS is a widespread convention as a catch-all code.
+# Success: the program succeeded, as defined by the program.
+# Exit 0 meaning success is a widespread convention as a catch-all code.
 EXIT_SUCCESS=0
 
-# FAILURE: the program failed, as defined by the program.
-# Exit 1 FAILURE is a widespread convention as a catch-all code.
+# Failure: the program failed, as defined by the program.
+# Exit 1 meaning failure is a widespread convention as a catch-all code.
 # E.g. an error, an abort, found no results, lack of data, etc.
 EXIT_FAILURE=1
 
-# USAGE: a command is used incorrectly.
-# Exit 2 USAGE is a widespread convention as a catch-all CLI code.
+# Usage: a command is used incorrectly, as defined by the program.
+# Exit 2 meaning usage is a widespread convention as a catch-all CLI code.
 # E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
-# This code supersedes sysexists EXIT_USAGE=64, which is old and seldom used.
 EXIT_USAGE=2
 
-##
-# Exit codes 3-63 are by convention the range that each program uses,
-# for program-specific exits.
-##
-
-##
-# Exit codes 64-78 are based on sysexits documentation from the 1980's.
-# We deliberately replace EXIT_USAGE=64 with EXIT_USAGE=2, because we
-# favor modern popular conventions over older unpopular conventions.
-##
+# Cancel: a command is canceled, as defined by the program.
+# Exit 3 meaning cancel is our own convention as a catch-all CLI code.
+# E.g. user chooses to cancel, user declines to continue, etc.
+EXIT_CANCEL=3
 
 # The input data was incorrect in some way. This should only be used for user's
 # data and not system files.
@@ -141,15 +146,19 @@ EXIT_CONFIG=78
 # code cannot be tested. If the script exits with this code, the current
 # revision will be skipped (see git bisect skip above). 125 was chosen as the
 # highest sensible value to use for this purpose, because 126 and 127 are used
-# by POSIX shells to signal specific error status (127 is for command not found,
-# 126 is for command found but not executable—​these details do not matter, as
-# they are normal errors in the script, as far as bisect run is concerned).
+# by POSIX shells to signal specific error status; see below for details.
 EXIT_GIT_BISECT_SKIP=125
 
-# GNU bash: If a command is found but is not executable, then return 126. 
+# Many POSIX shells use exit code 126 and 127 to signal specific error status:
+# 126 is for command found but not executable, and 127 is for command not found.
+#
+# Many POSIX shells use exit codes above 128 in their $? representation of the
+# exit status to encode the signal number of a process being killed.
+
+# A command is found but is not executable
 EXIT_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
 
-# GNU bash: If a command is not found, then return 127. 
+# A command is not found
 EXIT_COMMAND_NOT_FOUND=127
 
 ##
@@ -240,7 +249,7 @@ big() {
 # unique random id a.k.a. zid, hostname, and process number.
 #
 log() {
-        printf '%s %s %s %s\n' "$( now_nano )" "$( zid )" "$( hostname )" $$ "$*"
+        printf '%s %s %s %s\n' "$( now )" "$( zid )" "$( hostname )" $$ "$*"
 }
 
 # zid: generate a 32-bit secure random lowercase hex identifier.
@@ -348,20 +357,21 @@ user_dir(){
 # => 2021-05-04
 # ```
 now_date() {
+        # shellcheck disable=SC2120
         date -u "+%Y-%m-%d" "$@"
 }
 
-# now_nano: get a datetime as our preferred ISO format with nanoseconds
+# now: get a datetime as our preferred ISO format with nanoseconds
 #
 # Example with the current datetime:
 # ```
-# now_nano
+# now
 # => 2021-05-04T22:59:28.000000000+00:00
 # ```
 #
 # Example with a custom datetime:
 # ```
-# now_nano -d "2021-01-01" 
+# now -d "2021-01-01" 
 # => 2021-01-01T00:00:00.000000000+00:00
 # ```
 #
@@ -380,7 +390,8 @@ now_date() {
 # because this script sends the args along to the system "date" command.
 # For example Linux GNU "date" handles this, but macOS BSD "date" doesn't.
 #
-now_nano() {
+now() {
+        # shellcheck disable=SC2120        
         date -u "+%Y-%m-%dT%H:%M:%S.000000000+00:00" "$@"
 }
 
