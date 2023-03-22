@@ -467,7 +467,7 @@ sec() {
         date "+%s" "$@"
 }
 
-# age: get the age of a given time in POSIX secords.
+# age: get the age of a given time in POSIX seconds.
 #
 # Example:
 # ```

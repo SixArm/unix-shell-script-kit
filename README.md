@@ -124,7 +124,7 @@ sec
 => 1620169178
 ```
 
-### age: get the age of a given time in POSIX secords
+### age: get the age of a given time in POSIX seconds
 
 ```sh
 age 1620169178
