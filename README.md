@@ -1,4 +1,4 @@
-# Unix shell functions
+# POSIX shell functions
 
 SixArm is a consulting group that creates software and systems.
 
@@ -11,16 +11,16 @@ Constructive feedback is welcome and appreciated.
 To download this file:
 
 ```sh
-curl -O "https://raw.githubusercontent.com/SixArm/sixarm-unix-shell-functions/main/sixarm-unix-shell-functions"
+curl -O "https://raw.githubusercontent.com/SixArm/sixarm-posix-shell-functions/main/sixarm-posix-shell-functions"
 ```
 
 ## Tracking
 
-* Package: sixarm-unix-shell-functions
+* Package: sixarm-posix-shell-functions
 * Version: 11.0.2
 * Created: 2017-08-22T00:00:00Z
 * Updated: 2023-03-16T00:48:07Z
-* Website: https://github.com/sixarm/sixarm-unix-shell-functions
+* Website: https://github.com/sixarm/sixarm-posix-shell-functions
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
@@ -117,14 +117,14 @@ now -d "2021-01-01"
 => 2021-01-01T00:00:00.000000000+00:00
 ```
 
-### sec: get the current time in Unix seconds
+### sec: get the current time in POSIX seconds
 
 ```sh
 sec
 => 1620169178
 ```
 
-### age: get the age of a given time in Unix secords
+### age: get the age of a given time in POSIX secords
 
 ```sh
 age 1620169178
