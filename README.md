@@ -619,167 +619,363 @@ file_ends_with_newline notes.txt
 
 ## Exit codes
 
-It is good practice to call exit with a value that indicates success (0) 
-or a failure condition when ending a program. The pre-defined exit codes
-from sysexits can be used, so the caller of the process can get a rough
-estimation about the failure class without looking up the source code.
+Our POSIX shell programs call "exit" with an exit code value.
 
-The successful exit is always indicated by a status of 0. 
+Conventions:
 
-Error numbers begin at EXIT__BASE to reduce the possibility of clashing with
-other exit statuses that random programs may already return. The meaning of
-the codes is approximately as follows.
+* 0 = success, and non-zero indicates any other issue.
 
-SUCCESS: the program succeeded, as defined by the program. 
-Exit 0 meaning SUCCESS is a widespread convention as a catch-all code.
+* 1 = failure
+
+* 2 = failure due to a usage problem
+
+* 3-63 are for a program's progam-specific exit codes.
+
+* 64-78 are based on sysexits documentation from the 1980's.
+
+* 80-99 are SixArm conventions that we find useful in many programs.
+
+Many POSIX shells use exit code 126 and 127 to signal specific error status:
+126 is for command found but not executable, and 127 is for command not found.
+
+* 126 is for the shell and indicates command found but not executable.
+
+* 127 is for the shell and indicate command not found.
+
+Many POSIX shells use exit codes above 128 in their $? representation of the
+exit status to encode the signal number of a process being killed.
+
+The pre-defined exit codes from sysexits can be used, so the caller of the
+process can get a rough estimation about the failure class without looking up
+the source code.
+
+See https://man.openbsd.org/sysexits.3
+
+We recommend:
+
+* Authentication issues: EXIT_NOUSER
+
+* Authoriziation issues: EXIT_NOPERM
+
+The exit code list below is subject to change over time, as we learn more.
+
+
+### Success
+
+Success: the program succeeded, as defined by the program.
+
+Exit 0 meaning success is a widespread convention as a catch-all code.
 
 ```sh
 EXIT_SUCCESS=0
 ```
 
-FAILURE: the program failed, as defined by the program.
-Exit 1 meaning FAILURE is a widespread convention as a catch-all code.
+### Failure
+
+Failure: the program failed, as defined by the program.
+
 E.g. an error, an abort, found no results, lack of data, etc.
+
+Exit 1 meaning failure is a widespread convention as a catch-all code.
 
 ```sh
 EXIT_FAILURE=1
 ```
 
-USAGE: a command is used incorrectly.
-Exit 2 meaning USAGE is a widespread convention as a catch-all CLI code.
+### Usage
+
+Usage: the program is used incorrectly, as defined by the program.
+
 E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
-This code supersedes sysexists EXIT_USAGE=64, which is old and seldom used.
+
+Exit 2 meaning usage is a widespread convention as a catch-all CLI code.
 
 ```sh
 EXIT_USAGE=2
 ```
 
-CANCEL: when a user chooses to cancel, such as declines to continue, etc.
-Exit 3 meaning CANCEL is a SixArm convention, because it's common for us.
-E.g. a prompt says "Continue? yes/no", then the user types "n" for no.
+### Data Err
 
-```sh
-EXIT_CANCEL=3
-```
-
-The input data was incorrect in some way. This should only be used for user's
-data and not system files.
+Data Err: The input data was incorrect in some way. This should only be used
+for user's data and not system files.
 
 ```sh
 EXIT_DATAERR=65
 ```
 
-An input file-- not a system file-- did not exist or was not readable.  This
-could include errors like "No message" to a mailer-- if it cared to catch it.
+### No Input
+
+No Input: An input file-- not system file-- did not exist or was not readable.
+This could include errors like "No message" to a mailer, if it cared about it.
 
 ```sh
 EXIT_NOINPUT=66
 ```
 
-The user specified did not exist. This might be used for mail addresses or
-remote logins.
+### No User
+
+No User: The user specified did not exist. This might be used for mail
+addresses or remote logins, or when no user is found during authentication.
 
 ```sh
 EXIT_NOUSER=67
 ```
 
-The host specified did not exist. This is used in mail addresses or network
-requests.
+### No Host
+
+No Host: The host specified did not exist. This is used in mail addresses or
+network requests.
 
 ```sh
 EXIT_NOHOST=68
 ```
 
-A service is unavailable. This can occur if a support program or file does not
-exist. This can also be used as a catchall message when something you wanted
-to do does not work, but you do not know why.
+### Unavailable
+
+Unavailable: A service is unavailable. This can occur if a support program or
+file does not exist. This can also be used as a catchall message when
+something you wanted to do does not work, but you do not know why.
 
 ```sh
 EXIT_UNAVAILABLE=69
 ```
 
-An internal software error has been detected. This should be limited to
-non-operating system related errors as possible.
+### Software
+
+Software: An internal software error has been detected. This should be limited
+to non-operating system related errors as possible.
 
 ```sh
 EXIT_SOFTWARE=70
 ```
 
-An operating system error has been detected. This is intended to be used for
-such things as "cannot fork", "cannot create pipe", or the like.  It includes
+### OS Err
+
+OS Err: An operating system error has been detected. This is intended for such
+things as "cannot fork", "cannot create pipe", or the like.  It includes
 things like getuid returning a user that does not exist in the passwd file.
 
 ```sh
 EXIT_OSERR=71
 ```
 
-Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does not exist,
-cannot be opened, or has some sort of error (e.g. syntax error).
+### OS File
+
+OS File: Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does
+not exist, cannot be opened, or has some sort of error (e.g. syntax error).
 
 ```sh
 EXIT_OSFILE=72
 ```
 
-A user-specified output file cannot be created.
+### Can't Create
+
+Can't Create: A user-specified output file cannot be created.
 
 ```sh
-EXIT_CANTCREAT=73
+EXIT_CANTCREATE=73
 ```
 
-An error occurred while doing I/O on some file.
+### IO Err
+
+IO Err: An error occurred while doing I/O on some file.
 
 ```sh
 EXIT_IOERR=74
 ```
 
-Temporary failure, indicating something that is not really an error.  In
-sendmail, this means that a mailer (e.g. could not create a connection) and
-the request should be reattempted later.
+### Temp Fail
+
+Temp Fail: Temporary failure, indicating something is not a permanent error.
+E.g. a mailer could not create a connection. The request can be retried later.
 
 ```sh
 EXIT_TEMPFAIL=75
 ```
 
-The remote system returned something that was "not possible" during a protocol
-exchange.
+### Protocol
+
+Protocol: The remote system returned something that was "not possible" during
+a protocol exchange.
 
 ```sh
 EXIT_PROTOCOL=76
 ```
 
-You did not have sufficient permission to perform the operation.  This is not
-intended for file system problems, which should use EXIT_NOINPUT or
-EXIT_CANTCREAT, but rather for higher level permissions.
+### No Perm
+
+No Perm: You did not have sufficient permission to perform the operation. This
+is not for file system problems, which use EXIT_NOINPUT or EXIT_CANTCREATE,
+but rather for higher level permissions, access control authorization, etc.
 
 ```sh
 EXIT_NOPERM=77
 ```
 
-Something was found in an unconfigured or misconfigured state.
+### Config
+
+Config: Something was found in an unconfigured or misconfigured state.
 
 ```sh
 EXIT_CONFIG=78
 ```
 
+### Exit codes 80-119
+
+Exit codes 80-119 are for our own SixArm conventions.
+
+We propose these are generally useful to many kinds of programs.
+
+Caution: these exit codes and their values are work in progress, 
+draft only, as a request for comments, in version 11.x of this file.
+These exit codes will be set in version 12.x when it's released.
+
+* 80+ for user interation issues
+
+* 90+ for access control issues
+
+* 100+: process runtime issues
+
+* 110+: expected ability issues
+
+### Quit
+
+Quit: the user chose to quit, or cancel, or abort, or not continue, etc.
+
+```sh
+EXIT_QUIT=80
+```
+
+### KYC
+
+KYC: Know Your Customer means the program requires more user information.
+E.g. email validation, age verification, terms of service agreement, etc.
+
+```sh
+EXIT_KYC=81
+```
+
+### Update
+
+Update: the program or its dependencies need an update, or upgrade, etc.
+
+```sh
+EXIT_UPDATE=82
+```
+
+### Conflict
+
+Conflict: an item has a conflict e.g. edit collision, or merge error, etc.
+
+Akin to HTTP status code 409 Conflict.
+
+```sh
+EXIT_CONFLICT=91
+```
+
+### Unlawful
+
+Unlawful: e.g. prohibited due to law, or warrant, or court order, etc.
+
+Akin to HTTP status code 451 Unavailable For Legal Reasons (RFC 7725).
+
+```sh
+EXIT_UNLAWFUL=92
+```
+
+### Payment Issue
+
+Payment Issue: e.g. needs a credit card, or invoice, or billing, etc.
+
+Akin to HTTP status code 402 Payment Required.
+
+```sh
+EXIT_PAYMENT_ISSUE=93
+```
+
+### Busy
+
+Busy: a process is too busy, or overloaded, or throttled, or breakered, etc.
+
+Akin to HTTP status code 503 Service Unavailable; always means overloaded.
+
+```sh
+EXIT_BUSY=100
+```
+
+### Timeout
+
+Timeout: a process is too slow, or estimated to take too long, etc.
+
+Akin to HTTP status code 408 Request Timeout.
+
+```sh
+EXIT_TIMEOUT=101
+```
+
+### Lockout
+
+Lockout: a process is intentionally blocked as a danger, hazard, risk, etc.
+
+This is for lockout-tagout (LOGO) safety, or protecting users or data, etc.
+
+```sh
+EXIT_LOCKOUT=102
+```
+
+### Loop
+
+Loop: a process has detected an infinite loop, so is aborting.
+
+Akin to HTTP status code 508 Loop Detected.
+
+```sh
+EXIT_LOOP=103
+```
+
+### Gone
+
+Gone: an expected ability has been intentionally removed, or deleted, etc.
+
+Akin to HTTP status code 410 Gone; the ability should be purged.
+
+```sh
+EXIT_GONE=110
+```
+
+### TODO
+
+Todo: an expected ability is not yet implemented, or work in progress, etc.
+
+Akin to HTTP status code 501 Not Implemented; implies future availability.
+
+```sh
+EXIT_TODO=111
+```
+
+### Git bisect skip
+
 Git bisect: The special exit code 125 should be used when the current source
 code cannot be tested. If the script exits with this code, the current
 revision will be skipped (see git bisect skip above). 125 was chosen as the
 highest sensible value to use for this purpose, because 126 and 127 are used
-by POSIX shells to signal specific error status (127 is for command not found,
-126 is for command found but not executable—​these details do not matter, as
-they are normal errors in the script, as far as bisect run is concerned).
+by POSIX shells to signal specific error status; see below for details.
 
 ```sh
 EXIT_GIT_BISECT_SKIP=125
 ```
 
-GNU bash: If a command is found but is not executable, then return 126. 
+### Command found but not executable
+
+Command found but not executable: A command is found but is not executable.
 
 ```sh
 EXIT_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
 ```
 
-GNU bash: If a command is not found, then return 127. 
+### Command not found
+
+Command not found: A command is not found. 
 
 ```sh
 EXIT_COMMAND_NOT_FOUND=127

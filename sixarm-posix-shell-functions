@@ -32,7 +32,7 @@
 # Exit codes
 ##
 
-# It is good practice for a program to call "exit" with an exit code value.
+# Our POSIX shell programs call "exit" with an exit code value.
 #
 # Conventions:
 #
@@ -46,11 +46,17 @@
 #
 # * 64-78 are based on sysexits documentation from the 1980's.
 #
-# * 80-90 are SixArm conventions that we find useful in many programs.
+# * 80-99 are SixArm conventions that we find useful in many programs.
+#
+# Many POSIX shells use exit code 126 and 127 to signal specific error status:
+# 126 is for command found but not executable, and 127 is for command not found.
 #
 # * 126 is for the shell and indicates command found but not executable.
 #
 # * 127 is for the shell and indicate command not found.
+#
+# Many POSIX shells use exit codes above 128 in their $? representation of the
+# exit status to encode the signal number of a process being killed.
 #
 # The pre-defined exit codes from sysexits can be used, so the caller of the
 # process can get a rough estimation about the failure class without looking up
@@ -80,61 +86,60 @@ EXIT_FAILURE=1
 # Exit 2 meaning usage is a widespread convention as a catch-all CLI code.
 EXIT_USAGE=2
 
-# The input data was incorrect in some way. This should only be used for user's
-# data and not system files.
+# Data Err: The input data was incorrect in some way. This should only be used
+# for user's data and not system files.
 EXIT_DATAERR=65
 
-# An input file-- not a system file-- did not exist or was not readable.  This
-# could include errors like "No message" to a mailer-- if it cared to catch it.
+# No Input: An input file-- not system file-- did not exist or was not readable.
+# This could include errors like "No message" to a mailer, if it cared about it.
 EXIT_NOINPUT=66
 
-# The user specified did not exist. This might be used for mail addresses or
-# remote logins.
+# No User: The user specified did not exist. This might be used for mail
+# addresses or remote logins, or when no user is found during authentication.
 EXIT_NOUSER=67
 
-# The host specified did not exist. This is used in mail addresses or network
-# requests.
+# No Host: The host specified did not exist. This is used in mail addresses or
+# network requests.
 EXIT_NOHOST=68
 
-# A service is unavailable. This can occur if a support program or file does not
-# exist. This can also be used as a catchall message when something you wanted
-# to do does not work, but you do not know why.
+# Unavailable: A service is unavailable. This can occur if a support program or
+# file does not exist. This can also be used as a catchall message when
+# something you wanted to do does not work, but you do not know why.
 EXIT_UNAVAILABLE=69
 
-# An internal software error has been detected. This should be limited to
-# non-operating system related errors as possible.
+# Software: An internal software error has been detected. This should be limited
+# to non-operating system related errors as possible.
 EXIT_SOFTWARE=70
 
-# An operating system error has been detected. This is intended to be used for
-# such things as "cannot fork", "cannot create pipe", or the like.  It includes
+# OS Err: An operating system error has been detected. This is intended for such
+# things as "cannot fork", "cannot create pipe", or the like.  It includes
 # things like getuid returning a user that does not exist in the passwd file.
 EXIT_OSERR=71
 
-# Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does not exist,
-# cannot be opened, or has some sort of error (e.g. syntax error).
+# OS File: Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does
+# not exist, cannot be opened, or has some sort of error (e.g. syntax error).
 EXIT_OSFILE=72
 
-# A user-specified output file cannot be created.
-EXIT_CANTCREAT=73
+# Can't Create: A user-specified output file cannot be created.
+EXIT_CANTCREATE=73
 
-# An error occurred while doing I/O on some file.
+# IO Err: An error occurred while doing I/O on some file.
 EXIT_IOERR=74
 
-# Temporary failure, indicating something that is not really an error.  In
-# sendmail, this means that a mailer (e.g. could not create a connection) and
-# the request should be reattempted later.
+# Temp Fail: Temporary failure, indicating something is not a permanent error.
+# E.g. a mailer could not create a connection. The request can be retried later.
 EXIT_TEMPFAIL=75
 
-# The remote system returned something that was "not possible" during a protocol
-# exchange.
+# Protocol: The remote system returned something that was "not possible" during
+# a protocol exchange.
 EXIT_PROTOCOL=76
 
-# You did not have sufficient permission to perform the operation.  This is not
-# intended for file system problems, which should use EXIT_NOINPUT or
-# EXIT_CANTCREAT, but rather for higher level permissions.
+# No Perm: You did not have sufficient permission to perform the operation. This
+# is not for file system problems, which use EXIT_NOINPUT or EXIT_CANTCREATE,
+# but rather for higher level permissions, access control authorization, etc.
 EXIT_NOPERM=77
 
-# Something was found in an unconfigured or misconfigured state.
+# Config: Something was found in an unconfigured or misconfigured state.
 EXIT_CONFIG=78
 
 # Exit codes 80-99 are for our own SixArm conventions.
@@ -144,64 +149,69 @@ EXIT_CONFIG=78
 # draft only, as a request for comments, in version 11.x of this file.
 # These exit codes will be set in version 12.x when it's released.
 #
-# * 95-97 process runtime issues
-# * 98-99 expected ability changes
+# * 80+ for user interation issues
+#
+# * 90+ for access control issues
+#
+# * 100+: process runtime issues
+#
+# * 110+: expected ability issues
 
-# Exit codes for user interactions...
+# Exit codes 80+ for user interation issues...
 
 # Quit: the user chose to quit, or cancel, or abort, or not continue, etc.
 EXIT_QUIT=80
 
-# KYC Issue: Know Your Customer means the program needs more user information.
+# KYC: Know Your Customer means the program requires more user information.
 # E.g. email validation, age verification, terms of service agreement, etc.
-EXIT_KYC_ISSUE=81
-
-# Legal Issue: e.g. prohibited due to law, or restricted by court order, etc.
-# Akin to HTTP status code 451 Unavailable For Legal Reasons (RFC 7725).
-EXIT_LEGAL_ISSUE=82
-
-# Payment Issue: e.g. needs money, or credit card, or invoice, etc.
-# Akin to HTTP status code 402 Payment Required.
-EXIT_PAYMENT_ISSUE=83
+EXIT_KYC=81
 
 # Update: the program or its dependencies need an update, or upgrade, etc.
-EXIT_UPDATE_ISSUE=84
+EXIT_UPDATE=84
 
-# Exit codes for access control...
-
-# Lock: an item cannot be used because it has a lock.
-# Akin to HTTP status code 423 Locked (WebDAV; RFC 4918).
-EXIT_LOCK=85
+# Exit codes 90+ for access control issues...
 
 # Conflict: an item has a conflict e.g. edit collision, or merge error, etc.
 # Akin to HTTP status code 409 Conflict.
-EXIT_CONFLICT=86
+EXIT_CONFLICT=91
 
-# Exit codes for process runtime issues...
+# Unlawful: e.g. prohibited due to law, or warrant, or court order, etc.
+# Akin to HTTP status code 451 Unavailable For Legal Reasons (RFC 7725).
+EXIT_UNLAWFUL=92
+
+# Payment Issue: e.g. needs a credit card, or invoice, or billing, etc.
+# Akin to HTTP status code 402 Payment Required.
+EXIT_PAYMENT_ISSUE=93
+
+# Exit codes 100+ for process runtime issues...
 
 # Busy: a process is too busy, or overloaded, or throttled, or breakered, etc.
 # Akin to HTTP status code 503 Service Unavailable; always means overloaded.
-EXIT_BUSY=95
+EXIT_BUSY=100
 
 # Timeout: a process is too slow, or estimated to take too long, etc.
 # Akin to HTTP status code 408 Request Timeout.
-EXIT_TIMEOUT=96
+EXIT_TIMEOUT=101
+
+# Lockout: a process is intentionally blocked as a danger, hazard, risk, etc.
+# This is for lockout-tagout (LOGO) safety, or protecting users or data, etc.
+EXIT_LOCKOUT=102
 
 # Loop: a process has detected an infinite loop, so is aborting.
 # Akin to HTTP status code 508 Loop Detected.
-EXIT_LOOP=97
+EXIT_LOOP=103
 
-# Exit codes for expected ability changes...
+# Exit codes 110+ for expected ability issues...
 
 # Gone: an expected ability has been intentionally removed, or deleted, etc.
 # Akin to HTTP status code 410 Gone; the ability should be purged.
-EXIT_GONE=98
+EXIT_GONE=110
 
 # Todo: an expected ability is not yet implemented, or work in progress, etc.
 # Akin to HTTP status code 501 Not Implemented; implies future availability.
-EXIT_TODO=99
+EXIT_TODO=111
 
-# Exit codes 100 and higher...
+# Exit codes beyond SixArm conventions...
 
 # Git bisect: The special exit code 125 should be used when the current source
 # code cannot be tested. If the script exits with this code, the current
@@ -212,14 +222,11 @@ EXIT_GIT_BISECT_SKIP=125
 
 # Many POSIX shells use exit code 126 and 127 to signal specific error status:
 # 126 is for command found but not executable, and 127 is for command not found.
-#
-# Many POSIX shells use exit codes above 128 in their $? representation of the
-# exit status to encode the signal number of a process being killed.
 
-# A command is found but is not executable
+# Command found but not executable: A command is found but is not executable
 EXIT_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
 
-# A command is not found
+# Command not found: A command is not found.
 EXIT_COMMAND_NOT_FOUND=127
 
 ##
@@ -530,7 +537,7 @@ command_exists() {
 # => exit 1
 # ```
 command_exists_or_die() {
-        command_exists "$1" || die "$EXIT_UNAVAILABLE" "Command needed: $1"
+        command_exists "$1" || die "$EXIT_COMMAND_NOT_FOUND" "Command needed: $1"
 }
 
 # command_version_or_die: ensure a command version exists.
@@ -545,7 +552,7 @@ command_exists_or_die() {
 # => exit 1
 # ```
 command_version_or_die() {
-        command_exists "$1" && version "$2" "$3" || die "$EXIT_UNAVAILABLE" "Command version needed: $1 >= $2 (not ${3:-?})"
+        command_exists "$1" && version "$2" "$3" || die "$EXIT_COMMAND_NOT_FOUND" "Command version needed: $1 >= $2 (not ${3:-?})"
 }
 
 # var_exists: return true iff a variable exists.
