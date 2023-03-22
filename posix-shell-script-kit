@@ -72,16 +72,16 @@
 #
 # The exit code list below is subject to change over time, as we learn more.
 
-# Success: the program succeeded, as defined by the program.
+# Success: the program succeeded.
 # Exit 0 meaning success is a widespread convention as a catch-all code.
 EXIT_SUCCESS=0
 
-# Failure: the program failed, as defined by the program.
+# Failure: the program failed.
 # E.g. an error, an abort, found no results, lack of data, etc.
 # Exit 1 meaning failure is a widespread convention as a catch-all code.
 EXIT_FAILURE=1
 
-# Usage: the program is used incorrectly, as defined by the program.
+# Usage: the program usage is incorrect, or malformed, or in conflict, etc.
 # E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
 # Exit 2 meaning usage is a widespread convention as a catch-all CLI code.
 EXIT_USAGE=2
@@ -116,17 +116,17 @@ EXIT_SOFTWARE=70
 # things like getuid returning a user that does not exist in the passwd file.
 EXIT_OSERR=71
 
-# OS File: Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does
-# not exist, cannot be opened, or has some sort of error (e.g. syntax error).
+# OS File: An operating system file (e.g. /etc/passwd) does not exist, or cannot
+# be opened, or has some sort of error (e.g. syntax error).
 EXIT_OSFILE=72
 
-# Can't Create: A user-specified output file cannot be created.
+# Can't Create: A user-specified output (e.g. a file) cannot be created.
 EXIT_CANTCREATE=73
 
 # IO Err: An error occurred while doing I/O on some file.
 EXIT_IOERR=74
 
-# Temp Fail: Temporary failure, indicating something is not a permanent error.
+# Temp Fail: A temporary failure occurred; this is not a permanent error.
 # E.g. a mailer could not create a connection. The request can be retried later.
 EXIT_TEMPFAIL=75
 
@@ -346,7 +346,7 @@ ask() {
 # Directory helpers
 ##
 
-# user_dir: get user-specific directory via env var or XDG setting or HOME.
+# user_dir: get a user-specific directory via env var, or XDG setting, or HOME.
 #
 # Example:
 # ```
@@ -360,7 +360,7 @@ ask() {
 #   * `user_dir config` => configuration directory
 #   * `user_dir data` => data directory
 #   * `user_dir desktop` => desktop directory
-#   * `user_dir doscuments` => documents directory
+#   * `user_dir documents` => documents directory
 #   * `user_dir download` => download directory
 #   * `user_dir log` => logging directory
 #   * `user_dir music` => music directory
@@ -372,29 +372,27 @@ ask() {
 #   * `user_dir templates` => templates directory
 #   * `user_dir videos` => videos directory
 #
-# POSIX conventions:
-# ```
-# XDG_BIN_HOME: user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
-# XDG_LOG_HOME: user-specific log files, analogous to system /var/log or $HOME/.local/log.
-# XDG_TEMP_HOME: user-specific temporary files, analogous to system /temp or $HOME/.temp.
-# XDG_DATA_HOME: user-specific data files, analogous to system /usr/share or $HOME/.local/share.
-# XDG_CACHE_HOME: user-specific cache files, analogous to system /var/cache or $HOME/.cache.
-# XDG_STATE_HOME: user-specific cache files, analogous to system /var/state or $HOME/.local/state.
-# XDG_CONFIG_HOME: user-specific configuration files, analogous to system /etc or $HOME/.config.
-# XDG_RUNTIME_HOME: user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
-# ```
+# Popular XDG conventions:
 #
-# User directory conventions:
-# ```
-# XDG_DESKTOP_DIR: user-specific desktop, such as frequent apps and files.
-# XDG_DOCUMENTS_DIR: user-specific documents, such as typical working files.
-# XDG_DOWNLOAD_DIR: user-specific downloads, such as internet file downloads.
-# XDG_MUSIC_DIR: user-specific music files, such as songs.
-# XDG_PICTURES_DIR: user-specific pictures, such as photos.
-# XDG_PUBLICSHARE_DIR: user-specific public share, such as file sharing.
-# XDG_TEMPLATES_DIR: user-specific templates.
-# XDG_VIDEOS_DIR: user-specific videos, such as movies.
-# ```
+#   * `XDG_DESKTOP_DIR` => user-specific desktop, such as frequent apps and files.
+#   * `XDG_DOCUMENTS_DIR` => user-specific documents, such as typical working files.
+#   * `XDG_DOWNLOAD_DIR` => user-specific downloads, such as internet file downloads.
+#   * `XDG_MUSIC_DIR` => user-specific music files, such as songs.
+#   * `XDG_PICTURES_DIR` => user-specific pictures, such as photos.
+#   * `XDG_PUBLICSHARE_DIR` => user-specific public share, such as file sharing.
+#   * `XDG_TEMPLATES_DIR` => user-specific templates.
+#   * `XDG_VIDEOS_DIR` => user-specific videos, such as movies.
+#
+# POSIX XDG conventions:
+#
+#   * `XDG_BIN_HOME` => user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
+#   * `XDG_LOG_HOME` => user-specific log files, analogous to system /var/log or $HOME/.local/log.
+#   * `XDG_TEMP_HOME` => user-specific temporary files, analogous to system /temp or $HOME/.temp.
+#   * `XDG_DATA_HOME` => user-specific data files, analogous to system /usr/share or $HOME/.local/share.
+#   * `XDG_CACHE_HOME` => user-specific cache files, analogous to system /var/cache or $HOME/.cache.
+#   * `XDG_STATE_HOME` => user-specific cache files, analogous to system /var/state or $HOME/.local/state.
+#   * `XDG_CONFIG_HOME` => user-specific configuration files, analogous to system /etc or $HOME/.config.
+#   * `XDG_RUNTIME_HOME` => user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
 #
 # See also:
 #
@@ -416,7 +414,7 @@ user_dir(){
 # Date & time helpers
 ##
 
-# now: get a datetime as our preferred ISO format.
+# now: get a datetime using our preferred ISO format.
 #
 # Example with the current datetime:
 # ```
@@ -450,7 +448,7 @@ now() {
         date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" "$@" | sed 's/N/000000000/'
 }
 
-# now_date: get a date as our preferred ISO format
+# now_date: get a date using our preferred ISO format
 #
 # Example:
 #
@@ -518,7 +516,7 @@ older() {
 # Validation helpers
 ##
 
-# command_exists: return true iff a command exists.
+# command_exists: does a command exist?
 #
 # Example:
 # ```
@@ -544,25 +542,25 @@ command_exists() {
 # => exit 1
 # ```
 command_exists_or_die() {
-        command_exists "$1" || die "$EXIT_COMMAND_NOT_FOUND" "Command needed: $1"
+        command_exists "$1" || die "$EXIT_UNAVAILABLE" "Command needed: $1"
 }
 
-# command_version_or_die: ensure a command version exists.
+# command_version_exists_or_die: ensure a command version exists.
 #
 # Example:
 # ```
-# command_version_or_die grep 2.2 1.1
+# command_version_exists_or_die grep 2.2 1.1
 # => true
 #
 # version_or_die grep 2.2 3.3
 # STDERR=> Command version needed: grep >= 3.x
 # => exit 1
 # ```
-command_version_or_die() {
-        command_exists "$1" && version "$2" "$3" || die "$EXIT_COMMAND_NOT_FOUND" "Command version needed: $1 >= $2 (not ${3:-?})"
+command_version_exists_or_die() {
+        command_exists "$1" && version "$2" "$3" || die "$EXIT_UNAVAILABLE" "Command version needed: $1 >= $2 (not ${3:-?})"
 }
 
-# var_exists: return true iff a variable exists.
+# var_exists: does a variable exist?
 #
 # Example:
 # ```
@@ -591,7 +589,7 @@ var_exists_or_die() {
         var_exists "$1" || die "$EXIT_CONFIG" "Variable needed: $1"
 }
 
-# version: return true iff a version is sufficient.
+# version: is a version sufficient?
 #
 # Example:
 # ```
@@ -989,7 +987,7 @@ array_i() {
         exit $EXIT_USAGE
 }
 
-# array_first: return the array's first item.
+# array_first: get the array's first item.
 #
 # Example:
 # ```
@@ -1001,7 +999,7 @@ array_first() {
         printf %s "$1"
 }
 
-# array_last: return the array's last item.
+# array_last: get the array's last item.
 #
 # Example:
 # ```
@@ -1014,7 +1012,7 @@ array_last() {
         printf %s "$__array_last_x"
 }
 
-# array_car: return the array's car item a.k.a. first item.
+# array_car: get the array's car item a.k.a. first item.
 #
 # Example:
 # ```
@@ -1026,7 +1024,7 @@ array_car() {
         printf %s "$1"
 }
 
-# array_cdr: return the array's cdr items a.k.a. everything after the first item.
+# array_cdr: get the array's cdr items a.k.a. everything after the first item.
 #
 # Example:
 # ```
@@ -1348,42 +1346,42 @@ file_media_type_subtype() {
 # Font helpers
 ##
 
-# font_exists: does a font name exist on this system?
+# font_name_exists: does a font name exist on this system?
 # 
 # Example:
 # ```
-# font_exists Arial
+# font_name_exists Arial
 # => true
 #
-# font_exists Foo
+# font_name_exists Foo
 # => false
 # ```
 #
-font_exists() {
+font_name_exists() {
         fc-list | grep -q ": $1:"
 }
 
-# font_exists_or_die: ensure a font name exists.
+# font_name_exists_or_die: ensure a font name exists.
 # 
 # Example:
 # ```
-# font_exists_or_die Arial
+# font_name_exists_or_die Arial
 # => true
 #
-# font_exists_or_die Foo
+# font_name_exists_or_die Foo
 # STDERR=> Font needed: Foo
 # => exit 1
 # ```
 #
-font_exists_or_die() {
-        font_exists "$1" || die "$EXIT_UNAVAILABLE" "Font needed: $1" 
+font_name_exists_or_die() {
+        font_name_exists "$1" || die "$EXIT_UNAVAILABLE" "Font needed: $1" 
 }
 
 ##
 # Content helpers
 ##
 
-# File ends with newline?
+# file_ends_with_newline: Does a file end with a newline?
 #
 # Example:
 # ```

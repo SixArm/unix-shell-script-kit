@@ -30,7 +30,7 @@ curl -O "https://raw.githubusercontent.com/SixArm/posix-shell-script-kit/main/po
 
 ### out
 
-out: print output message to stdout.
+Print output message to stdout.
 
 ```sh
 out "my message"
@@ -39,7 +39,7 @@ STDOUT=> my message
 
 ### err
 
-err: print error message to stderr.
+Print error message to stderr.
 
 ```sh
 err "my message"
@@ -48,7 +48,7 @@ STDERR=> my message
 
 ### die
 
-die: print error message to stderr, then exit with error code 1.
+Print error message to stderr, then exit with error code 1.
 
 ```sh
 die 1 "my message"
@@ -58,7 +58,7 @@ STDERR=> my message
 
 ### big
 
-big: print a big banner to stdout, good for human readability.
+Print a big banner to stdout, good for human readability.
 
 ```sh
 big "my message"
@@ -72,7 +72,7 @@ big "my message"
 
 ### log
 
-log: print a datestamp, unique random id, hostname, process id, and message.
+Print a datestamp, unique random id, hostname, process id, and message.
 
 ```sh
 log "my message"
@@ -81,7 +81,7 @@ log "my message"
 
 ### zid
 
-zid: generate a 32-bit secure random lowercase hex identifier.
+Generate a 32-bit secure random lowercase hex identifier.
 
 ```sh
 zid
@@ -90,7 +90,7 @@ zid
 
 ### ask
 
-ask: prompt the user for a line of input, then return a trimmed string.
+Prompt the user for a line of input, then return a trimmed string.
 
 ```sh
 ask
@@ -101,22 +101,59 @@ ask
 
 ### user_dir
 
-user_dir: get user-specific directory via env var or XDG setting or HOME..
+Get a user-specific directory via env var, or XDG setting, or HOME.
 
 ```sh
-user_dir log
-=> $FOO_DIR
-=> $FOO_HOME
-=> $XDG_FOO_DIR
-=> $XDG_FOO_HOME
-=> $HOME/foo
+user_dir foo
+=> $FOO_DIR || $FOO_HOME || $XDG_FOO_DIR || $XDG_FOO_HOME || $HOME/foo
 ```
+
+Conventions:
+
+  * `user_dir bin` => binary executable directory
+  * `user_dir cache` => cache directory
+  * `user_dir config` => configuration directory
+  * `user_dir data` => data directory
+  * `user_dir desktop` => desktop directory
+  * `user_dir documents` => documents directory
+  * `user_dir download` => download directory
+  * `user_dir log` => logging directory
+  * `user_dir music` => music directory
+  * `user_dir pictures` => pictures directory
+  * `user_dir publicshare` => public share directory
+  * `user_dir runtime` => runtime directory
+  * `user_dir state` => state directory
+  * `user_dir temp` => temporary directory
+  * `user_dir templates` => templates directory
+  * `user_dir videos` => videos directory
+
+Popular XDG conventions:
+
+* `XDG_DESKTOP_DIR` => user-specific desktop, such as frequent apps and files.
+* `XDG_DOCUMENTS_DIR` => user-specific documents, such as typical working files.
+* `XDG_DOWNLOAD_DIR` => user-specific downloads, such as internet file downloads.
+* `XDG_MUSIC_DIR` => user-specific music files, such as songs.
+* `XDG_PICTURES_DIR` => user-specific pictures, such as photos.
+* `XDG_PUBLICSHARE_DIR` => user-specific public share, such as file sharing.
+* `XDG_TEMPLATES_DIR` => user-specific templates.
+* `XDG_VIDEOS_DIR` => user-specific videos, such as movies.
+  
+POSIX XDG conventions:
+
+* `XDG_BIN_HOME` => user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
+* `XDG_LOG_HOME` => user-specific log files, analogous to system /var/log or $HOME/.local/log.
+* `XDG_TEMP_HOME` => user-specific temporary files, analogous to system /temp or $HOME/.temp.
+* `XDG_DATA_HOME` => user-specific data files, analogous to system /usr/share or $HOME/.local/share.
+* `XDG_CACHE_HOME` => user-specific cache files, analogous to system /var/cache or $HOME/.cache.
+* `XDG_STATE_HOME` => user-specific cache files, analogous to system /var/state or $HOME/.local/state.
+* `XDG_CONFIG_HOME` => user-specific configuration files, analogous to system /etc or $HOME/.config.
+* `XDG_RUNTIME_HOME` => user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
 
 ## Date & time helpers
 
 ### now
 
-now: get a datetime as our preferred ISO format with nanoseconds.
+Get a datetime using our preferred ISO format.
 
 ```sh
 now
@@ -132,7 +169,7 @@ now -d "2021-01-01"
 
 ### now_date
 
-now_date: get a date as our preferred ISO format.
+Get a date using our preferred ISO format.
 
 ```sh
 now_date
@@ -148,7 +185,7 @@ now_date -d "January 1, 2021"
 
 ### sec
 
-sec: get the current time in POSIX seconds.
+Get the current time in POSIX seconds.
 
 ```sh
 sec
@@ -157,7 +194,7 @@ sec
 
 ### age
 
-age: get the age of a given time in POSIX seconds.
+Get the age of a given time in POSIX seconds.
 
 ```sh
 age 1620169178
@@ -166,7 +203,7 @@ age 1620169178
 
 ### newer
 
-newer: is the age of a given time newer than a given number of seconds?.
+Is the age of a given time newer than a given number of seconds?
 
 ```sh
 newer 2000000000 && echo "true" || echo "false
@@ -175,7 +212,7 @@ newer 2000000000 && echo "true" || echo "false
 
 ### older
 
-older: is the age of a given time older than a given number of seconds?.
+Is the age of a given time older than a given number of seconds?
 
 ```sh
 older 1000000000 && echo "true" || echo "false"
@@ -186,7 +223,7 @@ older 1000000000 && echo "true" || echo "false"
 
 ### command_exists
 
-command_exists: return true iff a command exists.
+Does a command exist?
 
 ```sh
 command_exists grep
@@ -198,7 +235,7 @@ command_exists curl
 
 ### command_exists_or_die
 
-command_exists_or_die: ensure a command exists, otherwise die with a help message.
+Ensure a command exists, otherwise die with a help message.
 
 ```sh
 command_exists_or_die grep
@@ -209,22 +246,22 @@ STDERR=> Command needed: curl
 => exit 1
 ```
 
-### command_version_or_die
+### command_version_exists_or_die
 
-command_version_or_die: ensure a command exists and version is sufficient, otherwise die with a help message.
+Ensure a command exists and version is sufficient, otherwise die with a help message.
 
 ```sh
-command_version_or_die grep 1.1 2.2
+command_version_exists_or_die grep 1.1 2.2
 => true
 
-command_version_or_die grep 3.3 2.2
+command_version_exists_or_die grep 3.3 2.2
 STDERR=> Command version needed: grep >= 3.3 (not 2.2)
 => exit 1
 ```
 
 ### var_exists
 
-var_exists: return true iff a variable exists.
+Does a variable exist?
 
 ```sh
 var_exists HOME
@@ -236,7 +273,7 @@ var_exists FOO
 
 ### var_exists_or_die
 
-var_exists_or_die: ensure a variable exists, otherwise die with a help message.
+Ensure a variable exists, otherwise die with a help message.
 
 ```sh
 var_exists_or_die HOME
@@ -249,7 +286,7 @@ STDERR=> Variable needed: FOO
 
 ### version
 
-version: return true iff a version is sufficient..
+Is a version sufficient?
 
 ```sh
 version 1.1 2.2
@@ -261,7 +298,7 @@ version 3.3 2.2
 
 ### version_or_die
 
-version_or_die: ensure a version is sufficient, otherwise die with a help message.
+Ensure a version is sufficient, otherwise die with a help message.
 
 ```sh
 version_or_die 1.1 2.2
@@ -275,7 +312,7 @@ STDERR=> Version needed: >= 3.3 (not 2.2)
 
 ### int
 
-int: convert a number string to an integer number string.
+Convert a number string to an integer number string.
 
 ```sh
 int 1.23
@@ -284,7 +321,7 @@ int 1.23
 
 ### sum
 
-sum: print the sum of numbers.
+Print the sum of numbers.
 
 ```sh
 sum 1 2 3
@@ -295,7 +332,7 @@ sum 1 2 3
 
 ### cmp_alnums
 
-cmp_alnums: compare alnums as groups, such as for word version strings..
+Compare alnums as groups, such as for word version strings.
 
 ```sh
 cmp_alnums "a.b.c" "a.b.d"
@@ -304,7 +341,7 @@ cmp_alnums "a.b.c" "a.b.d"
 
 ### cmp_digits
 
-cmp_digits: compare digits as groups, such as for number version strings..
+Compare digits as groups, such as for number version strings.
 
 ```sh
 cmp_digits "1.2.3" "1.2.4"
@@ -315,7 +352,7 @@ cmp_digits "1.2.3" "1.2.4"
 
 ### dot_all
 
-dot_all: source all the executable files in a given directory and subdirectories.
+Source all the executable files in a given directory and subdirectories.
 
 ```sh
 dot_all ~/temp
@@ -326,7 +363,7 @@ dot_all ~/temp
 
 ### run_all
 
-run_all: run all the executable commands in a given directory and subdirectories.
+Run all the executable commands in a given directory and subdirectories.
 
 ```sh
 run_all ~/temp
@@ -337,7 +374,7 @@ run_all ~/temp
 
 ### sh_all
 
-sh_all: shell all the executable commands in a given directory and subdirectories.
+Shell all the executable commands in a given directory and subdirectories.
 
 ```sh
 sh_all ~/temp
@@ -348,7 +385,7 @@ sh_all ~/temp
 
 ### rm_all
 
-rm_all: remove all files in a given directory and subdirectories-- use with caution.
+Remove all files in a given directory and subdirectories-- use with caution.
 
 ```sh
 rm_all ~/temp
@@ -361,7 +398,7 @@ rm_all ~/temp
 
 ### trim
 
-trim: remove any space characters at the text's start or finish.
+Remove any space characters at the text's start or finish.
 
 ```sh
 trim "  foo  "
@@ -370,7 +407,7 @@ trim "  foo  "
 
 ### slug
 
-slug: convert a string from any characters to solely lowercase and single internal dash characters.
+Convert a string from any characters to solely lowercase and single internal dash characters.
 
 ```sh
 slug "**Foo** **Goo** **Hoo**"
@@ -379,7 +416,7 @@ slug "**Foo** **Goo** **Hoo**"
 
 ### slugs
 
-slugs: convert a string from any characters to solely lowercase and single internal dash characters and slash characters..
+Convert a string from any characters to solely lowercase and single internal dash characters and slash characters.
 
 ```sh
 slugs "**Foo** / **Goo** / **Hoo**"
@@ -388,7 +425,7 @@ slugs "**Foo** / **Goo** / **Hoo**"
 
 ### upper_format
 
-upper_format: convert text from any lowercase letters to uppercase letters.
+Convert text from any lowercase letters to uppercase letters.
 
 ```sh
 upper_format AbCdEf
@@ -397,7 +434,7 @@ upper_format AbCdEf
 
 ### lower_format
 
-lower_format: convert text from any uppercase letters to lowercase letters.
+Convert text from any uppercase letters to lowercase letters.
 
 ```sh
 lower_format AbCdEf
@@ -406,7 +443,7 @@ lower_format AbCdEf
 
 ### chain_format
 
-chain_format: convert a string from any characters to solely alphanumeric and single internal dash characters.
+Convert a string from any characters to solely alphanumeric and single internal dash characters.
 
 ```sh
 chain_format "**Foo** **Goo** **Hoo**"
@@ -415,7 +452,7 @@ chain_format "**Foo** **Goo** **Hoo**"
 
 ### snake_format
 
-snake_format: convert a string from any characters to solely alphanumeric and single internal underscore characters.
+Convert a string from any characters to solely alphanumeric and single internal underscore characters.
 
 ```sh
 snake_format "**Foo** **Goo** **Hoo**"
@@ -424,7 +461,7 @@ snake_format "**Foo** **Goo** **Hoo**"
 
 ### space_format
 
-space_format: convert a string from any characters to solely alphanumeric and single internal space characters.
+Convert a string from any characters to solely alphanumeric and single internal space characters.
 
 ```sh
 space_format "**Foo** **Goo** **Hoo**"
@@ -433,7 +470,7 @@ space_format "**Foo** **Goo** **Hoo**"
 
 ### touch_format
 
-touch_format: convert a string from any characters to solely a command "touch -t" timestamp format.
+Convert a string from any characters to solely a command "touch -t" timestamp format.
 
 ```sh
 touch_format "Foo  2021-05-04 22:57:54 Goo"
@@ -442,7 +479,7 @@ touch_format "Foo  2021-05-04 22:57:54 Goo"
 
 ### select_character_class
 
-select_character_class: get a string's characters that match a class, with optional offset and length.
+Get a string's characters that match a class, with optional offset and length.
 
 Syntax: select_character_class <string> <class> [offset [length]]
 
@@ -470,7 +507,7 @@ select_character_class foo123goo456 alpha 3 1
 
 ### reject_character_class
 
-reject_character_class: get a string's characters that don't match a class, with optional offset and length.
+Get a string's characters that don't match a class, with optional offset and length.
 
 Syntax: reject_character_class <string> <class> [offset [length]]
 
@@ -499,7 +536,7 @@ reject_character_class foo123goo456 alpha 3 1
 
 ### array_n
 
-array_n: get the array number of fields a.k.a. length a.k.a. size.
+Get the array number of fields a.k.a. length a.k.a. size.
 
 ```sh
 set -- a b c d
@@ -509,7 +546,7 @@ array_n "$@"
 
 ### array_i
 
-array_i: get the array item at index `i` which is 1-based..
+Get the array item at index `i` which is 1-based.
 
 ```sh
 set -- a b c d
@@ -519,7 +556,7 @@ array_i  "$@" 3
 
 ### array_first
 
-array_first: return the array's first item..
+Get the array's first item.
 
 ```
 set -- a b c d
@@ -529,7 +566,7 @@ array_first "$@"
 
 ### array_last
 
-array_last: return the array's last item..
+Get the array's last item.
 
 ```
 set -- a b c d
@@ -539,7 +576,7 @@ array_last "$@"
 
 ### array_car
 
-array_car: return the array's car item a.k.a. first item..
+Get the array's car item a.k.a. first item.
 
 ```
 set -- a b c d
@@ -549,7 +586,7 @@ array_car "$@"
 
 ### array_cdr
 
-array_cdr: return the array's cdr items a.k.a. everything after the first item..
+Get the array's cdr items a.k.a. everything after the first item.
 
 ```
 set -- a b c d
@@ -561,7 +598,7 @@ array_car "$@"
 
 ### assert_test
 
-assert_test: assert a test utility command succeeds.
+Assert a test utility command succeeds.
 
 ```sh
 assert_test -x program.sh
@@ -573,7 +610,7 @@ STDERR=> assert_test -x notes.txt
 
 ### assert_empty
 
-assert_empty: assert an item is empty i.e. null.
+Assert an item is empty i.e. null.
 
 ```sh
 assert_empty ""
@@ -585,7 +622,7 @@ STDERR=> assert_empty foo
 
 ### assert_not_empty
 
-assert_not_empty: assert an item is not empty i.e. not null.
+Assert an item is not empty i.e. not null.
 
 ```sh
 assert_not_empty foo
@@ -595,7 +632,9 @@ assert_not_empty ""
 STDERR=> assert_not_empty
 ```
 
-### assert_int_(eq|ne|ge|gt|le|lt): assert an integer or string versus another
+### assert_int_eq (eq|ne|ge|gt|le|lt)
+
+Assert an integer comparison.
 
 ```sh
 assert_int_eq 1 1
@@ -614,7 +653,9 @@ There are comparison assertions for integers:
 * `assert_int_le` is less than or equal to
 * `assert_int_lt` is less than
 
-### assert_str_(eq|ne|ge|gt|le|lt): assert a string versus another string
+### assert_str_eq (eq|ne|ge|gt|le|lt)
+
+Assert a string comparison.
 
 ```sh
 assert_str_eq foo foo
@@ -635,7 +676,7 @@ There are comparison assertions for strings:
 
 ### assert_str_starts_with
 
-assert_str_starts_with: assert a string starts with a substring.
+Assert a string starts with a substring.
 
 ```sh
 assert_str_starts_with foobar foo
@@ -647,7 +688,7 @@ STDERR=> assert_str_starts_with foobar xxx
 
 ### assert_str_ends_with
 
-assert_str_ends_with: assert a string ends with with a substring.
+Assert a string ends with with a substring.
 
 ```sh
 assert_str_ends_with foobar foo
@@ -661,7 +702,7 @@ STDERR=> assert_str_ends_with foobar xxx
 
 ### mktemp_dir
 
-mktemp_dir: make a temporary directory path.
+Make a temporary directory path.
 
 ```sh
 mktemp_dir
@@ -670,7 +711,7 @@ mktemp_dir
 
 ### mktemp_file
 
-mktemp_file: make a temporary file path.
+Make a temporary file path.
 
 ```sh
 mktemp_file
@@ -681,7 +722,7 @@ mktemp_file
 
 ### file_media_type
 
-file_media_type: get a file's media type a.k.a. mime type such as "text/plain".
+Get a file's media type a.k.a. mime type such as "text/plain".
 
 ```sh
 file_media_type notes.txt
@@ -690,7 +731,7 @@ file_media_type notes.txt
 
 ### file_media_type_supertype
 
-file_media_type_supertype: get a file's media type type a.k.a. mime type such as "text".
+Get a file's media type type a.k.a. mime type such as "text".
 
 ```sh
 file_media_type_supertype notes.txt
@@ -699,7 +740,7 @@ file_media_type_supertype notes.txt
 
 ### file_media_type_subtype
 
-file_media_type_subtype: get a file's media type subtype a.k.a. mime type such as "plain".
+Get a file's media type subtype a.k.a. mime type such as "plain".
 
 ```sh
 file_media_type_subtype notes.txt
@@ -708,27 +749,27 @@ file_media_type_subtype notes.txt
 
 ## Font helpers
 
-### font_exists
+### font_name_exists
 
-font_exists: does a font name exist on this system?.
+Does a font name exist on this system?
 
 ```sh
-font_exists Arial
+font_name_exists Arial
 => true
 
-font_exists Foo
+font_name_exists Foo
 => false
 ```
 
-### font_exists_or_die
+### font_name_exists_or_die
 
-font_exists_or_die: ensure a font name exists..
+Ensure a font name exists, otherwise die with a help message.
 
 ```sh
-font_exists_or_die Arial
+font_name_exists_or_die Arial
 => true
 
-font_exists_or_die Foo
+font_name_exists_or_die Foo
 STDERR=> Font needed: Foo
 => exit 1
 ```
@@ -737,7 +778,7 @@ STDERR=> Font needed: Foo
 
 ### file_ends_with_newline
 
-file_ends_with_newline: file ends with newline?.
+Does a file end with a newline?
 
 ```sh
 file_ends_with_newline notes.txt
@@ -789,7 +830,7 @@ The exit code list below is subject to change over time, as we learn more.
 
 ### Success
 
-Success: the program succeeded, as defined by the program.
+The program succeeded.
 
 Exit 0 meaning success is a widespread convention as a catch-all code.
 
@@ -799,7 +840,7 @@ EXIT_SUCCESS=0
 
 ### Failure
 
-Failure: the program failed, as defined by the program.
+The program failed.
 
 E.g. an error, an abort, found no results, lack of data, etc.
 
@@ -811,7 +852,7 @@ EXIT_FAILURE=1
 
 ### Usage
 
-Usage: the program is used incorrectly, as defined by the program.
+The program usage is incorrect, or malformed, or in conflict, etc.
 
 E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
 
@@ -823,7 +864,7 @@ EXIT_USAGE=2
 
 ### Data Err
 
-Data Err: The input data was incorrect in some way. This should only be used
+The input data was incorrect in some way. This should only be used
 for user's data and not system files.
 
 ```sh
@@ -832,7 +873,7 @@ EXIT_DATAERR=65
 
 ### No Input
 
-No Input: An input file-- not system file-- did not exist or was not readable.
+An input file-- not system file-- did not exist or was not readable.
 This could include errors like "No message" to a mailer, if it cared about it.
 
 ```sh
@@ -841,7 +882,7 @@ EXIT_NOINPUT=66
 
 ### No User
 
-No User: The user specified did not exist. This might be used for mail
+The user specified did not exist. This might be used for mail
 addresses or remote logins, or when no user is found during authentication.
 
 ```sh
@@ -850,7 +891,7 @@ EXIT_NOUSER=67
 
 ### No Host
 
-No Host: The host specified did not exist. This is used in mail addresses or
+The host specified did not exist. This is used in mail addresses or
 network requests.
 
 ```sh
@@ -859,7 +900,7 @@ EXIT_NOHOST=68
 
 ### Unavailable
 
-Unavailable: A service is unavailable. This can occur if a support program or
+A service is unavailable. This can occur if a support program or
 file does not exist. This can also be used as a catchall message when
 something you wanted to do does not work, but you do not know why.
 
@@ -869,7 +910,7 @@ EXIT_UNAVAILABLE=69
 
 ### Software
 
-Software: An internal software error has been detected. This should be limited
+An internal software error has been detected. This should be limited
 to non-operating system related errors as possible.
 
 ```sh
@@ -878,7 +919,7 @@ EXIT_SOFTWARE=70
 
 ### OS Err
 
-OS Err: An operating system error has been detected. This is intended for such
+An operating system error has been detected. This is intended for such
 things as "cannot fork", "cannot create pipe", or the like.  It includes
 things like getuid returning a user that does not exist in the passwd file.
 
@@ -888,8 +929,8 @@ EXIT_OSERR=71
 
 ### OS File
 
-OS File: Some system file (e.g. /etc/passwd, /var/run/utx.active, etc.) does
-not exist, cannot be opened, or has some sort of error (e.g. syntax error).
+An operating system file (e.g. /etc/passwd) does not exist, or cannot
+be opened, or has some sort of error (e.g. syntax error).
 
 ```sh
 EXIT_OSFILE=72
@@ -897,7 +938,7 @@ EXIT_OSFILE=72
 
 ### Can't Create
 
-Can't Create: A user-specified output file cannot be created.
+A user-specified output (e.g. a file) cannot be created.
 
 ```sh
 EXIT_CANTCREATE=73
@@ -905,7 +946,7 @@ EXIT_CANTCREATE=73
 
 ### IO Err
 
-IO Err: An error occurred while doing I/O on some file.
+An error occurred while doing I/O on some file.
 
 ```sh
 EXIT_IOERR=74
@@ -913,7 +954,7 @@ EXIT_IOERR=74
 
 ### Temp Fail
 
-Temp Fail: Temporary failure, indicating something is not a permanent error.
+A temporary failure occurred; this is not a permanent error.
 E.g. a mailer could not create a connection. The request can be retried later.
 
 ```sh
@@ -922,7 +963,7 @@ EXIT_TEMPFAIL=75
 
 ### Protocol
 
-Protocol: The remote system returned something that was "not possible" during
+The remote system returned something that was "not possible" during
 a protocol exchange.
 
 ```sh
@@ -931,7 +972,7 @@ EXIT_PROTOCOL=76
 
 ### No Perm
 
-No Perm: You did not have sufficient permission to perform the operation. This
+You did not have sufficient permission to perform the operation. This
 is not for file system problems, which use EXIT_NOINPUT or EXIT_CANTCREATE,
 but rather for higher level permissions, access control authorization, etc.
 
@@ -941,7 +982,7 @@ EXIT_NOPERM=77
 
 ### Config
 
-Config: Something was found in an unconfigured or misconfigured state.
+Something was found in an unconfigured or misconfigured state.
 
 ```sh
 EXIT_CONFIG=78
@@ -967,7 +1008,7 @@ These exit codes will be set in version 12.x when it's released.
 
 ### Quit
 
-Quit: the user chose to quit, or cancel, or abort, or not continue, etc.
+The user chose to quit, or cancel, or abort, or not continue, etc.
 
 ```sh
 EXIT_QUIT=80
@@ -975,7 +1016,7 @@ EXIT_QUIT=80
 
 ### KYC
 
-KYC: Know Your Customer means the program requires more user information.
+Know Your Customer means the program requires more user information.
 E.g. email validation, age verification, terms of service agreement, etc.
 
 ```sh
@@ -984,7 +1025,7 @@ EXIT_KYC=81
 
 ### Update
 
-Update: the program or its dependencies need an update, or upgrade, etc.
+The program or its dependencies need an update, or upgrade, etc.
 
 ```sh
 EXIT_UPDATE=82
@@ -992,7 +1033,7 @@ EXIT_UPDATE=82
 
 ### Conflict
 
-Conflict: an item has a conflict e.g. edit collision, or merge error, etc.
+An item has a conflict e.g. edit collision, or merge error, etc.
 
 Akin to HTTP status code 409 Conflict.
 
@@ -1002,7 +1043,7 @@ EXIT_CONFLICT=91
 
 ### Unlawful
 
-Unlawful: e.g. prohibited due to law, or warrant, or court order, etc.
+E.g. prohibited due to law, or warrant, or court order, etc.
 
 Akin to HTTP status code 451 Unavailable For Legal Reasons (RFC 7725).
 
@@ -1012,7 +1053,7 @@ EXIT_UNLAWFUL=92
 
 ### Payment Issue
 
-Payment Issue: e.g. needs a credit card, or invoice, or billing, etc.
+E.g. needs a credit card, or invoice, or billing, etc.
 
 Akin to HTTP status code 402 Payment Required.
 
@@ -1022,7 +1063,7 @@ EXIT_PAYMENT_ISSUE=93
 
 ### Busy
 
-Busy: a process is too busy, or overloaded, or throttled, or breakered, etc.
+A process is too busy, or overloaded, or throttled, or breakered, etc.
 
 Akin to HTTP status code 503 Service Unavailable; always means overloaded.
 
@@ -1032,7 +1073,7 @@ EXIT_BUSY=100
 
 ### Timeout
 
-Timeout: a process is too slow, or estimated to take too long, etc.
+A process is too slow, or estimated to take too long, etc.
 
 Akin to HTTP status code 408 Request Timeout.
 
@@ -1042,7 +1083,7 @@ EXIT_TIMEOUT=101
 
 ### Lockout
 
-Lockout: a process is intentionally blocked as a danger, hazard, risk, etc.
+A process is intentionally blocked as a danger, hazard, risk, etc.
 
 This is for lockout-tagout (LOGO) safety, or protecting users or data, etc.
 
@@ -1052,7 +1093,7 @@ EXIT_LOCKOUT=102
 
 ### Loop
 
-Loop: a process has detected an infinite loop, so is aborting.
+A process has detected an infinite loop, so is aborting.
 
 Akin to HTTP status code 508 Loop Detected.
 
@@ -1062,7 +1103,7 @@ EXIT_LOOP=103
 
 ### Gone
 
-Gone: an expected ability has been intentionally removed, or deleted, etc.
+An expected ability has been intentionally removed, or deleted, etc.
 
 Akin to HTTP status code 410 Gone; the ability should be purged.
 
@@ -1072,7 +1113,7 @@ EXIT_GONE=110
 
 ### TODO
 
-Todo: an expected ability is not yet implemented, or work in progress, etc.
+An expected ability is not yet implemented, or work in progress, etc.
 
 Akin to HTTP status code 501 Not Implemented; implies future availability.
 
