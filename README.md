@@ -1,46 +1,54 @@
-# SixArm POSIX shell functions
+# POSIX shell script kit
 
-SixArm is a consulting group that creates software and systems.
+The POSIX shell script kit is one file of helper functions and constants.
 
-This is our POSIX shell script file of functions for general use.
+These work for bash, zsh, ksh, dash, sh, and any other modern POSIX shell.
 
-This script emphasizes small functions, helper variables, and clear examples.
+You can include this file in your own scripts, or copy anything you want.
+
+This file is free libre open source software, created by SixArm.
 
 Constructive feedback is welcome and appreciated.
 
 To download this file:
 
 ```sh
-curl -O "https://raw.githubusercontent.com/SixArm/sixarm-posix-shell-functions/main/sixarm-posix-shell-functions"
+curl -O "https://raw.githubusercontent.com/SixArm/posix-shell-script-kit/main/posix-shell-script-kit"
 ```
 
 ## Tracking
 
-* Package: sixarm-posix-shell-functions
+* Package: posix-shell-script-kit
 * Version: 11.0.4
 * Created: 2017-08-22T00:00:00Z
 * Updated: 2023-03-22T15:32:10Z
-* Website: https://github.com/sixarm/sixarm-posix-shell-functions
+* Website: https://github.com/sixarm/posix-shell-script-kit
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)
 
 ## Input/output helpers
 
-### out: print output message to stdout
+### out
+
+out: print output message to stdout.
 
 ```sh
 out "my message"
 STDOUT=> my message
 ```
 
-### err: print error message to stderr
+### err
+
+err: print error message to stderr.
 
 ```sh
 err "my message"
 STDERR=> my message
 ```
 
-### die: print error message to stderr, then exit with error code 1
+### die
+
+die: print error message to stderr, then exit with error code 1.
 
 ```sh
 die 1 "my message"
@@ -48,7 +56,9 @@ STDERR=> my message
 => exit 1
 ```
 
-### big: print a big banner to stdout, good for human readability
+### big
+
+big: print a big banner to stdout, good for human readability.
 
 ```sh
 big "my message"
@@ -60,21 +70,27 @@ big "my message"
 ###
 ```
 
-### log: print a datestamp, unique random id, hostname, process id, and message
+### log
+
+log: print a datestamp, unique random id, hostname, process id, and message.
 
 ```sh
 log "my message"
 => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 my message
 ```
 
-### zid: generate a 32-bit secure random lowercase hex identifier
+### zid
+
+zid: generate a 32-bit secure random lowercase hex identifier.
 
 ```sh
 zid
 => 78577554e967951388b5907854b4c337
 ```
 
-### ask: prompt the user for a line of input, then return a trimmed string
+### ask
+
+ask: prompt the user for a line of input, then return a trimmed string.
 
 ```sh
 ask
@@ -83,7 +99,9 @@ ask
 
 ## Directory helpers
 
-### user_dir: get user-specific directory via env var or XDG setting or HOME.
+### user_dir
+
+user_dir: get user-specific directory via env var or XDG setting or HOME..
 
 ```sh
 user_dir log
@@ -94,16 +112,11 @@ user_dir log
 => $HOME/foo
 ```
 
-## Time helpers
+## Date & time helpers
 
-### now_date: get a date as our preferred ISO format
+### now
 
-```sh
-now_date
-=> 2021-05-04
-```
-
-### now: get a datetime as our preferred ISO format with nanoseconds
+now: get a datetime as our preferred ISO format with nanoseconds.
 
 ```sh
 now
@@ -117,28 +130,52 @@ now -d "2021-01-01"
 => 2021-01-01T00:00:00.000000000+00:00
 ```
 
-### sec: get the current time in POSIX seconds
+### now_date
+
+now_date: get a date as our preferred ISO format.
+
+```sh
+now_date
+=> 2021-05-04
+```
+
+Example with a custom date, if your date command offers option -d:
+
+```sh
+now_date -d "January 1, 2021" 
+=> 2021-01-01
+```
+
+### sec
+
+sec: get the current time in POSIX seconds.
 
 ```sh
 sec
 => 1620169178
 ```
 
-### age: get the age of a given time in POSIX seconds
+### age
+
+age: get the age of a given time in POSIX seconds.
 
 ```sh
 age 1620169178
 => 19
 ```
 
-### newer: is the age of a given time newer than a given number of seconds?
+### newer
+
+newer: is the age of a given time newer than a given number of seconds?.
 
 ```sh
 newer 2000000000 && echo "true" || echo "false
 => true
 ```
 
-### older: is the age of a given time older than a given number of seconds?
+### older
+
+older: is the age of a given time older than a given number of seconds?.
 
 ```sh
 older 1000000000 && echo "true" || echo "false"
@@ -147,7 +184,9 @@ older 1000000000 && echo "true" || echo "false"
 
 ## Validation helpers
 
-### command_exists: return true iff a command exists
+### command_exists
+
+command_exists: return true iff a command exists.
 
 ```sh
 command_exists grep
@@ -157,7 +196,9 @@ command_exists curl
 => false
 ```
 
-### command_exists_or_die: ensure a command exists, otherwise die with a help message
+### command_exists_or_die
+
+command_exists_or_die: ensure a command exists, otherwise die with a help message.
 
 ```sh
 command_exists_or_die grep
@@ -168,7 +209,9 @@ STDERR=> Command needed: curl
 => exit 1
 ```
 
-### command_version_or_die: ensure a command exists and version is sufficient, otherwise die with a help message
+### command_version_or_die
+
+command_version_or_die: ensure a command exists and version is sufficient, otherwise die with a help message.
 
 ```sh
 command_version_or_die grep 1.1 2.2
@@ -179,7 +222,9 @@ STDERR=> Command version needed: grep >= 3.3 (not 2.2)
 => exit 1
 ```
 
-### var_exists: return true iff a variable exists
+### var_exists
+
+var_exists: return true iff a variable exists.
 
 ```sh
 var_exists HOME
@@ -189,7 +234,9 @@ var_exists FOO
 => false
 ```
 
-### var_exists_or_die: ensure a variable exists, otherwise die with a help message
+### var_exists_or_die
+
+var_exists_or_die: ensure a variable exists, otherwise die with a help message.
 
 ```sh
 var_exists_or_die HOME
@@ -200,7 +247,9 @@ STDERR=> Variable needed: FOO
 => exit 1
 ```
 
-### version: return true iff a version is sufficient.
+### version
+
+version: return true iff a version is sufficient..
 
 ```sh
 version 1.1 2.2
@@ -210,7 +259,9 @@ version 3.3 2.2
 => false
 ```
 
-### version_or_die: ensure a version is sufficient, otherwise die with a help message
+### version_or_die
+
+version_or_die: ensure a version is sufficient, otherwise die with a help message.
 
 ```sh
 version_or_die 1.1 2.2
@@ -222,14 +273,18 @@ STDERR=> Version needed: >= 3.3 (not 2.2)
 
 ## Number helpers
 
-### int: convert a number string to an integer number string
+### int
+
+int: convert a number string to an integer number string.
 
 ```sh
 int 1.23
 => 1
 ```
 
-### sum: print the sum of numbers
+### sum
+
+sum: print the sum of numbers.
 
 ```sh
 sum 1 2 3
@@ -238,14 +293,18 @@ sum 1 2 3
 
 ## Comparison helpers
 
-### cmp_alnums: compare alnums as groups, such as for word version strings.
+### cmp_alnums
+
+cmp_alnums: compare alnums as groups, such as for word version strings..
 
 ```sh
 cmp_alnums "a.b.c" "a.b.d"
 # => -1 (negative one means left < right)
 ```
 
-### cmp_digits: compare digits as groups, such as for number version strings.
+### cmp_digits
+
+cmp_digits: compare digits as groups, such as for number version strings..
 
 ```sh
 cmp_digits "1.2.3" "1.2.4"
@@ -254,7 +313,9 @@ cmp_digits "1.2.3" "1.2.4"
 
 ## Extensibility helpers
 
-### dot_all: source all the executable files in a given directory and subdirectories
+### dot_all
+
+dot_all: source all the executable files in a given directory and subdirectories.
 
 ```sh
 dot_all ~/temp
@@ -263,7 +324,9 @@ dot_all ~/temp
 => . ~/temp/c.js
 ```
 
-### run_all: run all the executable commands in a given directory and subdirectories
+### run_all
+
+run_all: run all the executable commands in a given directory and subdirectories.
 
 ```sh
 run_all ~/temp
@@ -272,7 +335,9 @@ run_all ~/temp
 => ~/temp/c.js
 ```
 
-### sh_all: shell all the executable commands in a given directory and subdirectories
+### sh_all
+
+sh_all: shell all the executable commands in a given directory and subdirectories.
 
 ```sh
 sh_all ~/temp
@@ -281,7 +346,9 @@ sh_all ~/temp
 => sh -c ~/temp/c.js
 ```
 
-### rm_all: remove all files in a given directory and subdirectories-- use with caution
+### rm_all
+
+rm_all: remove all files in a given directory and subdirectories-- use with caution.
 
 ```sh
 rm_all ~/temp
@@ -292,70 +359,90 @@ rm_all ~/temp
 
 ## Text helpers
 
-### trim: remove any space characters at the text's start or finish
+### trim
+
+trim: remove any space characters at the text's start or finish.
 
 ```sh
 trim "  foo  "
 => foo
 ```
 
-### slug: convert a string from any characters to solely lowercase and single internal dash characters
+### slug
+
+slug: convert a string from any characters to solely lowercase and single internal dash characters.
 
 ```sh
 slug "**Foo** **Goo** **Hoo**"
 => foo-goo-hoo
 ```
 
-### slugs: convert a string from any characters to solely lowercase and single internal dash characters and slash characters.
+### slugs
+
+slugs: convert a string from any characters to solely lowercase and single internal dash characters and slash characters..
 
 ```sh
 slugs "**Foo** / **Goo** / **Hoo**"
 => foo/goo/hoo
 ```
 
-### upper_format: convert text from any lowercase letters to uppercase letters
+### upper_format
+
+upper_format: convert text from any lowercase letters to uppercase letters.
 
 ```sh
 upper_format AbCdEf
 => ABCDEF
 ```
 
-### lower_format: convert text from any uppercase letters to lowercase letters
+### lower_format
+
+lower_format: convert text from any uppercase letters to lowercase letters.
 
 ```sh
 lower_format AbCdEf
 => abcdef
 ```
 
-### chain_format: convert a string from any characters to solely alphanumeric and single internal dash characters
+### chain_format
+
+chain_format: convert a string from any characters to solely alphanumeric and single internal dash characters.
 
 ```sh
 chain_format "**Foo** **Goo** **Hoo**"
 => Foo-Goo-Hoo
 ```
 
-### snake_format: convert a string from any characters to solely alphanumeric and single internal underscore characters
+### snake_format
+
+snake_format: convert a string from any characters to solely alphanumeric and single internal underscore characters.
 
 ```sh
 snake_format "**Foo** **Goo** **Hoo**"
 => Foo_Goo_Hoo
 ```
 
-### space_format: convert a string from any characters to solely alphanumeric and single internal space characters
+### space_format
+
+space_format: convert a string from any characters to solely alphanumeric and single internal space characters.
 
 ```sh
 space_format "**Foo** **Goo** **Hoo**"
 => Foo Goo Hoo
 ```
 
-### touch_format: convert a string from any characters to solely a command "touch -t" timestamp format
+### touch_format
+
+touch_format: convert a string from any characters to solely a command "touch -t" timestamp format.
 
 ```sh
 touch_format "Foo  2021-05-04 22:57:54 Goo"
 => 202105042257.54
 ```
 
-### select_character_class: get a string's characters that match a class, with optional offset and length
+### select_character_class
+
+select_character_class: get a string's characters that match a class, with optional offset and length.
 
 Syntax: select_character_class <string> <class> [offset [length]]
 
@@ -381,7 +468,9 @@ select_character_class foo123goo456 alpha 3 1
 ```
 
 
-### reject_character_class: get a string's characters that don't match a class, with optional offset and length
+### reject_character_class
+
+reject_character_class: get a string's characters that don't match a class, with optional offset and length.
 
 Syntax: reject_character_class <string> <class> [offset [length]]
 
@@ -408,7 +497,9 @@ reject_character_class foo123goo456 alpha 3 1
 
 ## Array helpers
 
-### array_n: get the array number of fields a.k.a. length a.k.a. size
+### array_n
+
+array_n: get the array number of fields a.k.a. length a.k.a. size.
 
 ```sh
 set -- a b c d
@@ -416,7 +507,9 @@ array_n "$@"
 => 4
 ```
 
-### array_i: get the array item at index `i` which is 1-based.
+### array_i
+
+array_i: get the array item at index `i` which is 1-based..
 
 ```sh
 set -- a b c d
@@ -424,7 +517,9 @@ array_i  "$@" 3
 => c
 ```
 
-### array_first: return the array's first item.
+### array_first
+
+array_first: return the array's first item..
 
 ```
 set -- a b c d
@@ -432,7 +527,9 @@ array_first "$@"
 => a
 ```
 
-### array_last: return the array's last item.
+### array_last
+
+array_last: return the array's last item..
 
 ```
 set -- a b c d
@@ -440,7 +537,9 @@ array_last "$@"
 => d
 ```
 
-### array_car: return the array's car item a.k.a. first item.
+### array_car
+
+array_car: return the array's car item a.k.a. first item..
 
 ```
 set -- a b c d
@@ -448,7 +547,9 @@ array_car "$@"
 => a
 ```
 
-### array_cdr: return the array's cdr items a.k.a. everything after the first item.
+### array_cdr
+
+array_cdr: return the array's cdr items a.k.a. everything after the first item..
 
 ```
 set -- a b c d
@@ -458,7 +559,9 @@ array_car "$@"
 
 ## Assert helpers
 
-### assert_test: assert a test utility command succeeds
+### assert_test
+
+assert_test: assert a test utility command succeeds.
 
 ```sh
 assert_test -x program.sh
@@ -468,7 +571,9 @@ assert_test -x notes.txt
 STDERR=> assert_test -x notes.txt 
 ```
 
-### assert_empty: assert an item is empty i.e. null
+### assert_empty
+
+assert_empty: assert an item is empty i.e. null.
 
 ```sh
 assert_empty ""
@@ -478,7 +583,9 @@ assert_empty foo
 STDERR=> assert_empty foo
 ```
 
-### assert_not_empty: assert an item is not empty i.e. not null
+### assert_not_empty
+
+assert_not_empty: assert an item is not empty i.e. not null.
 
 ```sh
 assert_not_empty foo
@@ -526,7 +633,9 @@ There are comparison assertions for strings:
 * `assert_str_le` is less than or equal to
 * `assert_str_lt` is less than
 
-### assert_str_starts_with: assert a string starts with a substring
+### assert_str_starts_with
+
+assert_str_starts_with: assert a string starts with a substring.
 
 ```sh
 assert_str_starts_with foobar foo
@@ -536,7 +645,9 @@ assert_str_starts_with foobar xxx
 STDERR=> assert_str_starts_with foobar xxx
 ```
 
-### assert_str_ends_with: assert a string ends with with a substring
+### assert_str_ends_with
+
+assert_str_ends_with: assert a string ends with with a substring.
 
 ```sh
 assert_str_ends_with foobar foo
@@ -548,14 +659,18 @@ STDERR=> assert_str_ends_with foobar xxx
 
 ## Make temp helpers
 
-### mktemp_dir: make a temporary directory path
+### mktemp_dir
+
+mktemp_dir: make a temporary directory path.
 
 ```sh
 mktemp_dir
 => /var/folders/4f7b65122b0fb65b0fdad568a65dc97d
 ```
 
-### mktemp_file: make a temporary file path
+### mktemp_file
+
+mktemp_file: make a temporary file path.
 
 ```sh
 mktemp_file
@@ -564,21 +679,27 @@ mktemp_file
 
 ## Media helpers
 
-### file_media_type: get a file's media type a.k.a. mime type such as "text/plain"
+### file_media_type
+
+file_media_type: get a file's media type a.k.a. mime type such as "text/plain".
 
 ```sh
 file_media_type notes.txt
 => text/plain
 ```
 
-### file_media_type_supertype: get a file's media type type a.k.a. mime type such as "text"
+### file_media_type_supertype
+
+file_media_type_supertype: get a file's media type type a.k.a. mime type such as "text".
 
 ```sh
 file_media_type_supertype notes.txt
 => text
 ```
 
-### file_media_type_subtype: get a file's media type subtype a.k.a. mime type such as "plain"
+### file_media_type_subtype
+
+file_media_type_subtype: get a file's media type subtype a.k.a. mime type such as "plain".
 
 ```sh
 file_media_type_subtype notes.txt
@@ -587,7 +708,9 @@ file_media_type_subtype notes.txt
 
 ## Font helpers
 
-### font_exists: does a font name exist on this system?
+### font_exists
+
+font_exists: does a font name exist on this system?.
 
 ```sh
 font_exists Arial
@@ -597,7 +720,9 @@ font_exists Foo
 => false
 ```
 
-### font_exists_or_die: ensure a font name exists.
+### font_exists_or_die
+
+font_exists_or_die: ensure a font name exists..
 
 ```sh
 font_exists_or_die Arial
@@ -610,7 +735,9 @@ STDERR=> Font needed: Foo
 
 ## Content helpers
 
-### file_ends_with_newline: file ends with newline?
+### file_ends_with_newline
+
+file_ends_with_newline: file ends with newline?.
 
 ```sh
 file_ends_with_newline notes.txt
@@ -633,7 +760,7 @@ Conventions:
 
 * 64-78 are based on sysexits documentation from the 1980's.
 
-* 80-99 are SixArm conventions that we find useful in many programs.
+* 80-119 are SixArm conventions that we find useful in many programs.
 
 Many POSIX shells use exit code 126 and 127 to signal specific error status:
 126 is for command found but not executable, and 127 is for command not found.

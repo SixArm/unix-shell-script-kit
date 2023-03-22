@@ -1,32 +1,32 @@
 #!/bin/sh
 
-##
-# SixArm POSIX shell functions
+# POSIX shell script kit.
 #
-# SixArm is a consulting group that creates software and systems.
+# The POSIX shell script kit is one file of helper functions and constants.
 #
-# This is our POSIX shell script file of general-purpose functions.
+# These work for bash, zsh, ksh, dash, sh, and any other modern POSIX shell.
 #
-# We aim to emphasize small functions and clear examples.
+# You can include this file in your own scripts, or copy anything you want.
+#
+# This file is free libre open source software, created by SixArm.
 #
 # Constructive feedback is welcome and appreciated.
 #
 # To download this file:
 #
 # ```sh
-# curl -O "https://raw.githubusercontent.com/SixArm/sixarm-posix-shell-functions/main/sixarm-posix-shell-functions"
+# curl -O "https://raw.githubusercontent.com/SixArm/posix-shell-script-kit/main/posix-shell-script-kit"
 # ```
 #
 # ## Tracking
 #
-#   * Package: sixarm-posix-shell-functions
+#   * Package: posix-shell-script-kit
 #   * Version: 11.0.4
 #   * Created: 2017-08-22T00:00:00Z
 #   * Updated: 2023-03-22T15:32:10Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
-#   * Website: https://github.com/sixarm/sixarm-posix-shell-functions
+#   * Website: https://github.com/sixarm/posix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
-##
 
 ##
 # Exit codes
@@ -46,7 +46,7 @@
 #
 # * 64-78 are based on sysexits documentation from the 1980's.
 #
-# * 80-99 are SixArm conventions that we find useful in many programs.
+# * 80-119 are SixArm conventions that we find useful in many programs.
 #
 # Many POSIX shells use exit code 126 and 127 to signal specific error status:
 # 126 is for command found but not executable, and 127 is for command not found.
@@ -413,7 +413,7 @@ user_dir(){
 }
 
 ##
-# Time helpers
+# Date & time helpers
 ##
 
 # now: get a datetime as our preferred ISO format.
@@ -424,9 +424,9 @@ user_dir(){
 # => 2021-05-04T22:59:28.769653000+00:00
 # ```
 #
-# Example with a custom datetime:
+# Example with a custom datetime, if your date command offers option -d:
 # ```
-# now -d "2021-01-01" 
+# now -d "January 1, 2021" 
 # => 2021-01-01T00:00:00.000000000+00:00
 # ```
 #
@@ -458,6 +458,13 @@ now() {
 # now_date
 # => 2021-05-04
 # ```
+#
+# Example with a custom date, if your date command offers option -d:
+# ```
+# now_date -d "January 1, 2021" 
+# => 2021-01-01
+# ```
+#
 now_date() {
         # shellcheck disable=SC2120
         date -u "+%Y-%m-%d" "$@"
