@@ -48,7 +48,7 @@ STDERR=> my message
 
 ### die
 
-Print error message to stderr, then exit with error code 1.
+Print error message to stderr, then exit with an error code.
 
 ```sh
 die 1 "my message"
@@ -97,58 +97,6 @@ ask
 => prompt
 ```
 
-## Directory helpers
-
-### user_dir
-
-Get a user-specific directory via env var, or XDG setting, or HOME.
-
-```sh
-user_dir foo
-=> $FOO_DIR || $FOO_HOME || $XDG_FOO_DIR || $XDG_FOO_HOME || $HOME/foo
-```
-
-Conventions:
-
-  * `user_dir bin` => binary executable directory
-  * `user_dir cache` => cache directory
-  * `user_dir config` => configuration directory
-  * `user_dir data` => data directory
-  * `user_dir desktop` => desktop directory
-  * `user_dir documents` => documents directory
-  * `user_dir download` => download directory
-  * `user_dir log` => logging directory
-  * `user_dir music` => music directory
-  * `user_dir pictures` => pictures directory
-  * `user_dir publicshare` => public share directory
-  * `user_dir runtime` => runtime directory
-  * `user_dir state` => state directory
-  * `user_dir temp` => temporary directory
-  * `user_dir templates` => templates directory
-  * `user_dir videos` => videos directory
-
-Popular XDG conventions:
-
-* `XDG_DESKTOP_DIR` => user-specific desktop, such as frequent apps and files.
-* `XDG_DOCUMENTS_DIR` => user-specific documents, such as typical working files.
-* `XDG_DOWNLOAD_DIR` => user-specific downloads, such as internet file downloads.
-* `XDG_MUSIC_DIR` => user-specific music files, such as songs.
-* `XDG_PICTURES_DIR` => user-specific pictures, such as photos.
-* `XDG_PUBLICSHARE_DIR` => user-specific public share, such as file sharing.
-* `XDG_TEMPLATES_DIR` => user-specific templates.
-* `XDG_VIDEOS_DIR` => user-specific videos, such as movies.
-  
-POSIX XDG conventions:
-
-* `XDG_BIN_HOME` => user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
-* `XDG_LOG_HOME` => user-specific log files, analogous to system /var/log or $HOME/.local/log.
-* `XDG_TEMP_HOME` => user-specific temporary files, analogous to system /temp or $HOME/.temp.
-* `XDG_DATA_HOME` => user-specific data files, analogous to system /usr/share or $HOME/.local/share.
-* `XDG_CACHE_HOME` => user-specific cache files, analogous to system /var/cache or $HOME/.cache.
-* `XDG_STATE_HOME` => user-specific cache files, analogous to system /var/state or $HOME/.local/state.
-* `XDG_CONFIG_HOME` => user-specific configuration files, analogous to system /etc or $HOME/.config.
-* `XDG_RUNTIME_HOME` => user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
-
 ## Date & time helpers
 
 ### now
@@ -163,7 +111,7 @@ now
 Example with a custom datetime:
 
 ```sh
-now -d "2021-01-01" 
+now -d "2021-01-01"
 => 2021-01-01T00:00:00.000000000+00:00
 ```
 
@@ -179,7 +127,7 @@ now_date
 Example with a custom date, if your date command offers option -d:
 
 ```sh
-now_date -d "January 1, 2021" 
+now_date -d "January 1, 2021"
 => 2021-01-01
 ```
 
@@ -605,7 +553,7 @@ assert_test -x program.sh
 => success i.e. no output
 
 assert_test -x notes.txt
-STDERR=> assert_test -x notes.txt 
+STDERR=> assert_test -x notes.txt
 ```
 
 ### assert_empty
@@ -647,7 +595,7 @@ STDERR=> assert_int_eq 1 2
 There are comparison assertions for integers:
 
 * `assert_int_eq` is equal to
-* `assert_int_ne` is not equal to 
+* `assert_int_ne` is not equal to
 * `assert_int_ge` is greater than or equal to
 * `assert_int_gt` is greater than
 * `assert_int_le` is less than or equal to
@@ -668,7 +616,7 @@ STDERR=> assert_str_eq foo bar
 There are comparison assertions for strings:
 
 * `assert_str_eq` is equal to
-* `assert_str_ne` is not equal to 
+* `assert_str_ne` is not equal to
 * `assert_str_ge` is greater than or equal to
 * `assert_str_gt` is greater than
 * `assert_str_le` is less than or equal to
@@ -785,6 +733,58 @@ file_ends_with_newline notes.txt
 => true
 ```
 
+## Directory helpers
+
+### user_dir
+
+Get a user-specific directory via env var, or XDG setting, or HOME.
+
+```sh
+user_dir foo
+=> $FOO_DIR || $FOO_HOME || $XDG_FOO_DIR || $XDG_FOO_HOME || $HOME/foo
+```
+
+Conventions:
+
+  * `user_dir bin` => binary executable directory
+  * `user_dir cache` => cache directory
+  * `user_dir config` => configuration directory
+  * `user_dir data` => data directory
+  * `user_dir desktop` => desktop directory
+  * `user_dir documents` => documents directory
+  * `user_dir download` => download directory
+  * `user_dir log` => logging directory
+  * `user_dir music` => music directory
+  * `user_dir pictures` => pictures directory
+  * `user_dir publicshare` => public share directory
+  * `user_dir runtime` => runtime directory
+  * `user_dir state` => state directory
+  * `user_dir temp` => temporary directory
+  * `user_dir templates` => templates directory
+  * `user_dir videos` => videos directory
+
+Popular XDG conventions:
+
+* `XDG_DESKTOP_DIR` => user-specific desktop, such as frequent apps and files.
+* `XDG_DOCUMENTS_DIR` => user-specific documents, such as typical working files.
+* `XDG_DOWNLOAD_DIR` => user-specific downloads, such as internet file downloads.
+* `XDG_MUSIC_DIR` => user-specific music files, such as songs.
+* `XDG_PICTURES_DIR` => user-specific pictures, such as photos.
+* `XDG_PUBLICSHARE_DIR` => user-specific public share, such as file sharing.
+* `XDG_TEMPLATES_DIR` => user-specific templates.
+* `XDG_VIDEOS_DIR` => user-specific videos, such as movies.
+
+POSIX XDG conventions:
+
+* `XDG_BIN_HOME` => user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
+* `XDG_LOG_HOME` => user-specific log files, analogous to system /var/log or $HOME/.local/log.
+* `XDG_TEMP_HOME` => user-specific temporary files, analogous to system /temp or $HOME/.temp.
+* `XDG_DATA_HOME` => user-specific data files, analogous to system /usr/share or $HOME/.local/share.
+* `XDG_CACHE_HOME` => user-specific cache files, analogous to system /var/cache or $HOME/.cache.
+* `XDG_STATE_HOME` => user-specific cache files, analogous to system /var/state or $HOME/.local/state.
+* `XDG_CONFIG_HOME` => user-specific configuration files, analogous to system /etc or $HOME/.config.
+* `XDG_RUNTIME_HOME` => user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
+
 ## Exit codes
 
 Our POSIX shell programs call "exit" with an exit code value.
@@ -830,15 +830,20 @@ The exit code list below is subject to change over time, as we learn more.
 
 ### Success
 
-The program succeeded.
-
-Exit 0 meaning success is a widespread convention as a catch-all code.
-
 ```sh
 EXIT_SUCCESS=0
 ```
 
+The program succeeded.
+
+Exit 0 meaning success is a widespread convention as a catch-all code.
+
+
 ### Failure
+
+```sh
+EXIT_FAILURE=1
+```
 
 The program failed.
 
@@ -846,11 +851,12 @@ E.g. an error, an abort, found no results, lack of data, etc.
 
 Exit 1 meaning failure is a widespread convention as a catch-all code.
 
-```sh
-EXIT_FAILURE=1
-```
 
 ### Usage
+
+```sh
+EXIT_USAGE=2
+```
 
 The program usage is incorrect, or malformed, or in conflict, etc.
 
@@ -858,18 +864,16 @@ E.g. wrong number of args, a bad flag, a syntax error in an option, etc.
 
 Exit 2 meaning usage is a widespread convention as a catch-all CLI code.
 
-```sh
-EXIT_USAGE=2
-```
 
 ### Data Err
-
-The input data was incorrect in some way. This should only be used
-for user's data and not system files.
 
 ```sh
 EXIT_DATAERR=65
 ```
+
+The input data was incorrect in some way. This should only be used
+for user's data and not system files.
+
 
 ### No Input
 
@@ -882,50 +886,56 @@ EXIT_NOINPUT=66
 
 ### No User
 
-The user specified did not exist. This might be used for mail
-addresses or remote logins, or when no user is found during authentication.
-
 ```sh
 EXIT_NOUSER=67
 ```
 
-### No Host
+The user specified did not exist.
 
-The host specified did not exist. This is used in mail addresses or
-network requests.
+This might be used for mail addresses or remote logins, or when authentication is required.
+
+
+### No Host
 
 ```sh
 EXIT_NOHOST=68
 ```
 
-### Unavailable
+The host specified did not exist. This is used in mail addresses or
+network requests.
 
-A service is unavailable. This can occur if a support program or
-file does not exist. This can also be used as a catchall message when
-something you wanted to do does not work, but you do not know why.
+
+### Unavailable
 
 ```sh
 EXIT_UNAVAILABLE=69
 ```
 
-### Software
+A service is unavailable. This can occur if a support program or
+file does not exist. This can also be used as a catchall message when
+something you wanted to do does not work, but you do not know why.
 
-An internal software error has been detected. This should be limited
-to non-operating system related errors as possible.
+
+### Software
 
 ```sh
 EXIT_SOFTWARE=70
 ```
 
+An internal software error has been detected. This should be limited
+to non-operating system related errors as possible.
+
+
 ### OS Err
+
+```sh
+EXIT_OSERR=71
+```
 
 An operating system error has been detected. This is intended for such
 things as "cannot fork", "cannot create pipe", or the like.  It includes
 things like getuid returning a user that does not exist in the passwd file.
 
-```sh
-EXIT_OSERR=71
-```
 
 ### OS File
 
@@ -938,11 +948,12 @@ EXIT_OSFILE=72
 
 ### Can't Create
 
-A user-specified output (e.g. a file) cannot be created.
-
 ```sh
 EXIT_CANTCREATE=73
 ```
+
+A user-specified output (e.g. a file) cannot be created.
+
 
 ### IO Err
 
@@ -954,39 +965,44 @@ EXIT_IOERR=74
 
 ### Temp Fail
 
-A temporary failure occurred; this is not a permanent error.
-E.g. a mailer could not create a connection. The request can be retried later.
-
 ```sh
 EXIT_TEMPFAIL=75
 ```
 
-### Protocol
+A temporary failure occurred; this is not a permanent error.
 
-The remote system returned something that was "not possible" during
-a protocol exchange.
+E.g. a mailer could not create a connection. The request can be retried later.
+
+
+### Protocol
 
 ```sh
 EXIT_PROTOCOL=76
 ```
 
-### No Perm
+The remote system returned something that was "not possible" during
+a protocol exchange.
 
-You did not have sufficient permission to perform the operation. This
-is not for file system problems, which use EXIT_NOINPUT or EXIT_CANTCREATE,
-but rather for higher level permissions, access control authorization, etc.
+
+### No Perm
 
 ```sh
 EXIT_NOPERM=77
 ```
 
-### Config
+You did not have sufficient permission to perform the operation. This
+is not for file system problems, which use EXIT_NOINPUT or EXIT_CANTCREATE,
+but rather for higher level permissions, access control authorization, etc.
 
-Something was found in an unconfigured or misconfigured state.
+
+### Config
 
 ```sh
 EXIT_CONFIG=78
 ```
+
+Something was found in an unconfigured or misconfigured state.
+
 
 ### Exit codes 80-119
 
@@ -994,7 +1010,7 @@ Exit codes 80-119 are for our own SixArm conventions.
 
 We propose these are generally useful to many kinds of programs.
 
-Caution: these exit codes and their values are work in progress, 
+Caution: these exit codes and their values are work in progress,
 draft only, as a request for comments, in version 11.x of this file.
 These exit codes will be set in version 12.x when it's released.
 
@@ -1008,120 +1024,136 @@ These exit codes will be set in version 12.x when it's released.
 
 ### Quit
 
-The user chose to quit, or cancel, or abort, or not continue, etc.
-
 ```sh
 EXIT_QUIT=80
 ```
 
-### KYC
+The user chose to quit, or cancel, or abort, or not continue, etc.
 
-Know Your Customer means the program requires more user information.
-E.g. email validation, age verification, terms of service agreement, etc.
+
+### KYC
 
 ```sh
 EXIT_KYC=81
 ```
 
-### Update
+Know Your Customer means the program requires more user information.
+E.g. email validation, age verification, terms of service agreement, etc.
 
-The program or its dependencies need an update, or upgrade, etc.
+
+### Update
 
 ```sh
 EXIT_UPDATE=82
 ```
 
+The program or its dependencies need an update, or upgrade, etc.
+
+
 ### Conflict
-
-An item has a conflict e.g. edit collision, or merge error, etc.
-
-Akin to HTTP status code 409 Conflict.
 
 ```sh
 EXIT_CONFLICT=91
 ```
 
+An item has a conflict e.g. edit collision, or merge error, etc.
+
+Akin to HTTP status code 409 Conflict.
+
+
 ### Unlawful
-
-E.g. prohibited due to law, or warrant, or court order, etc.
-
-Akin to HTTP status code 451 Unavailable For Legal Reasons (RFC 7725).
 
 ```sh
 EXIT_UNLAWFUL=92
 ```
 
+E.g. prohibited due to law, or warrant, or court order, etc.
+
+Akin to HTTP status code 451 Unavailable For Legal Reasons (RFC 7725).
+
+
 ### Payment Issue
-
-E.g. needs a credit card, or invoice, or billing, etc.
-
-Akin to HTTP status code 402 Payment Required.
 
 ```sh
 EXIT_PAYMENT_ISSUE=93
 ```
 
+E.g. needs a credit card, or invoice, or billing, etc.
+
+Akin to HTTP status code 402 Payment Required.
+
+
 ### Busy
-
-A process is too busy, or overloaded, or throttled, or breakered, etc.
-
-Akin to HTTP status code 503 Service Unavailable; always means overloaded.
 
 ```sh
 EXIT_BUSY=100
 ```
 
+A process is too busy, or overloaded, or throttled, or breakered, etc.
+
+Akin to HTTP status code 503 Service Unavailable; always means overloaded.
+
+
 ### Timeout
-
-A process is too slow, or estimated to take too long, etc.
-
-Akin to HTTP status code 408 Request Timeout.
 
 ```sh
 EXIT_TIMEOUT=101
 ```
 
+A process is too slow, or estimated to take too long, etc.
+
+Akin to HTTP status code 408 Request Timeout.
+
+
 ### Lockout
-
-A process is intentionally blocked as a danger, hazard, risk, etc.
-
-This is for lockout-tagout (LOTO) safety, or protecting users or data, etc.
 
 ```sh
 EXIT_LOCKOUT=102
 ```
 
+A process is intentionally blocked as a danger, hazard, risk, etc.
+
+This is for lockout-tagout (LOTO) safety, or protecting users or data, etc.
+
+
 ### Loop
-
-A process has detected an infinite loop, so is aborting.
-
-Akin to HTTP status code 508 Loop Detected.
 
 ```sh
 EXIT_LOOP=103
 ```
 
+A process has detected an infinite loop, so is aborting.
+
+Akin to HTTP status code 508 Loop Detected.
+
+
 ### Gone
-
-An expected ability has been intentionally removed, or deleted, etc.
-
-Akin to HTTP status code 410 Gone; the ability should be purged.
 
 ```sh
 EXIT_GONE=110
 ```
 
+An expected ability has been intentionally removed, or deleted, etc.
+
+Akin to HTTP status code 410 Gone; the ability should be purged.
+
+
 ### TODO
-
-An expected ability is not yet implemented, or work in progress, etc.
-
-Akin to HTTP status code 501 Not Implemented; implies future availability.
 
 ```sh
 EXIT_TODO=111
 ```
 
+An expected ability is not yet implemented, or work in progress, etc.
+
+Akin to HTTP status code 501 Not Implemented; implies future availability.
+
+
 ### Git bisect skip
+
+```sh
+EXIT_GIT_BISECT_SKIP=125
+```
 
 Git bisect: The special exit code 125 should be used when the current source
 code cannot be tested. If the script exits with this code, the current
@@ -1129,22 +1161,20 @@ revision will be skipped (see git bisect skip above). 125 was chosen as the
 highest sensible value to use for this purpose, because 126 and 127 are used
 by POSIX shells to signal specific error status; see below for details.
 
-```sh
-EXIT_GIT_BISECT_SKIP=125
-```
 
 ### Command found but not executable
-
-Command found but not executable: A command is found but is not executable.
 
 ```sh
 EXIT_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
 ```
 
-### Command not found
+A command is found but is not executable.
 
-Command not found: A command is not found. 
+
+### Command not found
 
 ```sh
 EXIT_COMMAND_NOT_FOUND=127
 ```
+
+A command is not found.

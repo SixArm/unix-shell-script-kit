@@ -95,7 +95,7 @@ EXIT_DATAERR=65
 EXIT_NOINPUT=66
 
 # No User: The user specified did not exist. This might be used for mail
-# addresses or remote logins, or when no user is found during authentication.
+# addresses or remote logins, or when authentication is required.
 EXIT_NOUSER=67
 
 # No Host: The host specified did not exist. This is used in mail addresses or
@@ -145,7 +145,7 @@ EXIT_CONFIG=78
 # Exit codes 80-99 are for our own SixArm conventions.
 # We propose these are generally useful to many kinds of programs.
 #
-# Caution: these exit codes and their values are work in progress, 
+# Caution: these exit codes and their values are work in progress,
 # draft only, as a request for comments, in version 11.x of this file.
 # These exit codes will be set in version 12.x when it's released.
 #
@@ -313,7 +313,7 @@ big() {
 #
 # We prefer this log file format for many of our scripts because we prefer
 # logging the additional diagnositc information that we use for our systems:
-# the datetime with nanosecond-friendly format and timezone-friendly format, 
+# the datetime with nanosecond-friendly format and timezone-friendly format,
 # unique random id a.k.a. zid, hostname, and process number.
 #
 log() {
@@ -343,74 +343,6 @@ ask() {
 }
 
 ##
-# Directory helpers
-##
-
-# user_dir: get a user-specific directory via env var, or XDG setting, or HOME.
-#
-# Example:
-# ```
-# user_dir foo => $FOO_DIR || $FOO_HOME || $XDG_FOO_DIR || $XDG_FOO_HOME || $HOME/foo
-# ```
-#
-# Conventions:
-#
-#   * `user_dir bin` => binary executable directory
-#   * `user_dir cache` => cache directory
-#   * `user_dir config` => configuration directory
-#   * `user_dir data` => data directory
-#   * `user_dir desktop` => desktop directory
-#   * `user_dir documents` => documents directory
-#   * `user_dir download` => download directory
-#   * `user_dir log` => logging directory
-#   * `user_dir music` => music directory
-#   * `user_dir pictures` => pictures directory
-#   * `user_dir publicshare` => public share directory
-#   * `user_dir runtime` => runtime directory
-#   * `user_dir state` => state directory
-#   * `user_dir temp` => temporary directory
-#   * `user_dir templates` => templates directory
-#   * `user_dir videos` => videos directory
-#
-# Popular XDG conventions:
-#
-#   * `XDG_DESKTOP_DIR` => user-specific desktop, such as frequent apps and files.
-#   * `XDG_DOCUMENTS_DIR` => user-specific documents, such as typical working files.
-#   * `XDG_DOWNLOAD_DIR` => user-specific downloads, such as internet file downloads.
-#   * `XDG_MUSIC_DIR` => user-specific music files, such as songs.
-#   * `XDG_PICTURES_DIR` => user-specific pictures, such as photos.
-#   * `XDG_PUBLICSHARE_DIR` => user-specific public share, such as file sharing.
-#   * `XDG_TEMPLATES_DIR` => user-specific templates.
-#   * `XDG_VIDEOS_DIR` => user-specific videos, such as movies.
-#
-# POSIX XDG conventions:
-#
-#   * `XDG_BIN_HOME` => user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
-#   * `XDG_LOG_HOME` => user-specific log files, analogous to system /var/log or $HOME/.local/log.
-#   * `XDG_TEMP_HOME` => user-specific temporary files, analogous to system /temp or $HOME/.temp.
-#   * `XDG_DATA_HOME` => user-specific data files, analogous to system /usr/share or $HOME/.local/share.
-#   * `XDG_CACHE_HOME` => user-specific cache files, analogous to system /var/cache or $HOME/.cache.
-#   * `XDG_STATE_HOME` => user-specific cache files, analogous to system /var/state or $HOME/.local/state.
-#   * `XDG_CONFIG_HOME` => user-specific configuration files, analogous to system /etc or $HOME/.config.
-#   * `XDG_RUNTIME_HOME` => user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
-#
-# See also:
-#
-#   * https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
-#
-#   * https://wiki.archlinux.org/title/XDG_user_directories
-#
-user_dir(){
-	upper=$(printf %s\\n "$1" | tr '[:lower:]' '[:upper:]')
-	lower=$(printf %s\\n "$1" | tr '[:upper:]' '[:lower:]')
-	a=$(eval printf "%s\\\\n" \$${upper}_DIR)
-	b=$(eval printf "%s\\\\n" \$${upper}_HOME)
-	c=$(eval printf "%s\\\\n" \$XDG_${upper}_DIR)
-	d=$(eval printf "%s\\\\n" \$XDG_${upper}_HOME)
-        printf %s\\n "${a:=${b:=${c:=${d:=$HOME/$lower}}}}"
-}
-
-##
 # Date & time helpers
 ##
 
@@ -424,7 +356,7 @@ user_dir(){
 #
 # Example with a custom datetime, if your date command offers option -d:
 # ```
-# now -d "January 1, 2021" 
+# now -d "January 1, 2021"
 # => 2021-01-01T00:00:00.000000000+00:00
 # ```
 #
@@ -444,7 +376,7 @@ user_dir(){
 # For example Linux GNU "date" handles this, but macOS BSD "date" doesn't.
 #
 now() {
-        # shellcheck disable=SC2120        
+        # shellcheck disable=SC2120
         date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" "$@" | sed 's/N/000000000/'
 }
 
@@ -459,7 +391,7 @@ now() {
 #
 # Example with a custom date, if your date command offers option -d:
 # ```
-# now_date -d "January 1, 2021" 
+# now_date -d "January 1, 2021"
 # => 2021-01-01
 # ```
 #
@@ -976,7 +908,7 @@ array_i() {
         for __array_i_i in "$@"; do true; done
         if [ "$__array_i_i" -ge 1 -a "$__array_i_i" -lt $# ]; then
                 __array_i_j=1
-                for __array_i_x in "$@"; do 
+                for __array_i_x in "$@"; do
                         if [ "$__array_i_j" -eq "$__array_i_i" ]; then
                                 printf %s "$__array_i_x"
                                 return
@@ -1049,7 +981,7 @@ array_cdr() {
 # => success i.e. no output
 #
 # assert_test -x notes.txt
-# STDERR=> assert_test -x notes.txt 
+# STDERR=> assert_test -x notes.txt
 # ```
 assert_test() {
         test "$1" "$2" || err assert_test "$@"
@@ -1347,7 +1279,7 @@ file_media_type_subtype() {
 ##
 
 # font_name_exists: does a font name exist on this system?
-# 
+#
 # Example:
 # ```
 # font_name_exists Arial
@@ -1362,7 +1294,7 @@ font_name_exists() {
 }
 
 # font_name_exists_or_die: ensure a font name exists.
-# 
+#
 # Example:
 # ```
 # font_name_exists_or_die Arial
@@ -1374,7 +1306,7 @@ font_name_exists() {
 # ```
 #
 font_name_exists_or_die() {
-        font_name_exists "$1" || die "$EXIT_UNAVAILABLE" "Font needed: $1" 
+        font_name_exists "$1" || die "$EXIT_UNAVAILABLE" "Font needed: $1"
 }
 
 ##
@@ -1390,4 +1322,73 @@ font_name_exists_or_die() {
 # ```
 file_ends_with_newline() {
         test $(tail -c1 "$1" | wc -l) -gt 0
+}
+
+
+##
+# Directory helpers
+##
+
+# user_dir: get a user-specific directory via env var, or XDG setting, or HOME.
+#
+# Example:
+# ```
+# user_dir foo => $FOO_DIR || $FOO_HOME || $XDG_FOO_DIR || $XDG_FOO_HOME || $HOME/foo
+# ```
+#
+# Conventions:
+#
+#   * `user_dir bin` => binary executable directory
+#   * `user_dir cache` => cache directory
+#   * `user_dir config` => configuration directory
+#   * `user_dir data` => data directory
+#   * `user_dir desktop` => desktop directory
+#   * `user_dir documents` => documents directory
+#   * `user_dir download` => download directory
+#   * `user_dir log` => logging directory
+#   * `user_dir music` => music directory
+#   * `user_dir pictures` => pictures directory
+#   * `user_dir publicshare` => public share directory
+#   * `user_dir runtime` => runtime directory
+#   * `user_dir state` => state directory
+#   * `user_dir temp` => temporary directory
+#   * `user_dir templates` => templates directory
+#   * `user_dir videos` => videos directory
+#
+# Popular XDG conventions:
+#
+#   * `XDG_DESKTOP_DIR` => user-specific desktop, such as frequent apps and files.
+#   * `XDG_DOCUMENTS_DIR` => user-specific documents, such as typical working files.
+#   * `XDG_DOWNLOAD_DIR` => user-specific downloads, such as internet file downloads.
+#   * `XDG_MUSIC_DIR` => user-specific music files, such as songs.
+#   * `XDG_PICTURES_DIR` => user-specific pictures, such as photos.
+#   * `XDG_PUBLICSHARE_DIR` => user-specific public share, such as file sharing.
+#   * `XDG_TEMPLATES_DIR` => user-specific templates.
+#   * `XDG_VIDEOS_DIR` => user-specific videos, such as movies.
+#
+# POSIX XDG conventions:
+#
+#   * `XDG_BIN_HOME` => user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
+#   * `XDG_LOG_HOME` => user-specific log files, analogous to system /var/log or $HOME/.local/log.
+#   * `XDG_TEMP_HOME` => user-specific temporary files, analogous to system /temp or $HOME/.temp.
+#   * `XDG_DATA_HOME` => user-specific data files, analogous to system /usr/share or $HOME/.local/share.
+#   * `XDG_CACHE_HOME` => user-specific cache files, analogous to system /var/cache or $HOME/.cache.
+#   * `XDG_STATE_HOME` => user-specific cache files, analogous to system /var/state or $HOME/.local/state.
+#   * `XDG_CONFIG_HOME` => user-specific configuration files, analogous to system /etc or $HOME/.config.
+#   * `XDG_RUNTIME_HOME` => user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
+#
+# See also:
+#
+#   * https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+#
+#   * https://wiki.archlinux.org/title/XDG_user_directories
+#
+user_dir(){
+	upper=$(printf %s\\n "$1" | tr '[:lower:]' '[:upper:]')
+	lower=$(printf %s\\n "$1" | tr '[:upper:]' '[:lower:]')
+	a=$(eval printf "%s\\\\n" \$${upper}_DIR)
+	b=$(eval printf "%s\\\\n" \$${upper}_HOME)
+	c=$(eval printf "%s\\\\n" \$XDG_${upper}_DIR)
+	d=$(eval printf "%s\\\\n" \$XDG_${upper}_HOME)
+        printf %s\\n "${a:=${b:=${c:=${d:=$HOME/$lower}}}}"
 }
