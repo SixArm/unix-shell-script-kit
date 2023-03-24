@@ -35,7 +35,7 @@ The exit codes in our list can be useful for a variety of needs, such as:
 
 * Authentication issues: `exit $EXIT_NOUSER`
 
-* Authoriziation issues: `exit $EXIT_NOPERM`
+* Authorization issues: `exit $EXIT_NOPERM`
 
 * A user chooses cancel: `exit $EXIT_QUIT`
 

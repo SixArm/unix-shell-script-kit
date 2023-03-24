@@ -16,12 +16,19 @@ To download this file:
 curl -O "https://raw.githubusercontent.com/SixArm/posix-shell-script-kit/main/posix-shell-script-kit"
 ```
 
+To include this file in your own script, in the same directory:
+
+```sh
+# Include https://github.com/SixArm/posix-shell-script-kit
+. "$(dirname "$(readlink -f "$0")")/posix-shell-script-kit"
+```
+
 ## Tracking
 
 * Package: posix-shell-script-kit
-* Version: 11.0.4
+* Version: 11.0.5
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2023-03-22T15:32:10Z
+* Updated: 2023-03-24T13:23:36Z
 * Website: https://github.com/sixarm/posix-shell-script-kit
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)
