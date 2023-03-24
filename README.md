@@ -196,8 +196,8 @@ Ensure a command exists, otherwise die with a help message.
 command_exists_or_die grep
 => true
 
-command_exists_or_die curl
-STDERR=> Command needed: curl
+command_exists_or_die loremipsum
+STDERR=> Command needed: loremipsum
 => exit 1
 ```
 
