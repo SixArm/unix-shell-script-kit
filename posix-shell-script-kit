@@ -1221,7 +1221,10 @@ touch_format() {
 
 # select_character_class: get a string's characters that match a class, with optional offset and length.
 #
-# Syntax: select_character_class <string> <class> [offset [length]]
+# Syntax: 
+# ```
+# select_character_class <string> <class> [offset [length]]
+# ```
 #
 # Example with character class:
 # ```
@@ -1249,7 +1252,10 @@ select_character_class() {
 
 # reject_character_class: get a string's characters that don't match a class, with optional offset and length.
 #
-# Syntax: reject_character_class <string> <class> [offset [length]]
+# Syntax:
+# ```
+# reject_character_class <string> <class> [offset [length]]
+# ```
 #
 # Example with character class:
 # ```
