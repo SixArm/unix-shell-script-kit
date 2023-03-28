@@ -545,12 +545,6 @@ Class       Pattern        Description
 
 Get random characters using `[:alnum:]` class.
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_alnum 8
 => 1Yp7M7wc
@@ -560,12 +554,6 @@ random_char_alnum 8
 
 Get random characters using `[:alpha:]` class.
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_alpha 8
 => dDSmQlYD
@@ -575,12 +563,6 @@ random_char_alpha 8
 
 Get random characters using `[:blank:]` class.
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_blank 8
 => "  \t  \t  \t"
@@ -590,12 +572,6 @@ random_char_blank 8
 
 Get random characters using `[:cntrl:]` class.
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_cntrl 8
 => "^c^m^r^z^a^e^p^u"
@@ -605,12 +581,6 @@ random_char_cntrl 8
 
 Get random characters using `[:digit:]` class.
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_digit 8
 => 36415110
@@ -620,12 +590,6 @@ random_char_digit 8
 
 Get random characters using `[:graph:]` class.
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_graph 8
 => e'2-3d+9
@@ -633,14 +597,6 @@ random_char_graph 8
 
 ### random_char_lower
 
-Get random characters using `[:lower:]` class.
-
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_lower 8
 => pgfqrefo
@@ -650,12 +606,6 @@ random_char_lower 8
 
 Get random characters using `[:lower:][:digit]` classes
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_lower_digit 8
 => 69m7o83i
@@ -665,12 +615,6 @@ random_char_lower_digit 8
 
 Get random characters using `[:upper:]` class.
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_upper 8
 => EGXUHNIM
@@ -680,12 +624,6 @@ random_char_upper 8
 
 Get random characters using `[:upper:][:digit:]` classes
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_upper_digit 8
 => L2PT37H6
@@ -695,12 +633,6 @@ random_char_upper_digit 8
 
 Get random characters using `[:print:]` class.
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_print 8
 => ),zN87K;
@@ -710,12 +642,6 @@ random_char_print 8
 
 Get random characters using `[:space:]` class.
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_space 8
 => "\n \t\r \v \f"
@@ -725,12 +651,6 @@ random_char_space 8
 
 Get random characters using `[:xdigit:]` class.
 
-Syntax:
-```sh
-random_char_alnum [length]
-```
-
-Example:
 ```sh
 random_char_xdigit 8
 => eC3Ce9eD
