@@ -1,14 +1,16 @@
 # POSIX shell script kit
 
-The POSIX shell script kit is one file of helper functions and constants.
+POSIX shell script kit is a file of POSIX helper functions.
 
-These work for bash, zsh, ksh, dash, sh, and any other modern POSIX shell.
+You simply download the kit file, then source it in your script.
 
-You can include this file in your own scripts, or copy anything you want.
+The kit works for bash, zsh, dash, and many other modern Unix shells.
 
-This file is free libre open source software, created by SixArm.
+The kit is free libre open source software, created by SixArm.
 
 Constructive feedback is welcome and appreciated.
+
+## Usage
 
 To download this file:
 
