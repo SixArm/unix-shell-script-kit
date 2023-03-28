@@ -856,6 +856,171 @@ rm_all() {
 }
 
 ##
+# Text helpers
+##
+
+# trim: remove any space characters at the text's start or finish.
+#
+# Example:
+# ```
+# trim "  foo  "
+# => foo
+#```
+trim() {
+        printf %s\\n "$*" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
+}
+
+# slug: convert a string from any characters to solely lowercase and single internal dash characters.
+#
+# Example:
+# ```
+# slug "**Foo** **Goo** **Hoo**"
+# => foo-goo-hoo
+#```
+slug() {
+        printf %s\\n "$*" | sed 's/[^[:alnum:]]/-/g; s/--*/-/g; s/^-*//; s/-*$//;' | tr '[[:upper:]]' '[[:lower:]]'
+}
+
+# slugs: convert a string from any characters to solely lowercase and single internal dash characters and slash characters.
+#
+# Example:
+# ```
+# slugs "**Foo** / **Goo** / **Hoo**"
+# => foo/goo/hoo
+#```
+slugs(){
+        printf %s\\n "$*" | sed 's/[^[:alnum:]\/]/-/g; s/--*/-/g; s/^-*//; s/-*$//; s/-*\/-*/\//g' | tr '[[:upper:]]' '[[:lower:]]'
+}
+
+# upper_format: convert text from any lowercase letters to uppercase letters.
+#
+# Example:
+# ```
+# upper_format AbCdEf
+# => ABCDEF
+#```
+upper_format() {
+        printf %s\\n "$*" | tr '[[:lower:]]' '[[:upper:]]'
+}
+
+# lower_format: convert text from any uppercase letters to lowercase letters.
+#
+# Example:
+# ```
+# lower_format AbCdEf
+# => abcdef
+#```
+lower_format() {
+        printf %s\\n "$*" | tr '[[:upper:]]' '[[:lower:]]'
+}
+
+# chain_format: convert a string from any characters to solely alphanumeric and single internal dash characters.
+#
+# Example:
+# ```
+# chain_format "**Foo** **Goo** **Hoo**"
+# => Foo-Goo-Hoo
+#```
+chain_format() {
+        printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/-/g; s/-\{2,\}/-/g; s/^-\{1,\}//; s/-\{1,\}$//;'
+}
+
+# snake_format: convert a string from any characters to solely alphanumeric and single internal underscore characters.
+#
+# Example:
+# ```
+# snake_format "**Foo** **Goo** **Hoo**"
+# => Foo_Goo_Hoo
+#```
+snake_format() {
+        printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/_/g; s/_\{2,\}/_/g; s/^_\{1,\}//; s/_\{1,\}$//;'
+}
+
+# space_format: convert a string from any characters to solely alphanumeric and single internal space characters.
+#
+# Example:
+# ```
+# space_format "**Foo** **Goo** **Hoo**"
+# => Foo Goo Hoo
+#```
+space_format() {
+        printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/ /g; s/ \{2,\}/ /g; s/^ \{1,\}//; s/ \{1,\}$//;'
+}
+
+# touch_format: convert a string from any characters to solely a command "touch -t" timestamp format.
+#
+# Example:
+# ```
+# touch_format "Foo  2021-05-04 22:57:54 Goo"
+# => 202105042257.54
+#```
+touch_format() {
+        printf %s\\n "$*" | sed 's/[^[:digit:]]//g; s/^\([[:digit:]]\{12\}\)\([[:digit:]]\{2\}\)/\1.\2/;'
+}
+
+# select_character_class: get a string's characters that match a class, with optional offset and length.
+#
+# Syntax: 
+# ```
+# select_character_class <string> <class> [offset [length]]
+# ```
+#
+# Example with character class:
+# ```
+# select_character_class foo123goo456 alpha
+# => foogoo
+# ```
+#
+# Example with character class and substring offset:
+# ```
+# select_character_class foo123goo456 alpha 3
+# => goo
+# ```
+#
+# Example with character class and substring offset and length:
+# ```
+# select_character_class foo123goo456 alpha 3 1
+# => g
+# ```
+select_character_class() {
+	string=${1//[^[:$2:]]/}
+	offset=${3:-0}
+	length=${4:-${#string}}
+	printf %s\\n ${string:$offset:$length}
+}
+
+# reject_character_class: get a string's characters that don't match a class, with optional offset and length.
+#
+# Syntax:
+# ```
+# reject_character_class <string> <class> [offset [length]]
+# ```
+#
+# Example with character class:
+# ```
+# reject_character_class foo123goo456 alpha
+# => -123--456
+# ```
+#
+# Example with character class and substring offset:
+# ```
+# reject_character_class foo123goo456 alpha 6
+# => 456
+# ```
+#
+# Example with character class and substring offset and length:
+# ```
+# reject_character_class foo123goo456 alpha 6 1
+# => 4
+# ```
+reject_character_class() {
+	string=${1//[[:$2:]]/}
+	offset=${3:-0}
+	length=${4:-${#string}}
+	printf %s\\n ${string:$offset:$length}
+}
+
+##
 # Random character helpers
 ##
 
@@ -1114,171 +1279,6 @@ random_char_space() {
 #```
 random_char_xdigit() {
         random_char '[:xdigit:]' "$@"
-}
-
-##
-# Text helpers
-##
-
-# trim: remove any space characters at the text's start or finish.
-#
-# Example:
-# ```
-# trim "  foo  "
-# => foo
-#```
-trim() {
-        printf %s\\n "$*" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
-}
-
-# slug: convert a string from any characters to solely lowercase and single internal dash characters.
-#
-# Example:
-# ```
-# slug "**Foo** **Goo** **Hoo**"
-# => foo-goo-hoo
-#```
-slug() {
-        printf %s\\n "$*" | sed 's/[^[:alnum:]]/-/g; s/--*/-/g; s/^-*//; s/-*$//;' | tr '[[:upper:]]' '[[:lower:]]'
-}
-
-# slugs: convert a string from any characters to solely lowercase and single internal dash characters and slash characters.
-#
-# Example:
-# ```
-# slugs "**Foo** / **Goo** / **Hoo**"
-# => foo/goo/hoo
-#```
-slugs(){
-        printf %s\\n "$*" | sed 's/[^[:alnum:]\/]/-/g; s/--*/-/g; s/^-*//; s/-*$//; s/-*\/-*/\//g' | tr '[[:upper:]]' '[[:lower:]]'
-}
-
-# upper_format: convert text from any lowercase letters to uppercase letters.
-#
-# Example:
-# ```
-# upper_format AbCdEf
-# => ABCDEF
-#```
-upper_format() {
-        printf %s\\n "$*" | tr '[[:lower:]]' '[[:upper:]]'
-}
-
-# lower_format: convert text from any uppercase letters to lowercase letters.
-#
-# Example:
-# ```
-# lower_format AbCdEf
-# => abcdef
-#```
-lower_format() {
-        printf %s\\n "$*" | tr '[[:upper:]]' '[[:lower:]]'
-}
-
-# chain_format: convert a string from any characters to solely alphanumeric and single internal dash characters.
-#
-# Example:
-# ```
-# chain_format "**Foo** **Goo** **Hoo**"
-# => Foo-Goo-Hoo
-#```
-chain_format() {
-        printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/-/g; s/-\{2,\}/-/g; s/^-\{1,\}//; s/-\{1,\}$//;'
-}
-
-# snake_format: convert a string from any characters to solely alphanumeric and single internal underscore characters.
-#
-# Example:
-# ```
-# snake_format "**Foo** **Goo** **Hoo**"
-# => Foo_Goo_Hoo
-#```
-snake_format() {
-        printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/_/g; s/_\{2,\}/_/g; s/^_\{1,\}//; s/_\{1,\}$//;'
-}
-
-# space_format: convert a string from any characters to solely alphanumeric and single internal space characters.
-#
-# Example:
-# ```
-# space_format "**Foo** **Goo** **Hoo**"
-# => Foo Goo Hoo
-#```
-space_format() {
-        printf %s\\n "$*" | sed 's/[^[:alnum:]]\{1,\}/ /g; s/ \{2,\}/ /g; s/^ \{1,\}//; s/ \{1,\}$//;'
-}
-
-# touch_format: convert a string from any characters to solely a command "touch -t" timestamp format.
-#
-# Example:
-# ```
-# touch_format "Foo  2021-05-04 22:57:54 Goo"
-# => 202105042257.54
-#```
-touch_format() {
-        printf %s\\n "$*" | sed 's/[^[:digit:]]//g; s/^\([[:digit:]]\{12\}\)\([[:digit:]]\{2\}\)/\1.\2/;'
-}
-
-# select_character_class: get a string's characters that match a class, with optional offset and length.
-#
-# Syntax: 
-# ```
-# select_character_class <string> <class> [offset [length]]
-# ```
-#
-# Example with character class:
-# ```
-# select_character_class foo123goo456 alpha
-# => foogoo
-# ```
-#
-# Example with character class and substring offset:
-# ```
-# select_character_class foo123goo456 alpha 3
-# => goo
-# ```
-#
-# Example with character class and substring offset and length:
-# ```
-# select_character_class foo123goo456 alpha 3 1
-# => g
-# ```
-select_character_class() {
-	string=${1//[^[:$2:]]/}
-	offset=${3:-0}
-	length=${4:-${#string}}
-	printf %s\\n ${string:$offset:$length}
-}
-
-# reject_character_class: get a string's characters that don't match a class, with optional offset and length.
-#
-# Syntax:
-# ```
-# reject_character_class <string> <class> [offset [length]]
-# ```
-#
-# Example with character class:
-# ```
-# reject_character_class foo123goo456 alpha
-# => -123--456
-# ```
-#
-# Example with character class and substring offset:
-# ```
-# reject_character_class foo123goo456 alpha 6
-# => 456
-# ```
-#
-# Example with character class and substring offset and length:
-# ```
-# reject_character_class foo123goo456 alpha 6 1
-# => 4
-# ```
-reject_character_class() {
-	string=${1//[[:$2:]]/}
-	offset=${3:-0}
-	length=${4:-${#string}}
-	printf %s\\n ${string:$offset:$length}
 }
 
 ##
