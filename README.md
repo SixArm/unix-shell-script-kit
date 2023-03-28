@@ -526,7 +526,7 @@ random_char '[:upper:]' 8
 POSiX character classes for ASCII characters:
 ```
 Class       Pattern        Description
----------_  -------------  -----------
+----------  -------------  -----------
 [:upper:]   [A-Z]          uppercase letters
 [:lower:]   [a-z]          lowercase letters
 [:alpha:]   [A-Za-z]       uppercase letters and lowercase letters
