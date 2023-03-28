@@ -443,7 +443,7 @@ touch_format "Foo  2021-05-04 22:57:54 Goo"
 
 Get a string's characters that match a class, with optional offset and length.
 
-Syntax: 
+Syntax:
 
 ```sh
 select_character_class <string> <class> [offset [length]]
@@ -474,7 +474,7 @@ select_character_class foo123goo456 alpha 3 1
 
 Get a string's characters that don't match a class, with optional offset and length.
 
-Syntax: 
+Syntax:
 
 ```sh
 reject_character_class <string> <class> [offset [length]]

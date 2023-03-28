@@ -12,26 +12,39 @@ Conventions:
 
 * 3-63 are for a program-specific exit codes.
 
-* 64-78 are based on sysexits documentation from the 1980's.
+* 64-78 are based on BSD sysexits <https://man.openbsd.org/sysexits.3>
 
 * 80-119 are SixArm conventions that we find useful in many programs.
 
-Many POSIX shells use exit codes 126 and 127 to signal specific error status:
+Many shells use exit codes 126-128 to signal specific error status:
 
-* 126 is for the shell and indicates command found but not executable.
+* 126 is for the shell and indicates command found but is not executable.
 
 * 127 is for the shell and indicate command not found.
 
-Many POSIX shells use exit codes above 128 in their $? representation of the
+* 128 is for invalid argument to exit.
+
+Many shells use exit codes above 128 in their $? representation of the
 exit status to encode the signal number of a process being killed.
 
-The pre-defined exit codes from sysexits can be used, so the caller of the
-process can get a rough estimation about the failure class without looking up
-the source code.
+* 128+n means fatal error signal "n"
 
-See https://man.openbsd.org/sysexits.3
+* Example: 130 means terminated by ctrl-c (because ctrl-c is signal 2)
 
-The exit codes in our list can be useful for a variety of needs, such as:
+* Example: 137 means terminated by kill -9 (because 128 + 9 = 137)
+
+Finally, the highest exit code:
+
+* 255 Exit status out of range (exit takes integer args 0-255)
+
+Be aware that on some shells, ut of range exit values can result in unexpected
+exit codes. An exit value greater than 255 returns an exit code modulo 256.
+
+* Example: exit 257 becomes exit 1 (because 257 % 256 = 1)
+
+* Caution: exit 256 becomes exit 0, which probably isn't what you want.
+
+For some typical needs that we encounter, we can suggest these:
 
 * Authentication issues: `exit $EXIT_NOUSER`
 
@@ -444,3 +457,25 @@ EXIT_COMMAND_NOT_FOUND=127
 ```
 
 A command is not found.
+
+
+### Exit code invalid
+
+```sh
+EXIT_CODE_INVALID=128
+```
+
+The exit code is invalid.
+
+Compare EXIT_CODE_OUT_OF_RANGE=255
+
+
+### Exit code out of range
+
+```sh
+EXIT_CODE_INVALID=128
+```
+
+The exit code is out of range i.e. not in 0-255.
+
+Compare EXIT_CODE_INVALID=128
