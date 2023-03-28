@@ -4,26 +4,31 @@
 #
 # POSIX shell script kit is a file of POSIX helper functions.
 #
+# The kit works for bash, zsh, dash, and many more Unix shells.
+#
 # You simply download the kit file, then source it in your script.
-#
-# The kit works for bash, zsh, dash, and many other modern Unix shells.
-#
-# The kit is free libre open source software, created by SixArm.
 #
 # Constructive feedback is welcome and appreciated.
 #
-# ## Usage
+# ## Download
 #
-# To download this file:
+# To download the POSIX shell script kit file:
 #
 # ```sh
 # curl -O "https://raw.githubusercontent.com/SixArm/posix-shell-script-kit/main/posix-shell-script-kit"
 # ```
 #
-# To include this file in your own script, in the same directory:
+# ## Source
+#
+# To use the kit in your own script, you source the kit like this:
 #
 # ```sh
-# # Include https://github.com/SixArm/posix-shell-script-kit
+# . /your/path/here/posix-shell-script-kit
+# ```
+#
+# To use the kit in your own script, in the same directory, you source the kit like this:
+#
+# ```sh
 # . "$(dirname "$(readlink -f "$0")")/posix-shell-script-kit"
 # ```
 #
