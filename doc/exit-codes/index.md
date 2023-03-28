@@ -85,7 +85,7 @@ Exit 2 meaning usage is a widespread convention as a catch-all CLI code.
 EXIT_DATAERR=65
 ```
 
-The input data was incorrect in some way. 
+The input data was incorrect in some way.
 
 This should only be used for user's data and not system files.
 
@@ -118,7 +118,7 @@ E.g. for email addresses, or remote logins, or authentication issues, etc.
 EXIT_NOHOST=68
 ```
 
-The host specified did not exist. 
+The host specified did not exist.
 
 E.g. for email addresses, or network requests, or web links, etc.
 
@@ -130,7 +130,7 @@ E.g. for email addresses, or network requests, or web links, etc.
 EXIT_UNAVAILABLE=69
 ```
 
-A service is unavailable. 
+A service is unavailable.
 
 E.g. a support program or file does not exist. This can also be a catchall
 message when something does not work, but you do not know why.
@@ -142,7 +142,7 @@ message when something does not work, but you do not know why.
 EXIT_SOFTWARE=70
 ```
 
-An internal software error has been detected. 
+An internal software error has been detected.
 
 This should be limited to non-operating system related errors as possible.
 
@@ -153,7 +153,7 @@ This should be limited to non-operating system related errors as possible.
 EXIT_OSERR=71
 ```
 
-An operating system error has been detected. 
+An operating system error has been detected.
 
 E.g. errors such as "cannot fork", "cannot create pipe", or getuid returns a
 user that does not exist in the passwd file, etc.
@@ -212,7 +212,7 @@ a protocol exchange.
 EXIT_NOPERM=77
 ```
 
-You did not have sufficient permission to perform the operation. 
+You did not have sufficient permission to perform the operation.
 
 This is not for file system problems, which use EXIT_NOINPUT or EXIT_CANTCREATE,
 but for higher level permissions, authorizations, etc.
@@ -419,7 +419,7 @@ EXIT_GIT_BISECT_SKIP=125
 
 Git bisect: The special exit code 125 should be used when the current source
 code cannot be tested. If the script exits with this code, the current
-revision will be skipped (see git bisect skip above). 
+revision will be skipped (see git bisect skip above).
 
 Value 125 was chosen as the highest sensible value to use for this purpose,
 because 126 and 127 are used by shells to signal specific error status.

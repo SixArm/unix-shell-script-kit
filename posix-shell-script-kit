@@ -28,9 +28,9 @@
 # ## Tracking
 #
 #   * Package: posix-shell-script-kit
-#   * Version: 11.0.5
+#   * Version: 11.1.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2023-03-24T13:23:36Z
+#   * Updated: 2023-03-28T14:01:52Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/posix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -111,7 +111,7 @@ EXIT_USAGE=2
 
 # Data Err
 #
-# The input data was incorrect in some way. 
+# The input data was incorrect in some way.
 #
 # This should only be used for user's data and not system files.
 #
@@ -127,7 +127,7 @@ EXIT_NOINPUT=66
 
 # No User
 #
-# The user specified did not exist. 
+# The user specified did not exist.
 #
 # E.g. for email addresses, or remote logins, or authentication issues, etc.
 #
@@ -135,7 +135,7 @@ EXIT_NOUSER=67
 
 # No Host
 #
-# The host specified did not exist. 
+# The host specified did not exist.
 #
 # E.g. for email addresses, or network requests, or webs links, etc.
 #
@@ -143,7 +143,7 @@ EXIT_NOHOST=68
 
 # Unavailable
 #
-# A service is unavailable. 
+# A service is unavailable.
 #
 # E.g. a support program or file does not exist. This can also be a catchall
 # message when something does not work, but you do not know why.
@@ -152,7 +152,7 @@ EXIT_UNAVAILABLE=69
 
 # Software
 #
-# An internal software error has been detected. 
+# An internal software error has been detected.
 #
 # This should be limited to non-operating system related errors as possible.
 #
@@ -160,7 +160,7 @@ EXIT_SOFTWARE=70
 
 # OS Err
 #
-# An operating system error has been detected. 
+# An operating system error has been detected.
 #
 # E.g. errors such as "cannot fork", "cannot create pipe", or getuid returns a
 # user that does not exist in the passwd file, etc.
@@ -175,7 +175,7 @@ EXIT_OSERR=71
 EXIT_OSFILE=72
 
 # Can't Create
-# 
+#
 # A user-specified output (e.g. a file) cannot be created.
 #
 EXIT_CANTCREATE=73
@@ -203,7 +203,7 @@ EXIT_PROTOCOL=76
 
 # No Perm
 #
-# You did not have sufficient permission to perform the operation. 
+# You did not have sufficient permission to perform the operation.
 #
 # This is not for file system problems, which use EXIT_NOINPUT or
 # EXIT_CANTCREATE, but for higher level permissions, authorizations, etc.
@@ -352,7 +352,7 @@ EXIT_FUTURE=119
 #
 # The special exit code 125 should be used when the current source code cannot
 # be tested. If the script exits with this code, the current revision will be
-# skipped (see git bisect skip above). 
+# skipped (see git bisect skip above).
 #
 # Value 125 was chosen as the highest sensible value to use for this
 # purpose, because 126 and 127 are used by shells to signal specific errors.
@@ -853,6 +853,267 @@ sh_all() {
 # ```
 rm_all() {
         find "${1:-.}" -type f -exec rm {} \;
+}
+
+##
+# Random character helpers
+##
+
+# random_char
+#
+# Syntax:
+# ```
+# random_char [characters [length]]
+# ```
+#
+# Example:
+# ```
+# random_char ABCDEF 8
+# => CBACBFDD
+#```
+#
+# Example hexadecimal digit uppercase:
+# ```
+# random_char 0-9A-F 8
+# => FC56A95C
+#```
+#
+# Example character class for uppercase letters:
+# ```
+# random_char '[:upper:]' 8
+# => ZMGIQBJB
+#```
+#
+# POSiX character classes for ASCII characters:
+#
+# ```
+# Class       Pattern        Description
+# ----------  -------------  -----------
+# [:upper:]   [A-Z]          uppercase letters
+# [:lower:]   [a-z]          lowercase letters
+# [:alpha:]   [A-Za-z]       uppercase letters and lowercase letters
+# [:alnum:]   [A-Za-z0-9]    uppercase letters and lowercase letters and digits
+# [:digit:]   [0-9]          digits
+# [:xdigit:]  [0-9A-Fa-f]    hexadecimal digits
+# [:punct:]                  punctuation (all graphic characters except letters and digits)
+# [:blank:]   [ \t]          space and TAB characters only
+# [:space:]   [ \t\n\r\f\v]  whitespace characters (space, tab, newline, return, feed, vtab)
+# [:cntrl:]                  control characters
+# [:graph:]   [^ [:cntrl:]]  graphic characters (all characters which have graphic representation)
+# [:print:]   [[:graph:] ]   graphic characters and space
+# ```
+random_char() {
+        chars=${1:-'[:graph:]'}
+        len=${2-1}
+        printf "%s\n" $(LC_ALL=C < /dev/urandom tr -dc "$chars" | head -c"$len")
+}
+
+# random_char_alnum: random characters using [:alnum:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_alnum 8
+# => 1Yp7M7wc
+#```
+random_char_alnum() {
+        random_char '[:alnum:]' "$@"
+}
+
+# random_char_alpha: random characters using [:alpha:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_alpha 8
+# => dDSmQlYD
+#```
+random_char_alpha() {
+        random_char '[:alpha:]' "$@"
+}
+
+# random_char_blank: random characters using [:blank:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_blank 8
+# => "  \t  \t  \t"
+#```
+random_char_blank() {
+        random_char '[:blank:]' "$@"
+}
+
+# random_char_cntrl: random characters using [:cntrl:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_cntrl 8
+# => "^c^m^r^z^a^e^p^u"
+#```
+random_char_cntrl() {
+        random_char '[:cntrl:]' "$@"
+}
+
+# random_char_digit: random characters using [:digit:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_digit 8
+# => 36415110
+#```
+random_char_digit() {
+        random_char '[:digit:]' "$@"
+}
+
+# random_char_graph: random characters using [:graph:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_graph 8
+# => e'2-3d+9
+#```
+random_char_graph() {
+        random_char '[:graph:]' "$@"
+}
+
+# random_char_lower: random characters using [:lower:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_lower 8
+# => pgfqrefo
+#```
+random_char_lower() {
+        random_char '[:lower:]' "$@"
+}
+
+# random_char_lower_digit: random characters using [:lower:][:digit] classes
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_lower_digit 8
+# => 69m7o83i
+#```
+random_char_lower_digit() {
+        random_char '[:lower:][:digit:]' "$@"
+}
+
+# random_char_upper: random characters using [:upper:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_upper 8
+# => EGXUHNIM
+#```
+random_char_upper() {
+        random_char '[:upper:]' "$@"
+}
+
+# random_char_upper_digit: random characters using [:upper:][:digit:] classes
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_upper_digit 8
+# => L2PT37H6
+#```
+random_char_upper_digit() {
+        random_char '[:upper:][:digit:]' "$@"
+}
+
+# random_char_print: random characters using [:print:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_print 8
+# => ),zN87K;
+#```
+random_char_print() {
+        random_char '[:print:]' "$@"
+}
+
+# random_char_space: random characters using [:space:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_space 8
+# => "\n \t\r \v \f"
+#```
+random_char_space() {
+        random_char '[:space:]' "$@"
+}
+
+# random_char_xdigit: random characters using [:xdigit:] class.
+#
+# Syntax:
+# ```
+# random_char_alnum [length]
+# ```
+#
+# Example:
+# ```
+# random_char_xdigit 8
+# => eC3Ce9eD
+#```
+random_char_xdigit() {
+        random_char '[:xdigit:]' "$@"
 }
 
 ##

@@ -26,9 +26,9 @@ To include this file in your own script, in the same directory:
 ## Tracking
 
 * Package: posix-shell-script-kit
-* Version: 11.0.5
+* Version: 11.1.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2023-03-24T13:23:36Z
+* Updated: 2023-03-28T14:01:52Z
 * Website: https://github.com/sixarm/posix-shell-script-kit
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -459,7 +459,6 @@ select_character_class foo123goo456 alpha 3 1
 => g
 ```
 
-
 ### reject_character_class
 
 Get a string's characters that don't match a class, with optional offset and length.
@@ -485,6 +484,248 @@ Example with character class and substring offset and length:
 ```sh
 reject_character_class foo123goo456 alpha 3 1
 => 4
+```
+
+## Random character helpers
+
+### random_char
+
+Generate random characters
+
+Syntax:
+```sh
+random_char [characters [length]]
+```
+
+Example:
+```sh
+random_char ABCDEF 8
+=> CBACBFDD
+```
+
+Example hexadecimal digit uppercase:
+```sh
+random_char 0-9A-F 8
+=> FC56A95C
+```
+
+Example character class for uppercase letters:
+```sh
+random_char '[:upper:]' 8
+=> ZMGIQBJB
+```
+
+POSiX character classes for ASCII characters:
+```
+Class       Pattern        Description
+---------_  -------------  -----------
+[:upper:]   [A-Z]          uppercase letters
+[:lower:]   [a-z]          lowercase letters
+[:alpha:]   [A-Za-z]       uppercase letters and lowercase letters
+[:alnum:]   [A-Za-z0-9]    uppercase letters and lowercase letters and digits
+[:digit:]   [0-9]          digits
+[:xdigit:]  [0-9A-Fa-f]    hexadecimal digits
+[:punct:]                  punctuation (all graphic characters except letters and digits)
+[:blank:]   [ \t]          space and TAB characters only
+[:space:]   [ \t\n\r\f\v]  whitespace characters (space, tab, newline, return, feed, vtab)
+[:cntrl:]                  control characters
+[:graph:]   [^ [:cntrl:]]  graphic characters (all characters which have graphic representation)
+[:print:]   [[:graph:] ]   graphic characters and space
+```
+
+### random_char_alnum
+
+Get random characters using `[:alnum:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_alnum 8
+=> 1Yp7M7wc
+```
+
+### random_char_alpha
+
+Get random characters using `[:alpha:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_alpha 8
+=> dDSmQlYD
+```
+
+### random_char_blank
+
+Get random characters using `[:blank:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_blank 8
+=> "  \t  \t  \t"
+```
+
+### random_char_cntrl
+
+Get random characters using `[:cntrl:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_cntrl 8
+=> "^c^m^r^z^a^e^p^u"
+```
+
+### random_char_digit
+
+Get random characters using `[:digit:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_digit 8
+=> 36415110
+```
+
+### random_char_graph
+
+Get random characters using `[:graph:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_graph 8
+=> e'2-3d+9
+```
+
+### random_char_lower
+
+Get random characters using `[:lower:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_lower 8
+=> pgfqrefo
+```
+
+### random_char_lower_digit
+
+Get random characters using `[:lower:][:digit]` classes
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_lower_digit 8
+=> 69m7o83i
+```
+
+### random_char_upper
+
+Get random characters using `[:upper:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_upper 8
+=> EGXUHNIM
+```
+
+### random_char_upper_digit
+
+Get random characters using `[:upper:][:digit:]` classes
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_upper_digit 8
+=> L2PT37H6
+```
+
+### random_char_print
+
+Get random characters using `[:print:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_print 8
+=> ),zN87K;
+```
+
+### random_char_space
+
+Get random characters using `[:space:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_space 8
+=> "\n \t\r \v \f"
+```
+
+### random_char_xdigit
+
+Get random characters using `[:xdigit:]` class.
+
+Syntax:
+```sh
+random_char_alnum [length]
+```
+
+Example:
+```sh
+random_char_xdigit 8
+=> eC3Ce9eD
 ```
 
 ## Array helpers
