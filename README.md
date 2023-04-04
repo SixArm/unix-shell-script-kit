@@ -35,7 +35,7 @@ To use the kit in your own script in the same directory, you source the kit like
 * Package: posix-shell-script-kit
 * Version: 11.1.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2023-03-28T14:01:52Z
+* Updated: 2023-04-04T23:36:31Z
 * Website: https://github.com/sixarm/posix-shell-script-kit
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)

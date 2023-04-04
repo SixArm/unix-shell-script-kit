@@ -37,7 +37,7 @@
 #   * Package: posix-shell-script-kit
 #   * Version: 11.1.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2023-03-28T14:01:52Z
+#   * Updated: 2023-04-04T23:36:31Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/posix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -288,15 +288,24 @@ EXIT_CONFLICT=90
 # Something is prohibited due to law, or warrant, or court order, etc.
 #
 # Akin to HTTP status code 451 Unavailable For Legal Reasons (RFC 7725).
+#
 EXIT_UNLAWFUL=91
 
 # Payment Issue
 #
 # Something needs a credit card, or invoice, or billing, etc.
 #
-# Akin to HTTP status code 402 Payment Required.
+# Akin to a superset of HTTP status code 402 Payment Required.
 #
 EXIT_PAYMENT_ISSUE=92
+
+# Quota Issue
+#
+# A quota is reached, such as exhausting a free trial, out of fuel, etc.
+#
+# Akin to a superset of HTTP status code 429 Too Many Requests.
+#
+EXIT_QUOTA_ISSUE=93
 
 # Exit codes 100+ for process runtime issues...
 

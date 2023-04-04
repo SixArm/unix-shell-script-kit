@@ -324,7 +324,18 @@ EXIT_PAYMENT_ISSUE=92
 
 Something needs a credit card, or invoice, or billing, etc.
 
-Akin to HTTP status code 402 Payment Required.
+Akin to a superset of HTTP status code 402 Payment Required.
+
+
+### Quota Issue
+
+```sh
+EXIT_QUOTA_ISSUE=93
+```
+
+A quota is reached, such as exhausting a free trial, out of fuel, etc.
+
+Akin to a superset of HTTP status code 429 Too Many Requests.
 
 
 ## Exit codes 100+ for process runtime issues
