@@ -1,21 +1,19 @@
 #!/bin/sh
 
-# POSIX shell script kit.
+# Unix shell script kit.
 #
-# POSIX shell script kit is a file of POSIX helper functions.
+# Unix shell script kit is a file of POSIX helper functions.
 #
-# The kit works for bash, zsh, dash, and many more Unix shells.
+# The kit works with POSIX shells, including bash, zsh, dash, ksh, sh, etc.
 #
-# You simply download the kit file, then source it in your script.
-#
-# Constructive feedback is welcome and appreciated.
+# All suggestions are welcome and appreciated.
 #
 # ## Download
 #
-# To download the POSIX shell script kit file:
+# Download the kit as one file that has everything:
 #
 # ```sh
-# curl -O "https://raw.githubusercontent.com/SixArm/posix-shell-script-kit/main/posix-shell-script-kit"
+# curl -O "https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/unix-shell-script-kit"
 # ```
 #
 # ## Source
@@ -23,23 +21,23 @@
 # To use the kit in your own script, you source the kit like this:
 #
 # ```sh
-# . /your/path/here/posix-shell-script-kit
+# . /your/path/here/unix-shell-script-kit
 # ```
 #
 # To use the kit in your own script, in the same directory, you source the kit like this:
 #
 # ```sh
-# . "$(dirname "$(readlink -f "$0")")/posix-shell-script-kit"
+# . "$(dirname "$(readlink -f "$0")")/unix-shell-script-kit"
 # ```
 #
 # ## Tracking
 #
-#   * Package: posix-shell-script-kit
-#   * Version: 11.1.0
+#   * Package: unix-shell-script-kit
+#   * Version: 12.0.0
 #   * Created: 2017-08-22T00:00:00Z
 #   * Updated: 2023-04-04T23:36:31Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
-#   * Website: https://github.com/sixarm/posix-shell-script-kit
+#   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
 
 ##
