@@ -6,6 +6,8 @@ The kit works with POSIX shells, including bash, zsh, dash, ksh, sh, etc.
 
 All suggestions are welcome and appreciated.
 
+[View source](unix-shell-script-kit)
+
 ## Download
 
 Download the kit as one file that has everything:
