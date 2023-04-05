@@ -2,7 +2,7 @@
 
 # Unix shell script kit.
 #
-# Unix shell script kit is a file of POSIX helper functions.
+# Unix shell script kit is a collection of utility functions and constants.
 #
 # The kit works with POSIX shells, including bash, zsh, dash, ksh, sh, etc.
 #
