@@ -33,9 +33,9 @@ To use the kit in your own script in the same directory, you source the kit like
 ## Tracking
 
 * Package: unix-shell-script-kit
-* Version: 12.0.0
+* Version: 12.1.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2023-04-04T23:36:31Z
+* Updated: 2023-04-15T05:45:49Z
 * Website: https://github.com/sixarm/unix-shell-script-kit
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -182,6 +182,81 @@ older 1000000000 && echo "true" || echo "false"
 ```
 
 ## Validation helpers
+
+### directory_exists
+
+Does a directory exist?
+
+```sh
+directory_exists /usr
+=> true
+
+directory_exists /loremipsum
+=> false
+```
+
+### directory_exists_or_die
+
+Ensure a directory exists.
+
+```sh
+directory_exists_or_die /usr
+=> true
+
+directory_exists_or_die /loremipsum
+STDERR=> Directory needed: /loremipsum
+=> exit $EXIT_IOERR
+```
+
+### file_exists
+
+Does a file exist?
+
+```sh
+file_exists foo.txt
+=> true
+
+file_exists loremipsum.txt
+=> false
+```
+
+### file_exists_or_die
+
+Ensure a file exists.
+
+```sh
+file_exists_or_die foo.txt
+=> true
+
+file_exists_or_die loremipsum.txt
+STDERR=> File needed: loremipsum.txt
+=> exit $EXIT_IOERR
+```
+
+### symlink_exists
+
+Does a symlink exist?
+
+```sh
+symlink_exists foo.txt
+=> true
+
+symlink_exists loremipsum.txt
+=> false
+```
+
+### symlink_exists_or_die
+
+Ensure a symlink exists.
+
+```sh
+symlink_exists_or_die foo.txt
+=> true
+
+symlink_exists_or_die loremipsum.txt
+STDERR=> Symlink needed: loremipsum.txt
+=> exit $EXIT_IOERR
+```
 
 ### command_exists
 
