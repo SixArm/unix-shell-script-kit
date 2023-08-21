@@ -33,9 +33,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 12.1.0
+#   * Version: 12.1.1
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2023-04-15T05:45:49Z
+#   * Updated: 2023-08-21T18:37:56Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -1553,7 +1553,7 @@ assert_empty() {
 # STDERR=> assert_not_empty
 # ```
 assert_not_empty() {
-        [ -z "$1" ] || err assert_empty "$@"
+        [ -z "$1" ] || err assert_not_empty "$@"
 }
 
 # assert_int_eq: assert an integer is equal to another integer.
