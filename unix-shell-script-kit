@@ -33,9 +33,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 12.1.1
+#   * Version: 12.1.2
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2023-08-21T18:37:56Z
+#   * Updated: 2023-11-25T01:11:42Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -1926,10 +1926,14 @@ file_ends_with_newline() {
 #
 user_dir(){
 	upper=$(printf %s\\n "$1" | tr '[:lower:]' '[:upper:]')
+	x=$(set +u; eval printf "%s\\\\n" \$${upper}_DIR)
+        if [ -n "$x" ]; then printf %s\\n "$x"; return; fi
+	x=$(set +u; eval printf "%s\\\\n" \$${upper}_HOME)
+        if [ -n "$x" ]; then printf %s\\n "$x"; return; fi
+	x=$(set +u; eval printf "%s\\\\n" \$XDG_${upper}_DIR)
+        if [ -n "$x" ]; then printf %s\\n "$x"; return; fi
+	x=$(set +u; eval printf "%s\\\\n" \$XDG_${upper}_HOME)
+        if [ -n "$x" ]; then printf %s\\n "$x"; return; fi
 	lower=$(printf %s\\n "$1" | tr '[:upper:]' '[:lower:]')
-	a=$(eval printf "%s\\\\n" \$${upper}_DIR)
-	b=$(eval printf "%s\\\\n" \$${upper}_HOME)
-	c=$(eval printf "%s\\\\n" \$XDG_${upper}_DIR)
-	d=$(eval printf "%s\\\\n" \$XDG_${upper}_HOME)
-        printf %s\\n "${a:=${b:=${c:=${d:=$HOME/$lower}}}}"
+        printf %s\\n "$HOME/$lower"
 }
