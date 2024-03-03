@@ -33,9 +33,9 @@ To use the kit in your own script in the same directory, you source the kit like
 ## Tracking
 
 * Package: unix-shell-script-kit
-* Version: 12.1.2
+* Version: 12.1.3
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2023-11-25T01:11:42Z
+* Updated: 2024-03-03T09:45:42Z
 * Website: https://github.com/sixarm/unix-shell-script-kit
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -69,6 +69,23 @@ die 1 "my message"
 STDERR=> my message
 => exit 1
 ```
+
+Example with an exit code number and name:
+
+```sh
+die $EXIT_UNAVAILABLE EXIT_UNAVAILABLE
+STDERR=> EXIT_UNAVAILABLE
+=> exit 69
+```
+
+Example with more diagnostics:
+
+```sh
+false || die $? "Fatal error $? on line $LINENO of $0"
+STDERR=> Fatal error 1 on line 2 of example.sh"
+=> exit 1
+```
+
 
 ### big
 
