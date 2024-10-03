@@ -33,9 +33,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 12.1.3
+#   * Version: 12.2.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2024-03-03T09:45:42Z
+#   * Updated: 2024-10-03T12:32:31Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -417,6 +417,85 @@ EXIT_CODE_INVALID=128
 EXIT_CODE_INVALID=128
 
 ##
+# Color helpers
+##
+
+# ANSI escape color codes. Use these directly. Do not use "tput".
+#
+# Example:
+#
+#     printf "%sblack\n" $COLOR_BLACK
+#     printf "%sred\n" $COLOR_RED
+#     printf "%sgreen\n" $COLOR_GREEN
+#     printf "%syellow\n" $COLOR_YELLOW
+#     printf "%sblue\n" $COLOR_BLUE
+#     printf "%smagenta\n" $COLOR_MAGENTA
+#     printf "%scyan\n" $COLOR_CYAN
+#     printf "%swhite\n" $COLOR_WHITE
+#
+# For the widest support, use the basic set of 8 colors below,
+# and respect the user preferences by using the color() function.
+#
+# Many terminals also support "bright" or "bold" colors;
+# these colors have their own set of codes, similar to the
+# basic colors yet with an additional ;1 in their codes.
+# We do not recommend using these colors in your shell scripts,
+# because so many users prefer to set their own terminal colors.
+
+# Reset all color information
+COLOR_RESET='[0m'
+
+# Basic Foreground
+COLOR_BLACK='[30m'
+COLOR_RED='[31m'
+COLOR_GREEN='[32m'
+COLOR_YELLOW='[33m'
+COLOR_BLUE='[34m'
+COLOR_MAGENTA='[35m'
+COLOR_CYAN='[36m'
+COLOR_WHITE='[37m'
+
+# Basic Background
+COLOR_BG_BLACK='[40m'
+COLOR_BG_RED='[41m'
+COLOR_BG_GREEN='[42m'
+COLOR_BG_YELLOW='[43m'
+COLOR_BG_BLUE='[44m'
+COLOR_BG_MAGENTA='[$5m'
+COLOR_BG_CYAN='[46m'
+COLOR_BG_WHITE='[47m'
+
+# color: should the program use color?
+#
+# The color logic heuristic in order of priority:
+# 1. If NO_COLOR is set to non-empty, then no.
+# 2. If CLICOLOR_FORCE is set to non-empty, then yes.
+# 3. If the TERM is set to "dumb", then no.
+# 4. If the output is on a terminal, then yes.
+# 5. Otherwise, no.
+#
+color() {
+        if [ -n "${NO_COLOR:-}" ]; then return 0; fi
+        if [ -n "${CLICOLOR_FORCE:-}" ]; then return 1; fi
+        if [ "${TERM:-}" == "dumb" ]; then return 0; fi
+        [ -t 1 ]
+}
+
+# Set standard output color start/stop and standard error color start/stop.
+# These variables are used by the out() function and err() function below.
+if color; then
+        : ${STDOUT_COLOR_START='[34m'}
+        : ${STDOUT_COLOR_STOP='[0m'}
+        : ${STDERR_COLOR_START='[31m'}
+        : ${STDERR_COLOR_STOP='[0m'}
+else
+        : ${STDOUT_COLOR_START=''}
+        : ${STDOUT_COLOR_STOP=''}
+        : ${STDERR_COLOR_START=''}
+        : ${STDERR_COLOR_STOP=''}
+fi
+
+##
 # Input/output helpers
 ##
 
@@ -438,7 +517,7 @@ EXIT_CODE_INVALID=128
 #   * Use the `err` function to print to STDERR.
 #
 out() {
-        printf %s\\n "$*"
+        printf %s%s%s\\n $STDOUT_COLOR_START "$*" $STDOUT_COLOR_STOP
 }
 
 # err: print error message to stderr.
@@ -459,7 +538,7 @@ out() {
 #   * Use the `err` function to print to STDERR.
 #
 err() {
-        >&2 printf %s\\n "$*"
+        >&2 printf %s%s%s\\n $STDERR_COLOR_START "$*" $STDERR_COLOR_STOP
 }
 
 # die: print error message to stderr, then exit with error code.
@@ -485,7 +564,7 @@ err() {
 # => exit 1
 # ```
 die() {
-       n="$1" ; shift ; >&2 printf %s\\n "$*" ; exit "$n"
+       n="$1" ; shift ; err "$*"; exit "$n"
 }
 
 # big: print a big banner to stdout, good for human readability.

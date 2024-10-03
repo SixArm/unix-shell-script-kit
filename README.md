@@ -33,9 +33,9 @@ To use the kit in your own script in the same directory, you source the kit like
 ## Tracking
 
 * Package: unix-shell-script-kit
-* Version: 12.1.3
+* Version: 12.2.0
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2024-03-03T09:45:42Z
+* Updated: 2024-10-03T12:32:31Z
 * Website: https://github.com/sixarm/unix-shell-script-kit
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -816,6 +816,44 @@ set -- a b c d
 array_car "$@"
 => b c d
 ```
+
+## Colors
+
+Colors use ANSI color codes and corresponding variable names: 
+
+```sh
+printf "%sblack\n" $COLOR_BLACK
+printf "%sred\n" $COLOR_RED
+printf "%sgreen\n" $COLOR_GREEN
+printf "%syellow\n" $COLOR_YELLOW
+printf "%sblue\n" $COLOR_BLUE
+printf "%smagenta\n" $COLOR_MAGENTA
+printf "%scyan\n" $COLOR_CYAN
+printf "%swhite\n" $COLOR_WHITE
+printf "%reset\n" $COLOR_RESET.
+```
+
+The kit will use these colors for standard output and standard error:
+
+```sh
+STDOUT_COLOR_START="$COLOR_BLUE"
+STDOUT_COLOR_STOP="$COLOR_RESET"
+STDERR_COLOR_START="$COLOR_RED"
+STDERR_COLOR_STOP="$COLOR_RESET"
+```
+
+
+### color
+
+Should the program use color?
+
+The color logic heuristic in order of priority:
+
+1. If NO_COLOR is set to non-empty, then no.
+2. If CLICOLOR_FORCE is set to non-empty, then yes.
+3. If the TERM is set to "dumb", then no.
+4. If the output is on a terminal, then yes.
+5. Otherwise, no.
 
 ## Assert helpers
 
