@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC2034
 
 # Unix shell script kit.
 #
@@ -115,6 +116,7 @@ EXIT_SUCCESS=0
 # E.g. an error, an abort, found no results, lack of data, etc.
 #
 # Exit 1 meaning failure is a widespread convention as a catch-all code.
+#
 EXIT_FAILURE=1
 
 # Usage
@@ -655,8 +657,8 @@ ask() {
 # because this script sends the args along to the system "date" command.
 # For example Linux GNU "date" handles this, but macOS BSD "date" doesn't.
 #
+# shellcheck disable=SC2120
 now() {
-        # shellcheck disable=SC2120
         date -u "+%Y-%m-%dT%H:%M:%S.%N+00:00" "$@" | sed 's/N/000000000/'
 }
 
