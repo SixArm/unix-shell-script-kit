@@ -34,9 +34,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 12.2.0
+#   * Version: 12.3.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2024-10-03T12:32:31Z
+#   * Updated: 2024-12-10T23:09:11Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -871,7 +871,7 @@ command_version_exists_or_die() {
 # var_exists FOO
 # => false
 # ```
-var() {
+var_exists() {
         ! eval 'test -z ${'$1'+x}'
 }
 
@@ -1845,6 +1845,38 @@ assert_str_starts_with() {
 # ```
 assert_str_ends_with() {
         [ "$1" != "${1%"$2"}" ] || err assert_str_ends_with "$@"
+}
+
+# assert_eval_int_eq_x: assert an eval into an integer is equal to an expression.
+#
+# Example:
+# ```
+# assert_eval_int_eq_x 'echo "1"' 1
+# => success i.e. no output
+#
+# assert_eval_int_eq_x 'echo "1"' 2
+# STDERR=> assert_eval_int_eq_x echo "1" 2
+# ```
+assert_eval_int_eq_x() {
+	if [ ! "$(eval "$1")" -eq "$2" ]; then
+                err assert_eval_int_eq_x "$@"
+	fi
+}
+
+# assert_eval_str_eq_x: assert an eval into a string is equal to an expression.
+#
+# Example:
+# ```
+# assert_eval_str_eq_x 'echo "foo"' foo
+# => success i.e. no output
+#
+# assert_eval_str_eq_x 'echo "foo"' bar
+# STDERR=> assert_eval_str_eq_x echo "foo" bar
+# ```
+assert_eval_str_eq_x() {
+	if [ ! "$(eval "$1")" = "$2" ]; then
+                err assert_eval_str_eq_x "$@"
+	fi
 }
 
 ##
