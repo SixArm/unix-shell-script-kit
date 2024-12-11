@@ -485,6 +485,15 @@ color() {
 
 # Set standard output color start/stop and standard error color start/stop.
 # These variables are used by the out() function and err() function below.
+#
+# If you wish to set these in your terminal, and your terminal supports
+# dollar strings with \E meaning escape, then you can use the following:
+#
+#     export STDOUT_COLOR_START=$'\E[34m'
+#     export STDOUT_COLOR_STOP=$'\E[0m'
+#     export STDERR_COLOR_START=$'\E[31m'
+#     export STDERR_COLOR_STOP=$'\E[0m'
+#
 if color; then
         : ${STDOUT_COLOR_START='[34m'}
         : ${STDOUT_COLOR_STOP='[0m'}
