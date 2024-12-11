@@ -649,6 +649,35 @@ utf8() {
         return 1
 }
 
+##
+# Print messages with pretty formatting, colors, emojis, etc.
+##
+
+# Set pretty display of messages for success, warning, failure.
+#
+# If you wish to set these in your terminal, and your terminal supports
+# dollar strings with \E meaning escape, then you can use the following:
+#
+#     export PRINT_SUCCESS_START=$'\E[32m✅ Success: '
+#     export PRINT_SUCCESS_START=$'\E[35m⚠️ Warning: '
+#     export PRINT_FAILURE_START=$'\E[31m❌ Failure: '
+#
+if color && utf8; then
+        : ${PRINT_SUCCESS_START='[32m✅ Success: '}
+        : ${PRINT_SUCCESS_STOP='[0m'}
+        : ${PRINT_WARNING_START='[33m⚠️ Warning: '}
+        : ${PRINT_WARNING_START='[0m'}
+        : ${PRINT_FAILURE_START='[31m❌ Failure: '}
+        : ${PRINT_FAILURE_STOP='[0m'}
+else
+        : ${PRINT_SUCCESS_START='Success: '}
+        : ${PRINT_SUCCESS_STOP=''}
+        : ${PRINT_WARNING_START='Warning: '}
+        : ${PRINT_WARNING_START=''}
+        : ${PRINT_FAILURE_START='Failure: '}
+        : ${PRINT_FAILURE_STOP=''}
+fi
+
 # print_success: print a success message to stdout.
 # 
 # Example:
