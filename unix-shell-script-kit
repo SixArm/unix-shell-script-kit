@@ -480,7 +480,7 @@ color() {
         if [ -n "${NO_COLOR:-}" ]; then return 0; fi
         if [ -n "${CLICOLOR_FORCE:-}" ]; then return 1; fi
         if [ "${TERM:-}" = "dumb" ]; then return 0; fi
-        [ -t 1 ]
+        return 1
 }
 
 # Set standard output color start/stop and standard error color start/stop.
@@ -645,7 +645,8 @@ ask() {
 # => true
 # ```
 utf8() {
-        [ "$(locale charmap)" = "UTF-8" ]
+        if [ "$(locale charmap)" = "UTF-8" ]; then return 0; fi
+        return 1
 }
 
 # print_success: print a success message to stdout.
