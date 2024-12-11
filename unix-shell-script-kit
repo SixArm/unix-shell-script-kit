@@ -648,6 +648,57 @@ utf8() {
         [ "$(locale charmap)" = "UTF-8" ]
 }
 
+# print_success: print a success message to stdout.
+# 
+# Example:
+# ```
+# print_success "This is a success message."
+# => This is a success message.
+# ```
+#
+# The output can be customized by setting:
+#
+#  * PRINT_SUCCESS_START
+#  * PRINT_SUCCESS_STOP
+#
+print_success() {
+        printf %s%s%s\\n "${PRINT_SUCCESS_START:-}" "$*" "${PRINT_SUCCESS_STOP:-}"
+}
+
+# print_warning: print a warning message to stdout.
+# 
+# Example:
+# ```
+# print_warning "This is a warning message."
+# => This is a warning message.
+# ```
+#
+# The output can be customized by setting:
+#
+#  * PRINT_WARNING_START
+#  * PRINT_WARNING_STOP
+#
+print_warning() {
+        printf %s%s%s\\n "${PRINT_WARNING_START:-}" "$*" "${PRINT_WARNING_STOP:-}"
+}
+
+# print_failure: print a failure message to stdout.
+# 
+# Example:
+# ```
+# print_failure "This is a failure message."
+# => This is a failure message.
+# ```
+#
+# The output can be customized by setting:
+#
+#  * PRINT_FAILURE_START
+#  * PRINT_FAILURE_STOP
+#
+print_failure() {
+        printf %s%s%s\\n "${PRINT_FAILURE_START:-}" "$*" "${PRINT_FAILURE_STOP:-}"
+}
+
 ##
 # Date & time helpers
 ##

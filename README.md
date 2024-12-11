@@ -128,6 +128,61 @@ ask
 => prompt
 ```
 
+### utf8
+
+Should the program print UTF-8 characters such as accents and emoji?
+
+This implementation is a heuristic and subject to change as we learn more.
+This checks the locale charmap. However, it's possible for the charmap to
+be set to UTF-8, but the terminal is unable to render UTF-8 characters.
+
+```sh
+utf8
+=> true
+```
+
+### print_success
+
+Print a success message to stdout, with customization via env vars.
+
+```sh
+print_success "This is a success message."
+=> This is a success message.
+```
+
+The output can be customized by setting:
+
+  * PRINT_SUCCESS_START
+  * PRINT_SUCCESS_STOP
+
+### print_warning
+
+Print a warning message to stdout.
+
+```sh
+print_warning "This is a warning message."
+=> This is a warning message.
+```
+
+The output can be customized by setting:
+
+  * PRINT_WARNING_START
+  * PRINT_WARNING_STOP
+
+### print_failure
+
+Print a failure message to stdout, with customization via env vars.
+
+```sh
+print_failure "This is a failure message."
+=> This is a failure message.
+```
+
+The output can be customized by setting:
+
+  * PRINT_FAILURE_START
+  * PRINT_FAILURE_STOP
+
 ## Date & time helpers
 
 ### now
