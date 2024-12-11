@@ -519,7 +519,7 @@ fi
 #   * Use the `err` function to print to STDERR.
 #
 out() {
-        printf %s%s%s\\n $STDOUT_COLOR_START "$*" $STDOUT_COLOR_STOP
+        printf %s%s%s\\n "${STDOUT_COLOR_START:-}" "$*" "${STDOUT_COLOR_STOP:-}"
 }
 
 # err: print error message to stderr.
@@ -540,7 +540,7 @@ out() {
 #   * Use the `err` function to print to STDERR.
 #
 err() {
-        >&2 printf %s%s%s\\n $STDERR_COLOR_START "$*" $STDERR_COLOR_STOP
+        >&2 printf %s%s%s\\n "${STDERR_COLOR_START:-}" "$*" "${STDERR_COLOR_STOP:-}"
 }
 
 # die: print error message to stderr, then exit with error code.
