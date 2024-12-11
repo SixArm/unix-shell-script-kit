@@ -479,7 +479,7 @@ COLOR_BG_WHITE='[47m'
 color() {
         if [ -n "${NO_COLOR:-}" ]; then return 0; fi
         if [ -n "${CLICOLOR_FORCE:-}" ]; then return 1; fi
-        if [ "${TERM:-}" == "dumb" ]; then return 0; fi
+        if [ "${TERM:-}" = "dumb" ]; then return 0; fi
         [ -t 1 ]
 }
 
