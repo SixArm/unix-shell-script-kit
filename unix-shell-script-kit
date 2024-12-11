@@ -633,6 +633,21 @@ ask() {
         read x ; echo "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
 }
 
+# utf8: should the program print UTF-8 characters such as accents and emoji?
+#
+# This implementation is a heuristic and subject to change as we learn more.
+# This checks the locale charmap. However, it's possible for the charmap to
+# be set to UTF-8, but the terminal is unable to render UTF-8 characters.
+#
+# Example:
+# ```
+# utf8
+# => true
+# ```
+utf8() {
+        [ "$(locale charmap)" = "UTF-8" ]
+}
+
 ##
 # Date & time helpers
 ##
