@@ -630,7 +630,7 @@ zid() {
 # => prompt
 # ```
 ask() {
-        read -r x ; out "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
+        read -r x ; echo "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
 }
 
 # utf8: should the program print UTF-8 characters such as accents and emoji?
