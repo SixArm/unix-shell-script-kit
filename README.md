@@ -33,9 +33,9 @@ To use the kit in your own script in the same directory, you source the kit like
 ## Tracking
 
 * Package: unix-shell-script-kit
-* Version: 12.3.0
+* Version: 12.3.1
 * Created: 2017-08-22T00:00:00Z
-* Updated: 2024-12-10T23:09:11Z
+* Updated: 2025-02-19T02:02:39Z
 * Website: https://github.com/sixarm/unix-shell-script-kit
 * License: GPL-2.0 or GPL-3.0 or contact us for more
 * Contact: Joel Parker Henderson (joel@sixarm.com)

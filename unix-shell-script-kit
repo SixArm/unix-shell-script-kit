@@ -34,9 +34,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 12.3.0
+#   * Version: 12.3.1
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2024-12-10T23:09:11Z
+#   * Updated: 2025-02-19T02:02:39Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -630,7 +630,7 @@ zid() {
 # => prompt
 # ```
 ask() {
-        read -r x ; echo "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
+        read -r x ; printf %s "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
 }
 
 # utf8: should the program print UTF-8 characters such as accents and emoji?
