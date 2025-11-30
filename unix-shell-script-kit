@@ -34,9 +34,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 12.3.1
+#   * Version: 12.3.2
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2025-02-19T02:02:39Z
+#   * Updated: 2025-11-30T11:46:51Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -1995,8 +1995,15 @@ assert_eval_str_eq_x() {
 # mktemp_dir
 # => /var/folders/4f7b65122b0fb65b0fdad568a65dc97d
 # ```
-mktemp_dir() {
-        x=$(mktemp -d -t "${1:-$(zid)}") ; trap '{ rm -rf "$x"; }' EXIT ; out "$x"
+#
+# Immediately after you make it, create a trap to remove it:
+#
+# ```
+# x=mktemp_directory
+# trap '{ rm -rf "$x"; }' EXIT
+# ```
+mktemp_directory() {
+        mktemp -d -t "${1:-$(zid)}"
 }
 
 # mktemp_file: make a temporary file path.
@@ -2006,8 +2013,15 @@ mktemp_dir() {
 # mktemp_file
 # => /var/folders/4f7b65122b0fb65b0fdad568a65dc97d/1d9aafac5373be95d8b4c2dece0b1197
 # ```
+#
+# Immediately after you make it, create a trap to remove it:
+#
+# ```
+# x=mktemp_file
+# trap '{ rm -rf "$x"; }' EXIT
+# ```
 mktemp_file() {
-        x=$(mktemp -t "${1:-$(zid)}") ; trap '{ rm -f "$x"; }' EXIT ; out "$x"
+        mktemp -t "${1:-$(zid)}"
 }
 
 ##
