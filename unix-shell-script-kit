@@ -34,9 +34,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 12.3.2
+#   * Version: 12.4.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2025-11-30T11:46:51Z
+#   * Updated: 2026-01-30T14:36:35Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -829,6 +829,113 @@ newer() {
 # ```
 older() {
         [ "$(( $(date "+%s") - $1 ))" -gt "$2" ]
+}
+
+# is_leap_year: is the year a leap year?
+#
+# Examples:
+# ```sh
+# is_leap_year 2023 => false
+# is_leap_year 2024 => true
+# is_leap_year 2025 => false
+# ```
+is_leap_year() { 
+   (( !($1 % 4) && ($1 % 100 || !($1 % 400) ) ))
+}
+
+# datetime_mday_max: given a year and month, calculate the maximum month-day number.
+#
+# Examples:
+# ```sh
+# datetime_mday_max 2026-01 => 31
+# datetime_mday_max 2026-02 => 28
+# ```
+datetime_mday_max() {
+    datetime="$1"
+    year=$(( ${datetime:0:4} ))
+    month=$(( ${datetime:5:2} ))
+    case $month in
+        1|3|5|7|8|10|12) printf 31 ;;
+        4|6|9|11); printf 30 ;;
+        2) is_leap_year $year && printf 29 || printf 28 ;;
+        *) die $EXIT_USAGE "datetime_mday_max $datetime" ;;
+    esac
+}        
+
+# datetime_format_for_at_command: datetime format for `at` command.
+# 
+# Given a datetime as ISO 8601 format "yyyy-mm-ddThh:mm:ss" 
+# return the format for `at` command "yyyymmdddhhmm.ss".
+# 
+# Example:
+# ```sh
+# datetime_format_for_at_command 2026-12-31T01:02:03
+# => 202612310102.03
+# ```
+#
+datetime_format_for_at_command() {
+    printf "${1:0:4}${1:5:2}${1:8:2}${1:11:2}${1:14:2}.${1:17:2}"
+}
+
+# datetime_format_for_pmset_command: datetime format for `pmset` command.
+# 
+# Given a datetime as ISO 8601 format "yyyy-mm-ddThh:mm:ss" 
+# return the format for `pmset` command  "mm/dd/yy hh:mm:ss".
+#
+# Example:
+# ```sh
+# datetime_format_for_pmset_command 2026-12-31T01:02:03
+# => 12/31/26 01:02:03
+# ```
+datetime_format_for_pmset_command() {
+    datetime="$1"
+    printf "${datetime:5:2}/${datetime:8:2}/${datetime:2:2} ${datetime:11:8}"
+}
+
+# datetime_add: given a datetime, add years, months, days, hours, minutes, seconds.
+#
+# Syntax:
+# 
+# ```sh
+# datetime_add <datetime iso 8601> <years> <months> <days> <hours> <minutes> <seconds>
+# ```
+# 
+# Examples:
+# ```
+# datetime_add 2000-01-01T00:00:00 0 0 0 0 0 1 => 2000-01-01T00:00:01 (next second)
+# datetime_add 2000-01-01T00:00:00 0 0 0 0 1 0 => 2000-01-01T00:01:00 (next minute)
+# datetime_add 2000-01-01T00:00:00 0 0 0 1 0 0 => 2000-01-01T01:00:00 (next hour)
+# datetime_add 2000-01-01T00:00:00 0 0 1 0 0 0 => 2000-01-01T00:00:00 (next day)
+# datetime_add 2000-01-01T00:00:00 0 1 0 0 0 0 => 2000-01-01T00:00:00 (next month)
+# datetime_add 2000-01-01T00:00:00 1 0 0 0 0 0 => 2000-01-01T00:00:00 (next year)
+#```
+#  
+# Examples of carry:
+# ```sh
+# datetime_add 2000-01-01T00:00:00 0 0 0 0 0 1 => 2000-01-01T00:00:01 (next second)
+# datetime_add 2000-01-01T00:00:59 0 0 0 0 0 1 => 2000-01-01T00:01:00 (next minute)
+# datetime_add 2000-01-01T00:59:59 0 0 0 0 0 1 => 2000-01-01T01:00:00 (next hour)
+# datetime_add 2000-01-01T23:59:59 0 0 0 0 0 1 => 2000-01-02T00:00:00 (next day)
+# datetime_add 2000-01-31T23:59:59 0 0 0 0 0 1 => 2000-02-01T00:00:00 (next month)
+# datetime_add 2000-12-31T23:59:59 0 0 0 0 0 1 => 2001-01-01T00:00:00 (next year)
+# ```
+datetime_add() {
+    datetime="$1"
+    year=$(( ${datetime:0:4} + $2 ))
+    month_0=$(( ${datetime:5:2} + $3 - 1))
+    mday_0=$(( ${datetime:8:2} + $4 - 1))
+    hour=$(( ${datetime:11:2} + $5 ))
+    minute=$(( ${datetime:14:2} + $6 ))
+    second=$(( ${datetime:17:2} + $7 ))
+    mday_max=$(datetime_mday_max "$1")
+    echo "input" $datetime $year $month_0 $mday_0 $hour $minute $second $mday_max
+    if [ $second  -ge 60 ]; then x=$(( $second / 60 )); second=$(( $second - $x * 60 )); minute=$(( $minute + x )); fi
+    if [ $minute  -ge 60 ]; then x=$(( $minute / 60 )); minute=$(( $minute - $x * 60 )); hour=$(( $hour + x )); fi
+    if [ $hour    -ge 24 ]; then x=$(( $hour / 24 )); hour=$(( $hour - $x * 24 )); mday_0=$(( $mday_0 + x )); fi
+    if [ $mday_0  -ge $mday_max ]; then x=$(( $mday_0 / $mday_max )); mday_0=$(( $mday_0 - $x * $mday_max )); month_0=$(( $month_0 + $x )); fi
+    if [ $month_0 -ge 12 ]; then x=$(( $month_0 / 12 )); month_0=$(( $month_0 - $x * 12 )); year=$(( $year + $x )); fi
+    echo "output" $year $month_0 $mday_0 $hour $minute $second $mday_max
+    printf "%04d-%02d-%02dT%02d:%02d:%02d" $year $(( $month_0 + 1 )) $(( $mday_0 + 1 )) $hour $minute $second
 }
 
 ##
