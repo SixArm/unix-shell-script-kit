@@ -6,7 +6,7 @@ The kit works with POSIX shells, including bash, zsh, dash, ksh, sh, etc.
 
 All suggestions are welcome and appreciated.
 
-[View source](unix-shell-script-kit)
+[View the source code file with all the documentation](unix-shell-script-kit)
 
 ## Download
 
@@ -32,13 +32,13 @@ To use the kit in your own script in the same directory, you source the kit like
 
 ## Tracking
 
-* Package: unix-shell-script-kit
-* Version: 12.3.1
-* Created: 2017-08-22T00:00:00Z
-* Updated: 2025-02-19T02:02:39Z
-* Website: https://github.com/sixarm/unix-shell-script-kit
-* License: GPL-2.0 or GPL-3.0 or contact us for more
-* Contact: Joel Parker Henderson (joel@sixarm.com)
+- Package: unix-shell-script-kit
+- Version: 12.4.0
+- Created: 2017-08-22T00:00:00Z
+- Updated: 2026-01-30T14:36:35Z
+- Website: https://github.com/sixarm/unix-shell-script-kit
+- License: GPL-2.0 or GPL-3.0 or contact us for more
+- Contact: Joel Parker Henderson (joel@sixarm.com)
 
 ## Input/output helpers
 
@@ -85,7 +85,6 @@ false || die $? "Fatal error $? on line $LINENO of $0"
 STDERR=> Fatal error 1 on line 2 of example.sh"
 => exit 1
 ```
-
 
 ### big
 
@@ -152,8 +151,8 @@ print_success "This is a success message."
 
 The output can be customized by setting:
 
-  * PRINT_SUCCESS_START
-  * PRINT_SUCCESS_STOP
+- PRINT_SUCCESS_START
+- PRINT_SUCCESS_STOP
 
 ### print_warning
 
@@ -166,8 +165,8 @@ print_warning "This is a warning message."
 
 The output can be customized by setting:
 
-  * PRINT_WARNING_START
-  * PRINT_WARNING_STOP
+- PRINT_WARNING_START
+- PRINT_WARNING_STOP
 
 ### print_failure
 
@@ -180,8 +179,8 @@ print_failure "This is a failure message."
 
 The output can be customized by setting:
 
-  * PRINT_FAILURE_START
-  * PRINT_FAILURE_STOP
+- PRINT_FAILURE_START
+- PRINT_FAILURE_STOP
 
 ## Date & time helpers
 
@@ -251,6 +250,66 @@ Is the age of a given time older than a given number of seconds?
 ```sh
 older 1000000000 && echo "true" || echo "false"
 => true
+```
+
+### is_leap_year
+
+Is the year a leap year?
+
+```sh
+is_leap_year 2023 => false
+is_leap_year 2024 => true
+is_leap_year 2025 => false
+```
+
+### datetime_mday_max
+
+Given a year and month, calculate the maximum month-day number.
+
+```sh
+datetime_mday_max 2026-01 => 31
+datetime_mday_max 2026-02 => 28
+```
+
+### datetime_format_for_at_command
+
+Given a datetime as ISO 8601 format "yyyy-mm-ddThh:mm:ss",
+return the format for `at` command "yyyymmdddhhmm.ss".
+
+```sh
+datetime_format_for_at_command 2026-12-31T01:02:03
+=> 202612310102.03
+```
+
+### datetime_format_for_pmset_command
+
+Given a datetime as ISO 8601 format "yyyy-mm-ddThh:mm:ss"
+return the format for `pmset` command "mm/dd/yy hh:mm:ss".
+
+```sh
+datetime_format_for_pmset_command 2026-12-31T01:02:03
+=> 12/31/26 01:02:03
+```
+
+### datetime_add
+
+Given a datetime, add years, months, days, hours, minutes, seconds.
+
+Syntax:
+
+```sh
+datetime_add <datetime iso 8601> <years> <months> <days> <hours> <minutes> <seconds>
+```
+
+Examples:
+
+```sh
+datetime_add 2000-01-01T00:00:00 0 0 0 0 0 1 => 2000-01-01T00:00:01 (next second)
+datetime_add 2000-01-01T00:00:00 0 0 0 0 1 0 => 2000-01-01T00:01:00 (next minute)
+datetime_add 2000-01-01T00:00:00 0 0 0 1 0 0 => 2000-01-01T01:00:00 (next hour)
+datetime_add 2000-01-01T00:00:00 0 0 1 0 0 0 => 2000-01-02T00:00:00 (next day)
+datetime_add 2000-01-01T00:00:00 0 1 0 0 0 0 => 2000-02-01T00:00:00 (next month)
+datetime_add 2000-01-01T00:00:00 1 0 0 0 0 0 => 2001-01-01T00:00:00 (next year)
 ```
 
 ## Validation helpers
@@ -655,29 +714,34 @@ reject_character_class foo123goo456 alpha 3 1
 Generate random characters
 
 Syntax:
+
 ```sh
 random_char [characters [length]]
 ```
 
 Example:
+
 ```sh
 random_char ABCDEF 8
 => CBACBFDD
 ```
 
 Example hexadecimal digit uppercase:
+
 ```sh
 random_char 0-9A-F 8
 => FC56A95C
 ```
 
 Example character class for uppercase letters:
+
 ```sh
 random_char '[:upper:]' 8
 => ZMGIQBJB
 ```
 
 POSiX character classes for ASCII characters:
+
 ```
 Class       Pattern        Description
 ----------  -------------  -----------
@@ -874,7 +938,7 @@ array_car "$@"
 
 ## Colors
 
-Colors use ANSI color codes and corresponding variable names: 
+Colors use ANSI color codes and corresponding variable names:
 
 ```sh
 printf "%sblack\n" $COLOR_BLACK
@@ -896,7 +960,6 @@ STDOUT_COLOR_STOP="$COLOR_RESET"
 STDERR_COLOR_START="$COLOR_RED"
 STDERR_COLOR_STOP="$COLOR_RESET"
 ```
-
 
 ### color
 
@@ -962,12 +1025,12 @@ STDERR=> assert_int_eq 1 2
 
 There are comparison assertions for integers:
 
-* `assert_int_eq` is equal to
-* `assert_int_ne` is not equal to
-* `assert_int_ge` is greater than or equal to
-* `assert_int_gt` is greater than
-* `assert_int_le` is less than or equal to
-* `assert_int_lt` is less than
+- `assert_int_eq` is equal to
+- `assert_int_ne` is not equal to
+- `assert_int_ge` is greater than or equal to
+- `assert_int_gt` is greater than
+- `assert_int_le` is less than or equal to
+- `assert_int_lt` is less than
 
 ### assert_str_eq (eq|ne|ge|gt|le|lt)
 
@@ -983,12 +1046,12 @@ STDERR=> assert_str_eq foo bar
 
 There are comparison assertions for strings:
 
-* `assert_str_eq` is equal to
-* `assert_str_ne` is not equal to
-* `assert_str_ge` is greater than or equal to
-* `assert_str_gt` is greater than
-* `assert_str_le` is less than or equal to
-* `assert_str_lt` is less than
+- `assert_str_eq` is equal to
+- `assert_str_ne` is not equal to
+- `assert_str_ge` is greater than or equal to
+- `assert_str_gt` is greater than
+- `assert_str_le` is less than or equal to
+- `assert_str_lt` is less than
 
 ### assert_str_starts_with
 
@@ -1114,41 +1177,41 @@ user_dir foo
 
 Conventions:
 
-  * `user_dir bin` => binary executable directory
-  * `user_dir cache` => cache directory
-  * `user_dir config` => configuration directory
-  * `user_dir data` => data directory
-  * `user_dir desktop` => desktop directory
-  * `user_dir documents` => documents directory
-  * `user_dir download` => download directory
-  * `user_dir log` => logging directory
-  * `user_dir music` => music directory
-  * `user_dir pictures` => pictures directory
-  * `user_dir publicshare` => public share directory
-  * `user_dir runtime` => runtime directory
-  * `user_dir state` => state directory
-  * `user_dir temp` => temporary directory
-  * `user_dir templates` => templates directory
-  * `user_dir videos` => videos directory
+- `user_dir bin` => binary executable directory
+- `user_dir cache` => cache directory
+- `user_dir config` => configuration directory
+- `user_dir data` => data directory
+- `user_dir desktop` => desktop directory
+- `user_dir documents` => documents directory
+- `user_dir download` => download directory
+- `user_dir log` => logging directory
+- `user_dir music` => music directory
+- `user_dir pictures` => pictures directory
+- `user_dir publicshare` => public share directory
+- `user_dir runtime` => runtime directory
+- `user_dir state` => state directory
+- `user_dir temp` => temporary directory
+- `user_dir templates` => templates directory
+- `user_dir videos` => videos directory
 
 Popular XDG conventions:
 
-* `XDG_DESKTOP_DIR` => user-specific desktop, such as frequent apps and files.
-* `XDG_DOCUMENTS_DIR` => user-specific documents, such as typical working files.
-* `XDG_DOWNLOAD_DIR` => user-specific downloads, such as internet file downloads.
-* `XDG_MUSIC_DIR` => user-specific music files, such as songs.
-* `XDG_PICTURES_DIR` => user-specific pictures, such as photos.
-* `XDG_PUBLICSHARE_DIR` => user-specific public share, such as file sharing.
-* `XDG_TEMPLATES_DIR` => user-specific templates.
-* `XDG_VIDEOS_DIR` => user-specific videos, such as movies.
+- `XDG_DESKTOP_DIR` => user-specific desktop, such as frequent apps and files.
+- `XDG_DOCUMENTS_DIR` => user-specific documents, such as typical working files.
+- `XDG_DOWNLOAD_DIR` => user-specific downloads, such as internet file downloads.
+- `XDG_MUSIC_DIR` => user-specific music files, such as songs.
+- `XDG_PICTURES_DIR` => user-specific pictures, such as photos.
+- `XDG_PUBLICSHARE_DIR` => user-specific public share, such as file sharing.
+- `XDG_TEMPLATES_DIR` => user-specific templates.
+- `XDG_VIDEOS_DIR` => user-specific videos, such as movies.
 
 POSIX XDG conventions:
 
-* `XDG_BIN_HOME` => user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
-* `XDG_LOG_HOME` => user-specific log files, analogous to system /var/log or $HOME/.local/log.
-* `XDG_TEMP_HOME` => user-specific temporary files, analogous to system /temp or $HOME/.temp.
-* `XDG_DATA_HOME` => user-specific data files, analogous to system /usr/share or $HOME/.local/share.
-* `XDG_CACHE_HOME` => user-specific cache files, analogous to system /var/cache or $HOME/.cache.
-* `XDG_STATE_HOME` => user-specific cache files, analogous to system /var/state or $HOME/.local/state.
-* `XDG_CONFIG_HOME` => user-specific configuration files, analogous to system /etc or $HOME/.config.
-* `XDG_RUNTIME_HOME` => user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
+- `XDG_BIN_HOME` => user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
+- `XDG_LOG_HOME` => user-specific log files, analogous to system /var/log or $HOME/.local/log.
+- `XDG_TEMP_HOME` => user-specific temporary files, analogous to system /temp or $HOME/.temp.
+- `XDG_DATA_HOME` => user-specific data files, analogous to system /usr/share or $HOME/.local/share.
+- `XDG_CACHE_HOME` => user-specific cache files, analogous to system /var/cache or $HOME/.cache.
+- `XDG_STATE_HOME` => user-specific cache files, analogous to system /var/state or $HOME/.local/state.
+- `XDG_CONFIG_HOME` => user-specific configuration files, analogous to system /etc or $HOME/.config.
+- `XDG_RUNTIME_HOME` => user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
