@@ -1,53 +1,8 @@
-# Unix shell script kit
+# unix-shell-script-kit
 
-Unix shell script kit is a collection of utility functions and constants.
+Unix shell script kit. POSIX. Functions, exit codes, color codes, utilties, helpers, tools.
 
-The kit works with POSIX shells, including bash, zsh, dash, ksh, sh, etc.
-
-All suggestions are welcome and appreciated.
-
-[View the source code file with all documentation comments](https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/unix-shell-script-kit)
-
-Documentation:
-
-- [Functions](https://github.com/SixArm/unix-shell-script-kit/tree/main/doc/functions/)
-- [Color codes](https://github.com/SixArm/unix-shell-script-kit/tree/main/doc/color-codes/)
-- [Exit codes](https://github.com/SixArm/unix-shell-script-kit/tree/main/doc/exit-codes/)
-- [Assert testing](https://github.com/SixArm/unix-shell-script-kit/tree/main/doc/assert-testing/)
-
-## Download
-
-Download the kit as one file that has everything:
-
-```sh
-curl -O "https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/unix-shell-script-kit"
-```
-
-## Source
-
-To use the kit in your own script, you source the kit like this:
-
-```sh
-. /your/path/here/unix-shell-script-kit
-```
-
-To use the kit in your own script in the same directory, you source the kit like this:
-
-```sh
-. "$(dirname "$(readlink -f "$0")")/unix-shell-script-kit"
-```
-
-## AI
-
-This work is 100% by humans. If you want to use this kit with your AI, then you can download AI-friendly files.
-
-- If your AI is small, then download [llms-small.txt](https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/llms-small.txt)
-
-- If your AI is large, then download [llms-large.txt](https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/llms-large.txt)
-
-## Overview
-
-Overview of the functions, color codes, exit codes, and assert testing. For more information please see the [source](https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/unix-shell-script-kit)
+https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/unix-shell-script-kit
 
 Functions:
 
@@ -69,7 +24,7 @@ Functions:
 - age_lt <epoch> <seconds> -> true or false
 - age_gt <epoch> <seconds> -> true or false
 - leap_year <year> -> true or false
-- datetime_mday_max <datetime | yyyy-mm\*> -> true or false
+- datetime_mday_max <datetime | yyyy-mm*> -> true or false
 - datetime_format_for_at_command <datetime> -> <yyyymmdddhhmm.ss>
 - datetime_format_for_pmset_command <datetime> -> <mm/dd/yy hh:mm:ss>
 - datetime_add <datetime> <years> <months> <days> <hours> <minutes> <seconds> -> <datetime>
@@ -125,8 +80,8 @@ Functions:
 - array_last <array> -> array last element
 - array_car <array> -> array car element
 - array_cdr <array> -> array cdr elements
-- mktemp_dir -> temporary directory path
-- mktemp_file -> temporary file path
+- mktemp_dir ->  temporary directory path
+- mktemp_file ->  temporary file path
 - file_media_type <file_path> -> media type
 - file_media_type_supertype <file_path> -> media type supertype
 - file_media_type_subtype <file_path> -> media type subtype
@@ -217,13 +172,3 @@ Assert testing:
 - assert_str_ends_with <string> <substring>
 - assert_eval_int_eq_x <eval_expression> <integer>
 - assert_eval_str_eq_x <eval_expression> <string>
-
-## Tracking
-
-- Package: unix-shell-script-kit
-- Version: 13.0.0
-- Created: 2017-08-22T00:00:00Z
-- Updated: 2026-02-01T15:37:19Z
-- Website: https://github.com/sixarm/unix-shell-script-kit
-- License: GPL-2.0 or GPL-3.0 or contact us for more
-- Contact: Joel Parker Henderson (joel@sixarm.com)

@@ -1,0 +1,8 @@
+#!/bin/sh
+set -euf
+top="$(git rev-parse --show-toplevel)"
+
+cat "$top/unix-shell-script-kit" |
+sed '/^#!/d; /# shellcheck disable=/d; /^[^#]/d;'  |
+perl -p0e 's/\n##\n# +(.+?)\n##\n/\n## $1\n/gs; s/\n\n# +(.+?) *\n#\n/\n\n### $1\n\n/gs; s/\n#\n/\n\n/gs; s/\n# /\n/gs;' |
+cat -s

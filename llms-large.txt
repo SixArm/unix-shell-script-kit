@@ -9,7 +9,7 @@
 # 
 # All suggestions are welcome and appreciated.
 #
-# [View the source code file with all documentation comments](https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/unix-shell-script-kit)
+# [View the source code file with all the documentation](https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/unix-shell-script-kit)
 #
 # Documentation:
 #
@@ -44,9 +44,17 @@
 #
 # This work is 100% by humans. If you want to use this kit with your AI, then you can download AI-friendly files.
 #
-# - If your AI is small, then download [llms-small.txt](https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/llms-small.txt)
+# If your AI is small, then download this small summary file:
 #
-# - If your AI is large, then download [llms-large.txt](https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/llms-large.txt)
+# ```sh
+# curl -O "https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/llms-small.txt"
+# ```
+#
+# If your AI is large, then download this large complete file:
+#
+# ```sh
+# curl -0 "https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/llms-large.txt"
+# ```
 #
 # ## Tracking
 #
@@ -503,32 +511,6 @@ COLOR_BG_MAGENTA='[$5m'
 COLOR_BG_CYAN='[46m'
 COLOR_BG_WHITE='[47m'
 
-# color
-# 
-# Should the program use color?
-#
-# Syntax:
-#
-# ```sh
-# color
-# => true or false
-# ```
-#
-# The color logic heuristic in order of priority:
-#
-# 1. If NO_COLOR is set to non-empty, then no.
-# 2. If CLICOLOR_FORCE is set to non-empty, then yes.
-# 3. If the TERM is set to "dumb", then no.
-# 4. If the output is on a terminal, then yes.
-# 5. Otherwise, no.
-#
-color() {
-        if [ -n "${NO_COLOR:-}" ]; then return 0; fi
-        if [ -n "${CLICOLOR_FORCE:-}" ]; then return 1; fi
-        if [ "${TERM:-}" = "dumb" ]; then return 0; fi
-        return 1
-}
-
 # Set output color and error color
 # 
 # Set our preferred color code for output message and error message.
@@ -560,6 +542,32 @@ fi
 ##
 # Input/output helpers
 ##
+
+# color
+# 
+# Should the program use color?
+#
+# Syntax:
+#
+# ```sh
+# color
+# => true or false
+# ```
+#
+# The color logic heuristic in order of priority:
+#
+# 1. If NO_COLOR is set to non-empty, then no.
+# 2. If CLICOLOR_FORCE is set to non-empty, then yes.
+# 3. If the TERM is set to "dumb", then no.
+# 4. If the output is on a terminal, then yes.
+# 5. Otherwise, no.
+#
+color() {
+        if [ -n "${NO_COLOR:-}" ]; then return 0; fi
+        if [ -n "${CLICOLOR_FORCE:-}" ]; then return 1; fi
+        if [ "${TERM:-}" = "dumb" ]; then return 0; fi
+        return 1
+}
 
 # out
 # 
@@ -761,7 +769,6 @@ zid() {
 # ask
 # => prompt the user for a line of input
 # ```
-# 
 ask() {
         read -r x ; printf %s "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
 }
@@ -788,7 +795,6 @@ ask() {
 # This implementation is a heuristic and subject to change as we learn more.
 # This checks the locale charmap. However, it's possible for the charmap to
 # be set to UTF-8, but the terminal is unable to render UTF-8 characters.
-# 
 utf8() {
         if [ "$(locale charmap)" = "UTF-8" ]; then return 0; fi
         return 1
@@ -1124,7 +1130,7 @@ datetime_mday_max() {
     month=$(( ${datetime:5:2} ))
     case $month in
         1|3|5|7|8|10|12) printf 31 ;;
-        4|6|9|11) printf 30 ;;
+        4|6|9|11); printf 30 ;;
         2) leap_year $year && printf 29 || printf 28 ;;
         *) die $EXIT_USAGE "datetime_mday_max $datetime" ;;
     esac
@@ -1608,8 +1614,7 @@ version_or_die() {
 # int 1.23
 # => 1
 # ```
-# 
-int() {
+# int() {
         printf %s\\n "$1" | awk '{ print int($0); exit }'
 }
 
@@ -3033,7 +3038,7 @@ assert_int_eq() {
 # Syntax:
 #
 # ```sh
-# assert_int_ne <int> <int>
+# assert_int_ne_ <int> <int>
 # => success or error
 # ```
 #

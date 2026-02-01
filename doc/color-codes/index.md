@@ -42,7 +42,6 @@ Basic foreground colors
 - `COLOR_MAGENTA`
 - `COLOR_CYAN`
 - `COLOR_WHITE`
-```
 
 ### Basic background colors
 
@@ -55,26 +54,10 @@ Basic foreground colors
 - `COLOR_BG_CYAN`
 - `COLOR_BG_WHITE`
 
-### color
+### Set output color and error color
 
-Should the program use color?
+Set our preferred color code for output message and error message.
 
-Syntax:
-
-```sh
-color
-=> true or false
-```
-
-The color logic heuristic in order of priority:
-
-1. If NO_COLOR is set to non-empty, then no.
-2. If CLICOLOR_FORCE is set to non-empty, then yes.
-3. If the TERM is set to "dumb", then no.
-4. If the output is on a terminal, then yes.
-5. Otherwise, no.
-
-### Set standard output color start/stop and standard error color start/stop.
 These variables are used by the out() function and err() function below.
 
 If you wish to set these in your terminal, and your terminal supports

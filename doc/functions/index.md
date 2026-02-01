@@ -44,9 +44,9 @@ on more systems, such a for escape sequence handling.
 
 Compare:
 
-  * Use the `out` function to print to STDOUT.
+- Use the `out` function to print to STDOUT.
 
-  * Use the `err` function to print to STDERR.
+- Use the `err` function to print to STDERR.
 
 ### err
 
@@ -64,16 +64,16 @@ Example:
 ```sh
 err "my message"
 STDERR=> my message
-````
+```
 
 We use `printf` instead of `echo` because `printf` is more consistent
 on more systems, such a for escape sequence handling.
 
 Compare:
 
-  * Use the `out` function to print to STDOUT.
+- Use the `out` function to print to STDOUT.
 
-  * Use the `err` function to print to STDERR.
+- Use the `err` function to print to STDERR.
 
 ### die
 
@@ -210,6 +210,7 @@ utf8
 ```
 
 #
+
 Example:
 
 ```sh
@@ -256,8 +257,8 @@ print_success "This is a success message."
 
 The output can be customized by setting:
 
- * PRINT_SUCCESS_START
- * PRINT_SUCCESS_STOP
+- PRINT_SUCCESS_START
+- PRINT_SUCCESS_STOP
 
 ### print_warning
 
@@ -279,8 +280,8 @@ print_warning "This is a warning message."
 
 The output can be customized by setting:
 
- * PRINT_WARNING_START
- * PRINT_WARNING_STOP
+- PRINT_WARNING_START
+- PRINT_WARNING_STOP
 
 ### print_failure
 
@@ -302,8 +303,8 @@ print_failure "This is a failure message."
 
 The output can be customized by setting:
 
- * PRINT_FAILURE_START
- * PRINT_FAILURE_STOP
+- PRINT_FAILURE_START
+- PRINT_FAILURE_STOP
 
 ## Date & time helpers
 
@@ -334,13 +335,13 @@ now -d "January 1, 2021"
 
 We prefer this date-time format for many of our scripts:
 
-* We prefer ISO standard because it's well documented and supported.
+- We prefer ISO standard because it's well documented and supported.
   Specifically, we use ISO "YYYY-MM-DDTHH:MM:SS.NNNNNNNNN+00:00".
 
-* We prefer nanosecond width because it aligns with high-speed systems.
+- We prefer nanosecond width because it aligns with high-speed systems.
   Specifically, we use GNU `date` and tools that print nanoseconds.
 
-* We prefer timezone width because it aligns with localized systems.
+- We prefer timezone width because it aligns with localized systems.
   Specifically, we use some systems and tools that require timezones.
 
 Note: the custom datetime capabilty relies on the system "date" command,
@@ -392,13 +393,13 @@ sec
 
 ### age
 
-Get the age of a given time in POSIX seconds.
+Get the age of a POSIX epoch time compared to now.
 
 Syntax:
 
 ```sh
-age <time as posix seconds>
-=> <difference in seconds between input and now>
+age <epoch>
+=> <difference in seconds between epoch and now>
 ```
 
 Example:
@@ -408,37 +409,41 @@ age 1620169178
 => 19
 ```
 
-### newer
+### age_lt
 
-Is the age of a given time newer than a given number of seconds?
+Is the age of a POSIX epoch time compard to now
+less than a given number of seconds? A.k.a. newer?
 
 Syntax:
 
 ```sh
-TODO
+age_lt <epoch> <seconds>
+=> true or false
 ```
 
 Example:
 
 ```sh
-newer 2000000000 && echo "true" || echo "false
+age_lt 1620169178 20
 => true
 ```
 
-### older
+### age_gt
 
-Is the age of a given time older than a given number of seconds?
+Is the age of a POSIX epoch time compard to now
+greater than a given number of seconds? A.k.a. older?
 
 Syntax:
 
 ```sh
-TODO
+age_gt <epoch> <seconds>
+=> true or false
 ```
 
 Example:
 
 ```sh
-older 1000000000 && echo "true" || echo "false"
+age_gt 1620169178 18
 => true
 ```
 
@@ -468,7 +473,7 @@ Given a datetime (or year and month), calculate the maximum month-day number.
 Syntax:
 
 ```sh
-datetime_mday_max <yyyy-mm*>
+datetime_mday_max <datetime | yyyy-mm*>
 => true or false
 ```
 
@@ -501,7 +506,7 @@ datetime_format_for_at_command 2026-12-31T01:02:03
 ### datetime_format_for_pmset_command
 
 Given a datetime as ISO 8601 format "yyyy-mm-ddThh:mm:ss"
-return the format for `pmset` command  "mm/dd/yy hh:mm:ss".
+return the format for `pmset` command "mm/dd/yy hh:mm:ss".
 
 Syntax:
 
@@ -511,6 +516,7 @@ datetime_format_for_pmset_command <datetime>
 ```
 
 Example:
+
 ```sh
 datetime_format_for_pmset_command 2026-12-31T01:02:03
 => 12/31/26 01:02:03
@@ -558,8 +564,8 @@ Does a directory exist?
 Syntax:
 
 ```sh
-TODO
-=>
+directory_exists <directory_path>
+=> true or false
 ```
 
 Example:
@@ -579,8 +585,8 @@ Does a directory exist? If no then die.
 Syntax:
 
 ```sh
-TODO
-=>
+directory_exists_or_die <directory_path>
+=> true or die
 ```
 
 Example:
@@ -601,8 +607,8 @@ Does a file exist?
 Syntax:
 
 ```sh
-TODO
-=>
+file_exists <file_path>
+=> true or false
 ```
 
 Example:
@@ -622,8 +628,8 @@ Does a file exist? If no then die.
 Syntax:
 
 ```sh
-TODO
-=>
+file_exists_or_die <file_path>
+=> true or die
 ```
 
 Example:
@@ -644,8 +650,8 @@ Does a symlink exist?
 Syntax:
 
 ```sh
-TODO
-=>
+symlink_exists <symlink_path>
+=> true or false
 ```
 
 Example:
@@ -665,8 +671,8 @@ Does a symlink exist? If no then die.
 Syntax:
 
 ```sh
-TODO
-=>
+symlink_exists_or_die <symlink_path>
+=> true or die
 ```
 
 Example:
@@ -687,8 +693,8 @@ Does a command exist?
 Syntax:
 
 ```sh
-TODO
-=>
+command_exists <command_name>
+=> true or false
 ```
 
 Example:
@@ -708,8 +714,8 @@ Does a command exist? If no then die.
 Syntax:
 
 ```sh
-TODO
-=>
+command_exists_or_die <command_name>
+=> true or die
 ```
 
 Example:
@@ -730,8 +736,8 @@ Does a command version exist?
 Syntax:
 
 ```sh
-TODO
-=>
+command_version_exists <command_name> <version_actual> <version_minimum>
+=> true or false
 ```
 
 Example:
@@ -740,19 +746,19 @@ Example:
 command_version_exists grep 2.2 1.1
 => true
 
-command_version_exists grep 2.2 1.1
-=> true
+command_version_exists grep 1.1 2.2
+=> false
 ```
 
 ### command_version_exists_or_die
 
-Does a command version exist? If no then die
+Does a command version exist? If no then die.
 
 Syntax:
 
 ```sh
-TODO
-=>
+command_version_exists_or_die <command_name> <version_actual> <version_minimum>
+=> true or die
 ```
 
 Example:
@@ -761,8 +767,8 @@ Example:
 command_version_exists_or_die grep 2.2 1.1
 => true
 
-command_version_exists_or_die grep 2.2 3.3
-STDERR=> Command version needed: grep >= 3.x
+command_version_exists_or_die grep 1.1 2.2
+STDERR=> Command and version needed: grep >= 3.x
 => exit 1
 ```
 
@@ -773,8 +779,8 @@ Does a variable exist?
 Syntax:
 
 ```sh
-TODO
-=>
+var_exists <var_name>
+=> true or false
 ```
 
 Example:
@@ -794,8 +800,8 @@ Does a variable exist? If no then die.
 Syntax:
 
 ```sh
-TODO
-=>
+var_exists_or_die <var_name>
+=> true or die
 ```
 
 Example:
@@ -816,17 +822,17 @@ Is a version number sufficient?
 Syntax:
 
 ```sh
-TODO
-=>
+version <version_actual> <version_minimum>
+=> true or false
 ```
 
 Example:
 
 ```sh
-version 1.1 2.2
+version 2.2 1.1
 => true
 
-version 3.3 2.2
+version 1.1 2.2
 => false
 ```
 
@@ -837,18 +843,18 @@ Is a version number sufficient? If no then die.
 Syntax:
 
 ```sh
-TODO
-=>
+version_or_die <version_actual> <version_minimum>
+=> true or die
 ```
 
 Example:
 
 ```sh
-version_or_die 1.1 2.2
+version_or_die 2.2 1.1
 => true
 
-version_or_die 3.3 2.2
-STDERR=> Version needed: >= 3.3 (not 2.2)
+version_or_die 1.1 2.2
+STDERR=> Version 1.1 is not >= 2.2
 ```
 
 ## Number helpers
@@ -860,8 +866,8 @@ Convert a number string to an integer number string.
 Syntax:
 
 ```sh
-TODO
-=>
+int <number_string>
+=> integer
 ```
 
 Example:
@@ -870,6 +876,7 @@ Example:
 int 1.23
 => 1
 ```
+
 int() {
 
 ### sum
@@ -879,8 +886,8 @@ Print the sum of numbers.
 Syntax:
 
 ```sh
-TODO
-=>
+sum <number> ...
+=> sum of numbers
 ```
 
 Example:
@@ -899,8 +906,8 @@ Compare alnums as groups, such as for word version strings.
 Syntax:
 
 ```sh
-TODO
-=>
+cmp_alnums <alnum_string> <alnum_string>
+=> 0 or -1 or 1
 ```
 
 Example:
@@ -923,8 +930,8 @@ Compare digits as groups, such as for numeric version strings.
 Syntax:
 
 ```sh
-TODO
-=>
+cmp_digits <digits_string> <digits_string>
+=> 0 or -1 or 1
 ```
 
 Example:
@@ -949,8 +956,8 @@ Source all the executable files in a given directory and subdirectories.
 Syntax:
 
 ```sh
-TODO
-=>
+dot_all <directory_path>
+=> source all executable files
 ```
 
 Example:
@@ -964,13 +971,13 @@ dot_all ~/temp
 
 ### run_all
 
-Run all the executable commands in a given directory and subdirectories.
+Run all the executable files in a given directory and subdirectories.
 
 Syntax:
 
 ```sh
-TODO
-=>
+run_all <directory_path>
+=> run all executable files
 ```
 
 Example:
@@ -984,13 +991,13 @@ run_all ~/temp
 
 ### sh_all
 
-Shell all the executable commands in a given directory and subdirectories.
+Shell all the executable files in a given directory and subdirectories.
 
 Syntax:
 
 ```sh
-TODO
-=>
+sh_all <directory_path>
+=> shell all executable files
 ```
 
 Example:
@@ -1004,13 +1011,13 @@ sh_all ~/temp
 
 ### rm_all
 
-Remove all files in a given directory and subdirectories-- use with caution.
+Remove all the files in a given directory and subdirectories-- use with caution.
 
 Syntax:
 
 ```sh
-TODO
-=>
+rm_all <directory_path>
+=> remove all files
 ```
 
 Example:
@@ -1031,13 +1038,13 @@ Remove any space characters at the text's start or finish.
 Syntax:
 
 ```sh
-TODO
-=>
+trim <string>
+=> string without leading/trailing spaces
 ```
 
 Example:
 
-```sh
+````sh
 trim "  foo  "
 => foo
 #```
@@ -1050,13 +1057,13 @@ dash characters.
 Syntax:
 
 ```sh
-TODO
-=>
-```
+slug <string>
+=> string with solely lowercase and single internal dash characters
+````
 
 Example:
 
-```sh
+````sh
 slug "**Foo** **Goo** **Hoo**"
 => foo-goo-hoo
 #```
@@ -1069,13 +1076,13 @@ dash characters and slash characters.
 Syntax:
 
 ```sh
-TODO
-=>
-```
+slugs <string>
+=> string with solely lowercase and single internal dash characters and slash characters
+````
 
 Example:
 
-```sh
+````sh
 slugs "**Foo** / **Goo** / **Hoo**"
 => foo/goo/hoo
 #```
@@ -1087,13 +1094,13 @@ Convert text from any lowercase letters to uppercase letters.
 Syntax:
 
 ```sh
-TODO
-=>
-```
+upper_case <string>
+=> string with uppercase not lowercase
+````
 
 Example:
 
-```sh
+````sh
 upper_case AbCdEf
 => ABCDEF
 #```
@@ -1105,13 +1112,13 @@ Convert text from any uppercase letters to lowercase letters.
 Syntax:
 
 ```sh
-TODO
-=>
-```
+lower_case <string>
+=> string with lowercase nor uppercase
+````
 
 Example:
 
-```sh
+````sh
 lower_case AbCdEf
 => abcdef
 #```
@@ -1123,13 +1130,13 @@ Convert a string from any characters to solely alphanumeric and single internal 
 Syntax:
 
 ```sh
-TODO
-=>
-```
+kebab_case <string>
+=> string with solely alphanumeric and single internal dash characters
+````
 
 Example:
 
-```sh
+````sh
 kebab_case "**Foo** **Goo** **Hoo**"
 => Foo-Goo-Hoo
 #```
@@ -1141,13 +1148,13 @@ Convert a string from any characters to solely alphanumeric and single internal 
 Syntax:
 
 ```sh
-TODO
-=>
-```
+snake_case <string>
+=> string with solely alphanumeric and single internal underscore characters
+````
 
 Example:
 
-```sh
+````sh
 snake_case "**Foo** **Goo** **Hoo**"
 => Foo_Goo_Hoo
 #```
@@ -1159,13 +1166,13 @@ Convert a string from any characters to solely alphanumeric and single internal 
 Syntax:
 
 ```sh
-TODO
-=>
-```
+space_case <string>
+=> string with solely solely alphanumeric and single internal space characters
+````
 
 Example:
 
-```sh
+````sh
 space_case "**Foo** **Goo** **Hoo**"
 => Foo Goo Hoo
 #```
@@ -1177,9 +1184,9 @@ Convert a string from any characters to solely a command "touch -t" timestamp fo
 Syntax:
 
 ```sh
-TODO
-=>
-```
+touch_case <string>
+=> string with solely a command "touch -t" timestamp format
+````
 
 Example:
 
@@ -1196,6 +1203,7 @@ Syntax:
 
 ```sh
 select_character_class <string> <class> [offset [length]]
+=> selected characters
 ```
 
 Example with character class:
@@ -1227,6 +1235,7 @@ Syntax:
 
 ```sh
 reject_character_class <string> <class> [offset [length]]
+=> rejected characters
 ```
 
 Example with character class:
@@ -1258,11 +1267,12 @@ Syntax:
 
 ```sh
 random_char [characters [length]]
+=> random characters
 ```
 
 Example:
 
-```sh
+````sh
 random_char ABCDEF 8
 => CBACBFDD
 #```
@@ -1298,225 +1308,238 @@ Class       Pattern        Description
 [:cntrl:]                  control characters
 [:graph:]   [^ [:cntrl:]]  graphic characters (all characters which have graphic representation)
 [:print:]   [[:graph:] ]   graphic characters and space
-```
+````
 
 ### random_char_alnum
 
-Random characters using [:alnum:] class.
+Random characters using class [:alnum:].
 
 Syntax:
 
 ```sh
 random_char_alnum [length]
+=> random characters in class [:alnum:]
 ```
 
 Example:
 
-```sh
+````sh
 random_char_alnum 8
 => 1Yp7M7wc
 #```
 
 ### random_char_alpha
 
-Random characters using [:alpha:] class.
+Random characters using class [:alpha:].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_alpha [length]
+=> random characters in class [:alpha:]
+````
 
 Example:
 
-```sh
+````sh
 random_char_alpha 8
 => dDSmQlYD
 #```
 
 ### random_char_blank
 
-Random characters using [:blank:] class.
+Random characters using class [:blank:].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_blank [length]
+=> random characters in class [:blank:]
+````
 
 Example:
 
-```sh
+````sh
 random_char_blank 8
 => "  \t  \t  \t"
 #```
 
 ### random_char_cntrl
 
-Random characters using [:cntrl:] class.
+Random characters using class [:cntrl:].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_cntrl [length]
+=> random characters in class [:cntrl:]
+````
 
 Example:
 
-```sh
+````sh
 random_char_cntrl 8
 => "^c^m^r^z^a^e^p^u"
 #```
 
 ### random_char_digit
 
-Random characters using [:digit:] class.
+Random characters using class [:digit:].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_digit [length]
+=> random characters in class [:digit:]
+````
 
 Example:
 
-```sh
+````sh
 random_char_digit 8
 => 36415110
 #```
 
 ### random_char_graph
 
-Random characters using [:graph:] class.
+Random characters using class [:graph:].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_graph [length]
+=> random characters in class [:graph:]
+````
 
 Example:
 
-```sh
+````sh
 random_char_graph 8
 => e'2-3d+9
 #```
 
 ### random_char_lower
 
-Random characters using [:lower:] class.
+Random characters using class [:lower:].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_lower [length]
+=> random characters in class [:lower:]
+````
 
 Example:
 
-```sh
+````sh
 random_char_lower 8
 => pgfqrefo
 #```
 
 ### random_char_lower_digit
 
-Random characters using [:lower:][:digit] classes
+Random characters using classes [:lower:][:digit].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_lower_digit [length]
+=> random characters in classes [:lower:][:digit]
+````
 
 Example:
 
-```sh
+````sh
 random_char_lower_digit 8
 => 69m7o83i
 #```
 
 ### random_char_upper
 
-Random characters using [:upper:] class.
+Random characters using class [:upper:].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_upper [length]
+=> random characters in class [:upper:]
+````
 
 Example:
 
-```sh
+````sh
 random_char_upper 8
 => EGXUHNIM
 #```
 
 ### random_char_upper_digit
 
-Random characters using [:upper:][:digit:] classes
+Random characters using classes [:upper:][:digit:].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_upper_digit [length]
+=> random characters in classes [:upper:][:digit]
+````
 
 Example:
 
-```sh
+````sh
 random_char_upper_digit 8
 => L2PT37H6
 #```
 
 ### random_char_print
 
-Random characters using [:print:] class.
+Random characters using class [:print:].
 
 Syntax:
 
 ```sb
-random_char_alnum [length]
-```
+random_char_print [length]
+=> random characters in class [:print:]
+````
 
 Example:
 
-```sh
+````sh
 random_char_print 8
 => ),zN87K;
 #```
 
 ### random_char_space
 
-Random characters using [:space:] class.
+Random characters using class [:space:].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_space [length]
+=> random characters in class [:space:]
+````
 
 Example:
 
-```sh
+````sh
 random_char_space 8
 => "\n \t\r \v \f"
 #```
 
 ### random_char_xdigit
 
-Random characters using [:xdigit:] class.
+Random characters using class [:xdigit:].
 
 Syntax:
 
 ```sh
-random_char_alnum [length]
-```
+random_char_xdigit [length]
+=> random characters in class [:xdigit:]
+````
 
 Example:
 
-```sh
+````sh
 random_char_xdigit 8
 => eC3Ce9eD
 #```
@@ -1530,9 +1553,9 @@ Get the array number of fields a.k.a. length a.k.a. size.
 Syntax:
 
 ```sh
-TODO
-=>
-```
+array_n <array>
+=> number of fields
+````
 
 Example:
 
@@ -1544,13 +1567,13 @@ array_n "$@"
 
 ### array_i
 
-Get the array item at index `i` which is 1-based.
+Get the array element at index `i` which is 1-based.
 
 Syntax:
 
 ```sh
-TODO
-=>
+array_i <array> <index>
+=> array element at index
 ```
 
 Example:
@@ -1573,13 +1596,13 @@ Bash syntax can have more power this way if you prefer it:
 
 ### array_first
 
-Get the array's first item.
+Get the array's first element.
 
 Syntax:
 
 ```sh
-TODO
-=>
+array_first <array>
+=> array first element
 ```
 
 Example:
@@ -1592,12 +1615,13 @@ array_first "$@"
 
 ### array_last
 
-Get the array's last item.
+Get the array's last element.
 
 Syntax:
 
 ```sh
-TODO
+array_last <array>
+=> array last element
 =>
 ```
 
@@ -1611,13 +1635,13 @@ array_last "$@"
 
 ### array_car
 
-Get the array's car item a.k.a. first item.
+Get the array's car element a.k.a. first item.
 
 Syntax:
 
 ```sh
-TODO
-=>
+array_car <array>
+=> array car element
 ```
 
 Example:
@@ -1635,8 +1659,8 @@ Get the array's cdr items a.k.a. everything after the first item.
 Syntax:
 
 ```sh
-TODO
-=>
+array_cdr <array>
+=> array cdr elements
 ```
 
 Example:
@@ -1645,407 +1669,6 @@ Example:
 set -- a b c
 array_cdr "$@"
 => b c d
-```
-
-## Assert helpers
-
-### assert_test
-
-Assert a test utility command succeeds.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_test -x program.sh
-=> success i.e. no output
-
-assert_test -x notes.txt
-STDERR=> assert_test -x notes.txt
-```
-
-### assert_empty
-
-Assert an item is empty.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_empty ""
-=> success i.e. no output
-
-assert_empty foo
-STDERR=> assert_empty foo
-```
-
-### assert_not_empty
-
-Assert an item is not empty.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_not_empty foo
-=> success i.e. no output
-
-assert_not_empty ""
-STDERR=> assert_not_empty
-```
-
-### assert_int_eq
-
-Assert an integer is equal to another integer.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_int_eq 1 1
-=> success i.e. no output
-
-assert_int_eq 1 2
-STDERR=> assert_int_eq 1 2
-```
-
-### assert_int_ne
-
-Assert an integer is not equal to another integer.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_int_eq 1 2
-=> success i.e. no output
-
-assert_int_eq 1 1
-STDERR=> assert_int_ne 1 1
-```
-
-### assert_int_ge
-
-Assert an integer is greater than or equal to another integer.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_int_ge 2 1
-=> success i.e. no output
-
-assert_int_ge 1 2
-STDERR=> assert_int_ge 1 2
-```
-
-### assert_int_gt
-
-Assert an integer is greater than another integer.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_int_gt 2 1
-=> success i.e. no output
-
-assert_int_gt 1 2
-STDERR=> assert_int_gt 1 2
-```
-
-### assert_int_le
-
-Assert an integer is less than or equal to another integer.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_int_le 1 2
-=> success i.e. no output
-
-assert_int_le 2 1
-STDERR=> assert_int_le 2 1
-```
-
-### assert_int_lt
-
-Assert an integer is less than to another integer.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_int_lt 1 2
-=> success i.e. no output
-
-assert_int_lt 2 1
-STDERR=> assert_int_lt 2 1
-```
-
-### assert_str_eq
-
-Assert a string is equal to another string.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_str_eq 1 1
-=> success i.e. no output
-
-assert_str_eq 1 2
-STDERR=> assert_str_eq 1 2
-```
-
-### assert_str_ne
-
-Assert a string is not equal to another string.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_str_eq 1 2
-=> success i.e. no output
-
-assert_str_eq 1 1
-STDERR=> assert_str_ne 1 1
-```
-
-### assert_str_ge
-
-Assert a string is greater than or equal to another string.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_str_ge 2 1
-=> success i.e. no output
-
-assert_str_ge 1 2
-STDERR=> assert_str_ge 1 2
-```
-
-### assert_str_gt
-
-Assert a string is greater than another string.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_str_gt 2 1
-=> success i.e. no output
-
-assert_str_gt 1 2
-STDERR=> assert_str_gt 1 2
-```
-
-### assert_str_le
-
-Assert a string is less than or equal to another string.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_str_le 1 2
-=> success i.e. no output
-
-assert_str_le 2 1
-STDERR=> assert_str_le 2 1
-```
-
-### assert_str_lt
-
-Assert a string is less than to another string.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_str_lt 1 2
-=> success i.e. no output
-
-assert_str_lt 2 1
-STDERR=> assert_str_lt 2 1
-```
-
-### assert_str_starts_with
-
-Assert a string starts with a substring.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_str_starts_with foobar foo
-=> success i.e. no output
-
-assert_str_starts_with foobar xxx
-STDERR=> assert_str_starts_with foobar xxx
-```
-
-### assert_str_ends_with
-
-Assert a string ends with with a substring.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_str_ends_with foobar bar
-=> success i.e. no output
-
-assert_str_ends_with foobar xxx
-STDERR=> assert_str_ends_with foobar xxx
-```
-
-### assert_eval_int_eq_x
-
-Assert an eval into an integer is equal to an expression.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_eval_int_eq_x 'echo "1"' 1
-=> success i.e. no output
-
-assert_eval_int_eq_x 'echo "1"' 2
-STDERR=> assert_eval_int_eq_x echo "1" 2
-```
-
-### assert_eval_str_eq_x
-
-Assert an eval into a string is equal to an expression.
-
-Syntax:
-
-```sh
-TODO
-=>
-```
-
-Example:
-
-```sh
-assert_eval_str_eq_x 'echo "foo"' foo
-=> success i.e. no output
-
-assert_eval_str_eq_x 'echo "foo"' bar
-STDERR=> assert_eval_str_eq_x echo "foo" bar
 ```
 
 ## Make temp helpers
@@ -2057,8 +1680,8 @@ Make a temporary directory path.
 Syntax:
 
 ```sh
-TODO
-=>
+mktemp_dir
+=>  temporary directory path
 ```
 
 Example:
@@ -2082,8 +1705,8 @@ Make a temporary file path.
 Syntax:
 
 ```sh
-TODO
-=>
+mktemp_file
+=>  temporary file path
 ```
 
 Example:
@@ -2109,8 +1732,8 @@ Get a file's media type a.k.a. mime type such as "text/plain".
 Syntax:
 
 ```sh
-TODO
-=>
+file_media_type <file_path>
+=> media type
 ```
 
 Example:
@@ -2127,8 +1750,8 @@ Get a file's media type type a.k.a. mime type such as "text".
 Syntax:
 
 ```sh
-TODO
-=>
+file_media_type_supertype <file_path>
+=> media type supertype
 ```
 
 Example:
@@ -2145,8 +1768,8 @@ Get a file's media type subtype a.k.a. mime type such as "plain".
 Syntax:
 
 ```sh
-TODO
-=>
+file_media_type_subtype <file_path>
+=> media type subtype
 ```
 
 Example:
@@ -2165,8 +1788,8 @@ Does a font name exist on this system?
 Syntax:
 
 ```sh
-TODO
-=>
+font_name_exists <font_name>
+=> true or false
 ```
 
 Example:
@@ -2186,8 +1809,8 @@ Does a font name exist on this system? If no then die.
 Syntax:
 
 ```sh
-TODO
-=>
+font_name_exists_or_die <font_name>
+=> true or die
 ```
 
 Example:
@@ -2210,8 +1833,8 @@ Does a file end with a newline?
 Syntax:
 
 ```sh
-TODO
-=>
+file_ends_with_newline <file_path>
+=> true or false
 ```
 
 Example:
@@ -2230,8 +1853,8 @@ Get a user-specific directory via env var, or XDG setting, or HOME.
 Syntax:
 
 ```sh
-TODO
-=>
+user_dir <directory_locator>
+=> directory path
 ```
 
 Example:
@@ -2242,48 +1865,47 @@ user_dir foo => $FOO_DIR || $FOO_HOME || $XDG_FOO_DIR || $XDG_FOO_HOME || $HOME/
 
 Conventions:
 
-  * `user_dir bin` => binary executable directory
-  * `user_dir cache` => cache directory
-  * `user_dir config` => configuration directory
-  * `user_dir data` => data directory
-  * `user_dir desktop` => desktop directory
-  * `user_dir documents` => documents directory
-  * `user_dir download` => download directory
-  * `user_dir log` => logging directory
-  * `user_dir music` => music directory
-  * `user_dir pictures` => pictures directory
-  * `user_dir publicshare` => public share directory
-  * `user_dir runtime` => runtime directory
-  * `user_dir state` => state directory
-  * `user_dir temp` => temporary directory
-  * `user_dir templates` => templates directory
-  * `user_dir videos` => videos directory
+- `user_dir bin` => binary executable directory
+- `user_dir cache` => cache directory
+- `user_dir config` => configuration directory
+- `user_dir data` => data directory
+- `user_dir desktop` => desktop directory
+- `user_dir documents` => documents directory
+- `user_dir download` => download directory
+- `user_dir log` => logging directory
+- `user_dir music` => music directory
+- `user_dir pictures` => pictures directory
+- `user_dir publicshare` => public share directory
+- `user_dir runtime` => runtime directory
+- `user_dir state` => state directory
+- `user_dir temp` => temporary directory
+- `user_dir templates` => templates directory
+- `user_dir videos` => videos directory
 
 Popular XDG conventions:
 
-  * `XDG_DESKTOP_DIR` => user-specific desktop, such as frequent apps and files.
-  * `XDG_DOCUMENTS_DIR` => user-specific documents, such as typical working files.
-  * `XDG_DOWNLOAD_DIR` => user-specific downloads, such as internet file downloads.
-  * `XDG_MUSIC_DIR` => user-specific music files, such as songs.
-  * `XDG_PICTURES_DIR` => user-specific pictures, such as photos.
-  * `XDG_PUBLICSHARE_DIR` => user-specific public share, such as file sharing.
-  * `XDG_TEMPLATES_DIR` => user-specific templates.
-  * `XDG_VIDEOS_DIR` => user-specific videos, such as movies.
+- `XDG_DESKTOP_DIR` => user-specific desktop, such as frequent apps and files.
+- `XDG_DOCUMENTS_DIR` => user-specific documents, such as typical working files.
+- `XDG_DOWNLOAD_DIR` => user-specific downloads, such as internet file downloads.
+- `XDG_MUSIC_DIR` => user-specific music files, such as songs.
+- `XDG_PICTURES_DIR` => user-specific pictures, such as photos.
+- `XDG_PUBLICSHARE_DIR` => user-specific public share, such as file sharing.
+- `XDG_TEMPLATES_DIR` => user-specific templates.
+- `XDG_VIDEOS_DIR` => user-specific videos, such as movies.
 
 POSIX XDG conventions:
 
-  * `XDG_BIN_HOME` => user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
-  * `XDG_LOG_HOME` => user-specific log files, analogous to system /var/log or $HOME/.local/log.
-  * `XDG_TEMP_HOME` => user-specific temporary files, analogous to system /temp or $HOME/.temp.
-  * `XDG_DATA_HOME` => user-specific data files, analogous to system /usr/share or $HOME/.local/share.
-  * `XDG_CACHE_HOME` => user-specific cache files, analogous to system /var/cache or $HOME/.cache.
-  * `XDG_STATE_HOME` => user-specific cache files, analogous to system /var/state or $HOME/.local/state.
-  * `XDG_CONFIG_HOME` => user-specific configuration files, analogous to system /etc or $HOME/.config.
-  * `XDG_RUNTIME_HOME` => user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
+- `XDG_BIN_HOME` => user-specific binaries, analogous to system /usr/bin or $HOME/.local/bin.
+- `XDG_LOG_HOME` => user-specific log files, analogous to system /var/log or $HOME/.local/log.
+- `XDG_TEMP_HOME` => user-specific temporary files, analogous to system /temp or $HOME/.temp.
+- `XDG_DATA_HOME` => user-specific data files, analogous to system /usr/share or $HOME/.local/share.
+- `XDG_CACHE_HOME` => user-specific cache files, analogous to system /var/cache or $HOME/.cache.
+- `XDG_STATE_HOME` => user-specific cache files, analogous to system /var/state or $HOME/.local/state.
+- `XDG_CONFIG_HOME` => user-specific configuration files, analogous to system /etc or $HOME/.config.
+- `XDG_RUNTIME_HOME` => user-specific runtime files such as sockets, named pipes, etc. or $HOME/.runtime.
 
 See also:
 
-  * https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+- https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 
-  * https://wiki.archlinux.org/title/XDG_user_directories
-
+- https://wiki.archlinux.org/title/XDG_user_directories
