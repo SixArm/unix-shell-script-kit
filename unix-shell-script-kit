@@ -429,8 +429,6 @@ EXIT_CODE_OUT_OF_RANGE=255
 ##
 
 # ANSI escape color codes
-# 
-# Use these directly. Do not use "tput".
 #
 # Example:
 #
@@ -444,6 +442,16 @@ EXIT_CODE_OUT_OF_RANGE=255
 # printf "%scyan\n" $COLOR_CYAN
 # printf "%swhite\n" $COLOR_WHITE
 # ```
+#
+# For POSIX compatibility we use escape codes directly. We do not use "tput".
+# It's true that tput is POSIX — it's specified in POSIX.1-2001 and later.
+#
+# However, some operands are standardized (clear, init, reset, longname)
+# whereas the color operands are not (setaf, setab, sgr0, bold, etc.).
+#
+# So while "tput setaf 1" works on most modern systems (Linux, macOS, BSDs),
+# it relies on non-POSIX terminfo extensions. The raw ANSI escape codes are
+# more universally portable when you need guaranteed behavior across systems.
 #
 # For the widest support, use the basic set of 8 colors below,
 # and respect the user preferences by using the color() function.
