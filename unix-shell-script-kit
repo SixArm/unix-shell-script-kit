@@ -51,9 +51,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 13.0.0
+#   * Version: 13.0.1
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2026-02-01T15:37:19Z
+#   * Updated: 2026-02-03T22:43:34Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -526,14 +526,18 @@ COLOR_BG_WHITE='[47m'
 #
 # 1. If NO_COLOR is set to non-empty, then no.
 # 2. If CLICOLOR_FORCE is set to non-empty, then yes.
-# 3. If the TERM is set to "dumb", then no.
+# 3. If TERM is set to "dumb", then no.
 # 4. If the output is on a terminal, then yes.
 # 5. Otherwise, no.
 #
+# The color logic heuristic is written line-by-line
+# to make it easier for developers to read and change.
+# 
 color() {
-        if [ -n "${NO_COLOR:-}" ]; then return 0; fi
-        if [ -n "${CLICOLOR_FORCE:-}" ]; then return 1; fi
-        if [ "${TERM:-}" = "dumb" ]; then return 0; fi
+        if [ -z "${NO_COLOR:-}" ]; then return 1; fi
+        if [ -n "${CLICOLOR_FORCE:-}" ]; then return 0; fi
+        if [ "${TERM:-}" = "dumb" ]; then return 1; fi
+        if [ -t 1 ]; then return 0;
         return 1
 }
 
@@ -588,7 +592,7 @@ fi
 # ```
 #
 # We use `printf` instead of `echo` because `printf` is more consistent
-# on more systems, such a for escape sequence handling.
+# on more systems, such as for escape sequence handling.
 #
 # Compare:
 #
@@ -619,7 +623,7 @@ out() {
 # ````
 #
 # We use `printf` instead of `echo` because `printf` is more consistent
-# on more systems, such a for escape sequence handling.
+# on more systems, such as for escape sequence handling.
 #
 # Compare:
 #

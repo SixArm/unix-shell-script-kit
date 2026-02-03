@@ -221,9 +221,9 @@ Assert testing:
 ## Tracking
 
 - Package: unix-shell-script-kit
-- Version: 13.0.0
+- Version: 13.0.1
 - Created: 2017-08-22T00:00:00Z
-- Updated: 2026-02-01T15:37:19Z
+- Updated: 2026-02-03T22:43:34Z
 - Website: https://github.com/sixarm/unix-shell-script-kit
 - License: GPL-2.0 or GPL-3.0 or contact us for more
 - Contact: Joel Parker Henderson (joel@sixarm.com)
