@@ -14,6 +14,16 @@ Functions:
 - zid -> <32-bit secure random lowercase hex identifier>
 - ask -> <prompt>
 - utf8 -> true or false
+- log <log level> <message> -> <datestamp> <unique random id> <hostname> <process id> <log level> <message>
+- log_emerg <message> -> log $LOG_EMERG <message>
+- log_alert <message> -> log $LOG_ALERT <message>
+- log_crit <message> -> log $LOG_CRIT <message>
+- log_err <message> -> log $LOG_ERR <message>
+- log_warn <message> -> log $LOG_WARN <message>
+- log_notice <message> -> log $LOG_NOTICE <message>
+- log_info <message> -> log $LOG_INFO <message>
+- log_debug <message> -> log $LOG_DEBUG <message>
+- log_trace <message> -> log $LOG_TRACE <message>
 - print_success <message>
 - print_warning <message>
 - print_failure <message>

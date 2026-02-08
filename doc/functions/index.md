@@ -139,29 +139,6 @@ big "my message"
 ###
 ```
 
-### log
-
-Print a datestamp, unique random id, hostname, process id, and message.
-
-Syntax:
-
-```sh
-log <message>
-=> <datestamp> <unique random id> <hostname> <process id> <message>
-```
-
-Example:
-
-```sh
-log "my message"
-=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 my message
-```
-
-We prefer this log file format for many of our scripts because we prefer
-logging the additional diagnositc information that we use for our systems:
-the datetime with nanosecond-friendly format and timezone-friendly format,
-unique random id a.k.a. zid, hostname, and process number.
-
 ### zid
 
 Generate a 32-bit secure random lowercase hex identifier.
@@ -209,18 +186,219 @@ utf8
 => true or false
 ```
 
-#
+## Log
+
+### log
+
+Print a datestamp, unique random id, hostname, process id, log level, and message.
+
+Syntax:
+
+```sh
+log <log level> <message>
+=> <datestamp> <unique random id> <hostname> <process id> <log level> <message>
+```
 
 Example:
 
 ```sh
-utf8
-=> true
+log $LOG_ALERT "my message"
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 1 my message
 ```
 
-This implementation is a heuristic and subject to change as we learn more.
-This checks the locale charmap. However, it's possible for the charmap to
-be set to UTF-8, but the terminal is unable to render UTF-8 characters.
+We prefer this log file format for many of our scripts because we prefer
+logging the additional diagnositc information that we use for our systems:
+the datetime with nanosecond-friendly format and timezone-friendly format,
+unique random id a.k.a. zid, hostname, and process number.
+
+This prints if and only if log level <= LOG_LEVEL environment variable,
+or the LOG_LEVEL environment variable is not set.
+
+The log level constants that are defined by syslog and this script:
+
+- LOG_EMERG=0 (Emergency: System is unusable)
+- LOG_ALERT=1 (Alert: Action must be taken immediately)
+- LOG_CRIT=2 (Critical conditions)
+- LOG_ERR=3 (Error conditions)
+- LOG_WARNING=4 (Warning conditions)
+- LOG_NOTICE=5 (Notice: normal but significant conditions)
+- LOG_INFO=6 (Informational)
+- LOG_DEBUG=7 (Debug-level messages)
+- LOG_TRACE=8 (Trace-level messages)
+
+This kit also provides these log functions that are more convenient:
+
+- log_emerg
+- log_alert
+- log_crit
+- log_err
+- log_warn
+- log_notice
+- log_info
+- log_debug
+- log_trace
+
+### log_emerg
+
+Log level emerg: log a datestamp, unique random id, hostname, process id, log level, and message.
+
+Syntax:
+
+```sh
+log_emerg <message>
+=> log $LOG_EMERG <message>
+```
+
+Example:
+
+```sh
+log_emerg "my message"
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 0 my message
+```
+
+### log_alert
+
+Log level alert: log a datestamp, unique random id, hostname, process id, log level, and message.
+
+Syntax:
+
+```sh
+log_alert <message>
+=> log $LOG_ALERT <message>
+```
+
+Example:
+
+```sh
+log_alert "my message"
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 1 my message
+```
+
+### log_crit
+
+Log level crit: log a datestamp, unique random id, hostname, process id, log level, and message.
+
+Syntax:
+
+```sh
+log_crit <message>
+=> log $LOG_CRIT <message>
+```
+
+Example:
+
+```sh
+log_crit "my message"
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 2 my message
+```
+
+### log_err
+
+Log level err: log a datestamp, unique random id, hostname, process id, log level, and message.
+
+Syntax:
+
+```sh
+log_err <message>
+=> log $LOG_ERR <message>
+```
+
+Example:
+
+```sh
+log_err "my message"
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 3 my message
+```
+
+### log_warn
+
+Log level warn: log a datestamp, unique random id, hostname, process id, log level, and message.
+
+Syntax:
+
+```sh
+log_warn <message>
+=> log $LOG_WARN <message>
+```
+
+Example:
+
+```sh
+log_warn "my message"
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 4 my message
+```
+
+### log_notice
+
+Log level notice: log a datestamp, unique random id, hostname, process id, log level, and message.
+
+Syntax:
+
+```sh
+log_notice <message>
+=> log $LOG_NOTICE <message>
+```
+
+Example:
+
+```sh
+log_notice "my message"
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 5 my message
+```
+
+### log_info
+
+Log level info: log a datestamp, unique random id, hostname, process id, log level, and message.
+
+Syntax:
+
+```sh
+log_info <message>
+=> log $LOG_INFO <message>
+```
+
+Example:
+
+```sh
+log_info "my message"
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 6 my message
+```
+
+### log_debug
+
+Log level debug: log a datestamp, unique random id, hostname, process id, log level, and message.
+
+Syntax:
+
+```sh
+log_debug <message>
+=> log $LOG_DEBUG <message>
+```
+
+Example:
+
+```sh
+log_debug "my message"
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 7 my message
+```
+
+### log_trace
+
+Log level trace: log a datestamp, unique random id, hostname, process id, log level, and message.
+
+Syntax:
+
+```sh
+log_trace <message>
+=> log $LOG_TRACE <message>
+```
+
+Example:
+
+```sh
+log_trace "my message"
+=> 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 8 my message
+```
 
 ## Print messages with pretty formatting, colors, emojis, etc.
 

@@ -6,7 +6,7 @@
 # Unix shell script kit is a collection of utility functions and constants.
 #
 # The kit works with POSIX shells, including bash, zsh, dash, ksh, sh, etc.
-# 
+#
 # All suggestions are welcome and appreciated.
 #
 # [View the source code file with all documentation comments](https://raw.githubusercontent.com/SixArm/unix-shell-script-kit/main/unix-shell-script-kit)
@@ -51,12 +51,49 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 13.0.1
+#   * Version: 13.1.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2026-02-03T22:43:34Z
+#   * Updated: 2026-02-08T17:38:13Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
+
+##
+# Log levels
+##
+
+# These log levels align with syslog priority levels and C include file.
+# For more about how to use these here, see the function `log` below.
+#
+# We define one extra log level, which is LOG_TRACE=8, because so many
+# tools have trace capabilties and it's pragmatic for writing scripts.
+
+# LOG_EMERG=0 (Emergency: System is unusable)
+LOG_EMERG=0
+
+# LOG_ALERT=1 (Alert: Action must be taken immediately)
+LOG_ALERT=1
+
+# LOG_CRIT=2 (Critical conditions)
+LOG_CRIT=2
+
+# LOG_ERR=3 (Error conditions)
+LOG_ERR=3
+
+# LOG_WARN=4 (Warning conditions)
+LOG_WARN=4
+
+# LOG_NOTICE=5 (Notice: normal but significant conditions)
+LOG_NOTICE=5
+
+# LOG_INFO=6 (Informational)
+LOG_INFO=6
+
+# LOG_DEBUG=7 (Debug-level messages)
+LOG_DEBUG=7
+
+# LOG_TRACE=8 (Trace-level messages)
+LOG_TRACE=8
 
 ##
 # Exit codes
@@ -393,7 +430,7 @@ EXIT_GIT_BISECT_SKIP=125
 # A command is found but is not executable.
 #
 # This is a shell convention.
-# 
+#
 EXIT_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
 
 # EXIT_COMMAND_NOT_FOUND=127 (Command not found)
@@ -401,7 +438,7 @@ EXIT_COMMAND_FOUND_BUT_NOT_EXECUTABLE=126
 # A command is not found.
 #
 # This is a shell convention.
-# 
+#
 EXIT_COMMAND_NOT_FOUND=127
 
 # EXIT_CODE_INVALID=128 (Exit code invalid)
@@ -463,11 +500,11 @@ EXIT_CODE_OUT_OF_RANGE=255
 # because so many users prefer to set their own terminal colors.
 
 # Reset all color information
-# 
+#
 # ```sh
 # COLOR_RESET
 # ```
-# 
+#
 COLOR_RESET='[0m'
 
 # Basic foreground colors
@@ -512,7 +549,7 @@ COLOR_BG_CYAN='[46m'
 COLOR_BG_WHITE='[47m'
 
 # color
-# 
+#
 # Should the program use color?
 #
 # Syntax:
@@ -532,17 +569,17 @@ COLOR_BG_WHITE='[47m'
 #
 # The color logic heuristic is written line-by-line
 # to make it easier for developers to read and change.
-# 
+#
 color() {
         if [ -z "${NO_COLOR:-}" ]; then return 1; fi
         if [ -n "${CLICOLOR_FORCE:-}" ]; then return 0; fi
         if [ "${TERM:-}" = "dumb" ]; then return 1; fi
-        if [ -t 1 ]; then return 0;
+        if [ -t 1 ]; then return 0; fi
         return 1
 }
 
 # Set output color and error color
-# 
+#
 # Set our preferred color code for output message and error message.
 #
 # These variables are used by the out() function and err() function below.
@@ -574,7 +611,7 @@ fi
 ##
 
 # out
-# 
+#
 # Print output message to stdout.
 #
 # Syntax:
@@ -601,11 +638,11 @@ fi
 #   * Use the `err` function to print to STDERR.
 #
 out() {
-        printf %s%s%s\\n "${STDOUT_COLOR_START:-}" "$*" "${STDOUT_COLOR_STOP:-}"
+        >&1 printf %s\\n "${STDOUT_COLOR_START:-}${*}${STDOUT_COLOR_STOP:-}"
 }
 
 # err
-# 
+#
 # Print error message to stderr.
 #
 # Syntax:
@@ -632,19 +669,19 @@ out() {
 #   * Use the `err` function to print to STDERR.
 #
 err() {
-        >&2 printf %s%s%s\\n "${STDERR_COLOR_START:-}" "$*" "${STDERR_COLOR_STOP:-}"
+        >&2 printf %s\\n "${STDERR_COLOR_START:-}${*}${STDERR_COLOR_STOP:-}"
 }
 
 # die
-# 
+#
 # Print error message to stderr, then exit with error code.
 #
 # Syntax:
 #
 # ```sh
-# die <code> <message>
+# die <exit code> <message>
 # STDERR=> <message>
-# => exit <code>
+# EXIT=> <exit code>
 # ```
 #
 # Example:
@@ -652,15 +689,15 @@ err() {
 # ```sh
 # die 1 "my message"
 # STDERR=> my message
-# => exit 1
+# EXIT=> 1
 # ```
 #
-# Example with an exit code number and name:
+# Example with an exit code number and exit code name:
 #
 # ```sh
 # die $EXIT_UNAVAILABLE EXIT_UNAVAILABLE
 # STDERR=> EXIT_UNAVAILABLE
-# => exit 69
+# EXIT=> 69
 # ```
 #
 # Example with more information:
@@ -668,7 +705,7 @@ err() {
 # ```sh
 # false || die $? "Fatal error $? on line $LINENO of $0"
 # STDERR=> Fatal error 1 on line 2 of example.sh"
-# => exit 1
+# EXIT=> 1
 # ```
 #
 die() {
@@ -676,7 +713,7 @@ die() {
 }
 
 # big
-# 
+#
 # Print a big banner to stdout, good for human readability.
 #
 # Syntax:
@@ -707,35 +744,8 @@ big() {
         printf \\n###\\n#\\n#\ %s\\n#\\n###\\n\\n "$*"
 }
 
-# log
-# 
-# Print a datestamp, unique random id, hostname, process id, and message.
-#
-# Syntax:
-#
-# ```sh
-# log <message>
-# => <datestamp> <unique random id> <hostname> <process id> <message>
-# ```
-#
-# Example:
-#
-# ```sh
-# log "my message"
-# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 my message
-# ```
-#
-# We prefer this log file format for many of our scripts because we prefer
-# logging the additional diagnositc information that we use for our systems:
-# the datetime with nanosecond-friendly format and timezone-friendly format,
-# unique random id a.k.a. zid, hostname, and process number.
-#
-log() {
-        printf '%s %s %s %s\n' "$( now )" "$( zid )" "$( hostname )" $$ "$*"
-}
-
 # zid
-# 
+#
 # Generate a 32-bit secure random lowercase hex identifier.
 #
 # Syntax:
@@ -757,7 +767,7 @@ zid() {
 }
 
 # ask
-# 
+#
 # Prompt the user for a line of input, then return a trimmed string.
 #
 # Syntax:
@@ -773,13 +783,13 @@ zid() {
 # ask
 # => prompt the user for a line of input
 # ```
-# 
+#
 ask() {
         read -r x ; printf %s "$x" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//'
 }
 
 # utf8
-# 
+#
 # Should the program print UTF-8 characters such as accents and emoji?
 #
 # Syntax:
@@ -800,10 +810,266 @@ ask() {
 # This implementation is a heuristic and subject to change as we learn more.
 # This checks the locale charmap. However, it's possible for the charmap to
 # be set to UTF-8, but the terminal is unable to render UTF-8 characters.
-# 
+#
 utf8() {
         if [ "$(locale charmap)" = "UTF-8" ]; then return 0; fi
         return 1
+}
+
+##
+# Log
+##
+
+# log
+#
+# Print a datestamp, unique random id, hostname, process id, log level, and message.
+#
+# Syntax:
+#
+# ```sh
+# log <log level> <message>
+# => <datestamp> <unique random id> <hostname> <process id> <log level> <message>
+# ```
+#
+# Example:
+#
+# ```sh
+# log $LOG_ALERT "my message"
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 1 my message
+# ```
+#
+# We prefer this log file format for many of our scripts because we prefer
+# logging the additional diagnositc information that we use for our systems:
+# the datetime with nanosecond-friendly format and timezone-friendly format,
+# unique random id a.k.a. zid, hostname, and process number.
+#
+# This prints if and only if log level <= LOG_LEVEL environment variable,
+# or the LOG_LEVEL environment variable is not set.
+#
+# The log level constants that are defined by syslog and this script:
+#
+# - LOG_EMERG=0 (Emergency: System is unusable)
+# - LOG_ALERT=1 (Alert: Action must be taken immediately)
+# - LOG_CRIT=2 (Critical conditions)
+# - LOG_ERR=3 (Error conditions)
+# - LOG_WARNING=4 (Warning conditions)
+# - LOG_NOTICE=5 (Notice: normal but significant conditions)
+# - LOG_INFO=6 (Informational)
+# - LOG_DEBUG=7 (Debug-level messages)
+# - LOG_TRACE=8 (Trace-level messages)
+#
+# This kit also provides these log functions that are more convenient:
+#
+# - log_emerg
+# - log_alert
+# - log_crit
+# - log_err
+# - log_warn
+# - log_notice
+# - log_info
+# - log_debug
+# - log_trace
+#
+log() {
+    [ "$1" -le "${LOG_LEVEL:-8}" ] && printf '%s %s %s %s %s\n' "$( now )" "$( zid )" "$( hostname )" $$ "$*"
+}
+
+# log_emerg
+#
+# Log level emerg: log a datestamp, unique random id, hostname, process id, log level, and message.
+#
+# Syntax:
+#
+# ```sh
+# log_emerg <message>
+# => log $LOG_EMERG <message>
+# ```
+#
+# Example:
+#
+# ```sh
+# log_emerg "my message"
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 0 my message
+# ```
+#
+log_emerg() {
+    log $LOG_EMERG "$@"
+}
+
+# log_alert
+#
+# Log level alert: log a datestamp, unique random id, hostname, process id, log level, and message.
+#
+# Syntax:
+#
+# ```sh
+# log_alert <message>
+# => log $LOG_ALERT <message>
+# ```
+#
+# Example:
+#
+# ```sh
+# log_alert "my message"
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 1 my message
+# ```
+#
+log_alert() {
+    log $LOG_ALERT "$@"
+}
+
+# log_crit
+#
+# Log level crit: log a datestamp, unique random id, hostname, process id, log level, and message.
+#
+# Syntax:
+#
+# ```sh
+# log_crit <message>
+# => log $LOG_CRIT <message>
+# ```
+#
+# Example:
+#
+# ```sh
+# log_crit "my message"
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 2 my message
+# ```
+#
+log_crit() {
+    log $LOG_CRIT "$@"
+}
+
+# log_err
+#
+# Log level err: log a datestamp, unique random id, hostname, process id, log level, and message.
+#
+# Syntax:
+#
+# ```sh
+# log_err <message>
+# => log $LOG_ERR <message>
+# ```
+#
+# Example:
+#
+# ```sh
+# log_err "my message"
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 3 my message
+# ```
+#
+log_err() {
+    log $LOG_ERR "$@"
+}
+
+# log_warn
+#
+# Log level warn: log a datestamp, unique random id, hostname, process id, log level, and message.
+#
+# Syntax:
+#
+# ```sh
+# log_warn <message>
+# => log $LOG_WARN <message>
+# ```
+#
+# Example:
+#
+# ```sh
+# log_warn "my message"
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 4 my message
+# ```
+#
+log_warn() {
+    log $LOG_WARN "$@"
+}
+
+# log_notice
+#
+# Log level notice: log a datestamp, unique random id, hostname, process id, log level, and message.
+#
+# Syntax:
+#
+# ```sh
+# log_notice <message>
+# => log $LOG_NOTICE <message>
+# ```
+#
+# Example:
+#
+# ```sh
+# log_notice "my message"
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 5 my message
+# ```
+#
+log_notice() {
+    log $LOG_NOTICE "$@"
+}
+
+# log_info
+#
+# Log level info: log a datestamp, unique random id, hostname, process id, log level, and message.
+#
+# Syntax:
+#
+# ```sh
+# log_info <message>
+# => log $LOG_INFO <message>
+# ```
+#
+# Example:
+#
+# ```sh
+# log_info "my message"
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 6 my message
+# ```
+#
+log_info() {
+    log $LOG_INFO "$@"
+}
+
+# log_debug
+#
+# Log level debug: log a datestamp, unique random id, hostname, process id, log level, and message.
+#
+# Syntax:
+#
+# ```sh
+# log_debug <message>
+# => log $LOG_DEBUG <message>
+# ```
+#
+# Example:
+#
+# ```sh
+# log_debug "my message"
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 7 my message
+# ```
+#
+log_debug() {
+    log $LOG_DEBUG "$@"
+}
+
+# log_trace
+#
+# Log level trace: log a datestamp, unique random id, hostname, process id, log level, and message.
+#
+# Syntax:
+#
+# ```sh
+# log_trace <message>
+# => log $LOG_TRACE <message>
+# ```
+#
+# Example:
+#
+# ```sh
+# log_trace "my message"
+# => 2021-05-04T22:57:54.000000000+00:00 7e7151dc24bd511098ebb248771d8ffb abc.example.com 1234 8 my message
+# ```
+#
+log_trace() {
+    log $LOG_TRACE "$@"
 }
 
 ##
@@ -811,7 +1077,7 @@ utf8() {
 ##
 
 # Color settings
-# 
+#
 # Set pretty display of messages for success, warning, failure.
 #
 # If you wish to set these in your terminal, and your terminal supports
@@ -820,15 +1086,15 @@ utf8() {
 # ```sh
 # export PRINT_SUCCESS_START=$'\E[32m✅ Success: '
 # export PRINT_SUCCESS_START=$'\E[35m⚠️ Warning: '
-# export PRINT_FAILURE_START=$'\E[31m❌ Failure: '
+# export PRINT_FAILURE_START=$'\E[31m⛔ Failure: '
 # ```
-# 
+#
 if color && utf8; then
         : ${PRINT_SUCCESS_START='[32m✅ Success: '}
         : ${PRINT_SUCCESS_STOP='[0m'}
         : ${PRINT_WARNING_START='[33m⚠️ Warning: '}
         : ${PRINT_WARNING_START='[0m'}
-        : ${PRINT_FAILURE_START='[31m❌ Failure: '}
+        : ${PRINT_FAILURE_START='[31m⛔ Failure: '}
         : ${PRINT_FAILURE_STOP='[0m'}
 else
         : ${PRINT_SUCCESS_START='Success: '}
@@ -840,7 +1106,7 @@ else
 fi
 
 # print_success
-# 
+#
 # Print a success message to stdout.
 #
 # Syntax:
@@ -867,7 +1133,7 @@ print_success() {
 }
 
 # print_warning
-# 
+#
 # Print a warning message to stdout.
 #
 # Syntax:
@@ -894,7 +1160,7 @@ print_warning() {
 }
 
 # print_failure
-# 
+#
 # Print a failure message to stdout.
 #
 # Syntax:
@@ -925,7 +1191,7 @@ print_failure() {
 ##
 
 # now
-# 
+#
 # Get a datetime as our preferred ISO format.
 #
 # Syntax:
@@ -970,7 +1236,7 @@ now() {
 }
 
 # now_date
-# 
+#
 # Get a date as our preferred ISO format
 #
 # Syntax:
@@ -1000,7 +1266,7 @@ now_date() {
 }
 
 # sec
-# 
+#
 # Get the current time in POSIX seconds.
 #
 # Syntax:
@@ -1022,7 +1288,7 @@ sec() {
 }
 
 # age
-# 
+#
 # Get the age of a POSIX epoch time compared to now.
 #
 # Syntax:
@@ -1044,7 +1310,7 @@ age() {
 }
 
 # age_lt
-# 
+#
 # Is the age of a POSIX epoch time compard to now
 # less than a given number of seconds? A.k.a. newer?
 #
@@ -1067,7 +1333,7 @@ age_lt() {
 }
 
 # age_gt
-# 
+#
 # Is the age of a POSIX epoch time compard to now
 # greater than a given number of seconds? A.k.a. older?
 #
@@ -1085,12 +1351,12 @@ age_lt() {
 # => true
 # ```
 #
-older() {
+age_gt() {
         [ "$(( $(date "+%s") - $1 ))" -gt "$2" ]
 }
 
 # leap_year
-# 
+#
 # Is the year a leap year?
 #
 # Syntax:
@@ -1109,11 +1375,11 @@ older() {
 # ```
 #
 leap_year() {
-   (( !($1 % 4) && ($1 % 100 || !($1 % 400) ) ))
+        (( !($1 % 4) && ($1 % 100 || !($1 % 400) ) ))
 }
 
 # datetime_mday_max
-# 
+#
 # Given a datetime (or year and month), calculate the maximum month-day number.
 #
 # Syntax:
@@ -1143,7 +1409,7 @@ datetime_mday_max() {
 }
 
 # datetime_format_for_at_command
-# 
+#
 # Given a datetime as ISO 8601 format "yyyy-mm-ddThh:mm:ss"
 # return the format for `at` command "yyyymmdddhhmm.ss".
 #
@@ -1190,7 +1456,7 @@ datetime_format_for_pmset_command() {
 }
 
 # datetime_add
-# 
+#
 # Given a datetime, add years, months, days, hours, minutes, seconds.
 #
 # Syntax:
@@ -1244,7 +1510,7 @@ datetime_add() {
 ##
 
 # directory_exists
-# 
+#
 # Does a directory exist?
 #
 # Syntax:
@@ -1269,7 +1535,7 @@ directory_exists() {
 }
 
 # directory_exists_or_die
-# 
+#
 # Does a directory exist? If no then die.
 #
 # Syntax:
@@ -1287,7 +1553,7 @@ directory_exists() {
 #
 # directory_exists_or_die /loremipsum
 # STDERR=> Directory needed: /loremipsum
-# => exit $EXIT_IOERR
+# EXIT=> $EXIT_IOERR
 # ```
 #
 directory_exists_or_die() {
@@ -1295,7 +1561,7 @@ directory_exists_or_die() {
 }
 
 # file_exists
-# 
+#
 # Does a file exist?
 #
 # Syntax:
@@ -1320,7 +1586,7 @@ file_exists() {
 }
 
 # file_exists_or_die
-# 
+#
 # Does a file exist? If no then die.
 #
 # Syntax:
@@ -1338,7 +1604,7 @@ file_exists() {
 #
 # file_exists_or_die loremipsum.txt
 # STDERR=> File needed: loremipsum.txt
-# => exit $EXIT_IOERR
+# EXIT=> $EXIT_IOERR
 # ```
 #
 file_exists_or_die() {
@@ -1346,7 +1612,7 @@ file_exists_or_die() {
 }
 
 # symlink_exists
-# 
+#
 # Does a symlink exist?
 #
 # Syntax:
@@ -1371,7 +1637,7 @@ symlink_exists() {
 }
 
 # symlink_exists_or_die
-# 
+#
 # Does a symlink exist? If no then die.
 #
 # Syntax:
@@ -1389,7 +1655,7 @@ symlink_exists() {
 #
 # symlink_exists_or_die loremipsum.txt
 # STDERR=> Symlink needed: loremipsum.txt
-# => exit $EXIT_IOERR
+# EXIT=> $EXIT_IOERR
 # ```
 #
 symlink_exists_or_die() {
@@ -1397,7 +1663,7 @@ symlink_exists_or_die() {
 }
 
 # command_exists
-# 
+#
 # Does a command exist?
 #
 # Syntax:
@@ -1422,7 +1688,7 @@ command_exists() {
 }
 
 # command_exists_or_die
-# 
+#
 # Does a command exist? If no then die.
 #
 # Syntax:
@@ -1440,7 +1706,7 @@ command_exists() {
 #
 # command_exists_or_die loremipsum
 # STDERR=> Command needed: loremipsum
-# => exit 1
+# EXIT=> $EXIT_UNAVAILABLE
 # ```
 #
 command_exists_or_die() {
@@ -1448,7 +1714,7 @@ command_exists_or_die() {
 }
 
 # command_version_exists
-# 
+#
 # Does a command version exist?
 #
 # Syntax:
@@ -1463,17 +1729,17 @@ command_exists_or_die() {
 # ```sh
 # command_version_exists grep 2.2 1.1
 # => true
-# 
+#
 # command_version_exists grep 1.1 2.2
 # => false
 # ```
 #
 command_version_exists() {
-        command_exists "$1" && version "$2" "$3" 
+        command_exists "$1" && version "$2" "$3"
 }
 
 # command_version_exists_or_die
-# 
+#
 # Does a command version exist? If no then die.
 #
 # Syntax:
@@ -1491,15 +1757,15 @@ command_version_exists() {
 #
 # command_version_exists_or_die grep 1.1 2.2
 # STDERR=> Command and version needed: grep >= 3.x
-# => exit 1
+# EXIT=> $EXIT_UNAVAILABLE
 # ```
 #
 command_version_exists_or_die() {
-        command_version_exists "$1" "$2" "$3}" || die "$EXIT_UNAVAILABLE" "Command $1 must exist and version $2 must be >= $3"
+        command_version_exists "$1" "$2" "$3" || die "$EXIT_UNAVAILABLE" "Command $1 must exist and version $2 must be >= $3"
 }
 
 # var_exists
-# 
+#
 # Does a variable exist?
 #
 # Syntax:
@@ -1524,7 +1790,7 @@ var_exists() {
 }
 
 # var_exists_or_die
-# 
+#
 # Does a variable exist? If no then die.
 #
 # Syntax:
@@ -1542,7 +1808,7 @@ var_exists() {
 #
 # var_exists_or_die FOO
 # STDERR=> Variable needed: FOO
-# => exit 1
+# EXIT=> $EXIT_CONFIG
 # ```
 #
 var_exists_or_die() {
@@ -1550,7 +1816,7 @@ var_exists_or_die() {
 }
 
 # version
-# 
+#
 # Is a version number sufficient?
 #
 # Syntax:
@@ -1563,7 +1829,7 @@ var_exists_or_die() {
 # Example:
 #
 # ```sh
-# version 2.2 1.1 
+# version 2.2 1.1
 # => true
 #
 # version 1.1 2.2
@@ -1593,6 +1859,7 @@ version() {
 #
 # version_or_die 1.1 2.2
 # STDERR=> Version 1.1 is not >= 2.2
+# EXIT=> $EXIT_CONFIG
 # ```
 #
 version_or_die() {
@@ -1604,7 +1871,7 @@ version_or_die() {
 ##
 
 # int
-# 
+#
 # Convert a number string to an integer number string.
 #
 # Syntax:
@@ -1620,13 +1887,13 @@ version_or_die() {
 # int 1.23
 # => 1
 # ```
-# 
+#
 int() {
         printf %s\\n "$1" | awk '{ print int($0); exit }'
 }
 
 # sum
-# 
+#
 # Print the sum of numbers.
 #
 # Syntax:
@@ -1652,7 +1919,7 @@ sum() {
 ##
 
 # cmp_alnums
-# 
+#
 # Compare alnums as groups, such as for word version strings.
 #
 # Syntax:
@@ -1679,27 +1946,27 @@ cmp_alnums() {
         if [ "$1" = "$2" ]; then
                 echo "0"; return 0
         fi
-	a=$(printf %s\\n "$1" | sed 's/^[^[:alnum:]]*//')
-	b=$(printf %s\\n "$2" | sed 's/^[^[:alnum:]]*//')
-	while true; do
-		x=$(printf %s\\n "$a" | sed 's/[^[:alnum:]].*//')
-		y=$(printf %s\\n "$b" | sed 's/[^[:alnum:]].*//')
-		if [ "$x" = "" ] && [ "$y" = "" ]; then
-			echo "0"; return 0
-		fi
-		if [ "$x" = "" ] || [ "$(expr "$x" \< "$y")" = 1 ]; then
-			echo "-1"; return 0
-		fi
-		if [ "$y" = "" ] || [ "$(expr "$x" \> "$y")" = 1 ]; then
-			echo "1"; return 0
-		fi
-		a=$(printf %s\\n "$a" | sed 's/^[[:alnum:]]*[^[:alnum:]]*//')
-		b=$(printf %s\\n "$b" | sed 's/^[[:alnum:]]*[^[:alnum:]]*//')
-	done
+    	a=$(printf %s\\n "$1" | sed 's/^[^[:alnum:]]*//')
+    	b=$(printf %s\\n "$2" | sed 's/^[^[:alnum:]]*//')
+    	while true; do
+    		x=$(printf %s\\n "$a" | sed 's/[^[:alnum:]].*//')
+    		y=$(printf %s\\n "$b" | sed 's/[^[:alnum:]].*//')
+    		if [ "$x" = "" ] && [ "$y" = "" ]; then
+    			echo "0"; return 0
+    		fi
+    		if [ "$x" = "" ] || [ "$(expr "$x" \< "$y")" = 1 ]; then
+    			echo "-1"; return 0
+    		fi
+    		if [ "$y" = "" ] || [ "$(expr "$x" \> "$y")" = 1 ]; then
+    			echo "1"; return 0
+    		fi
+    		a=$(printf %s\\n "$a" | sed 's/^[[:alnum:]]*[^[:alnum:]]*//')
+    		b=$(printf %s\\n "$b" | sed 's/^[[:alnum:]]*[^[:alnum:]]*//')
+    	done
 }
 
 # cmp_digits
-# 
+#
 # Compare digits as groups, such as for numeric version strings.
 #
 # Syntax:
@@ -1726,23 +1993,23 @@ cmp_digits() {
         if [ "$1" = "$2" ]; then
                 echo "0"; return 0
         fi
-	a=$(printf %s\\n "$1" | sed 's/^[^[:digit:]]*//')
-	b=$(printf %s\\n "$2" | sed 's/^[^[:digit:]]*//')
-	while true; do
-		x=$(printf %s\\n "$a" | sed 's/[^[:digit:]].*//')
-		y=$(printf %s\\n "$b" | sed 's/[^[:digit:]].*//')
-		if [ "$x" = "" ] && [ "$y" = "" ]; then
-			echo "0"; return 0
-		fi
-		if [ "$x" = "" ] || [ $x -lt $y ]; then
-			echo "-1"; return 0
-		fi
-		if [ "$y" = "" ] || [ $x -gt $y ]; then
-			echo "1"; return 0
-		fi
-		a=$(printf %s\\n "$a" | sed 's/^[[:digit:]]*[^[:digit:]]*//')
-		b=$(printf %s\\n "$b" | sed 's/^[[:digit:]]*[^[:digit:]]*//')
-	done
+    	a=$(printf %s\\n "$1" | sed 's/^[^[:digit:]]*//')
+    	b=$(printf %s\\n "$2" | sed 's/^[^[:digit:]]*//')
+    	while true; do
+    		x=$(printf %s\\n "$a" | sed 's/[^[:digit:]].*//')
+    		y=$(printf %s\\n "$b" | sed 's/[^[:digit:]].*//')
+    		if [ "$x" = "" ] && [ "$y" = "" ]; then
+    			echo "0"; return 0
+    		fi
+    		if [ "$x" = "" ] || [ $x -lt $y ]; then
+    			echo "-1"; return 0
+    		fi
+    		if [ "$y" = "" ] || [ $x -gt $y ]; then
+    			echo "1"; return 0
+    		fi
+    		a=$(printf %s\\n "$a" | sed 's/^[[:digit:]]*[^[:digit:]]*//')
+    		b=$(printf %s\\n "$b" | sed 's/^[[:digit:]]*[^[:digit:]]*//')
+    	done
 }
 
 ##
@@ -1750,7 +2017,7 @@ cmp_digits() {
 ##
 
 # dot_all
-# 
+#
 # Source all the executable files in a given directory and subdirectories.
 #
 # Syntax:
@@ -1774,7 +2041,7 @@ dot_all() {
 }
 
 # run_all
-# 
+#
 # Run all the executable files in a given directory and subdirectories.
 #
 # Syntax:
@@ -1798,7 +2065,7 @@ run_all() {
 }
 
 # sh_all
-# 
+#
 # Shell all the executable files in a given directory and subdirectories.
 #
 # Syntax:
@@ -1822,7 +2089,7 @@ sh_all() {
 }
 
 # rm_all
-# 
+#
 # Remove all the files in a given directory and subdirectories-- use with caution.
 #
 # Syntax:
@@ -1850,7 +2117,7 @@ rm_all() {
 ##
 
 # trim
-# 
+#
 # Remove any space characters at the text's start or finish.
 #
 # Syntax:
@@ -1872,7 +2139,7 @@ trim() {
 }
 
 # slug
-# 
+#
 # Convert a string from any characters to solely lowercase and single internal
 # dash characters.
 #
@@ -1895,7 +2162,7 @@ slug() {
 }
 
 # slugs
-# 
+#
 # Convert a string from any characters to solely lowercase and single internal
 # dash characters and slash characters.
 #
@@ -1918,7 +2185,7 @@ slugs(){
 }
 
 # upper_case
-# 
+#
 # Convert text from any lowercase letters to uppercase letters.
 #
 # Syntax:
@@ -1940,7 +2207,7 @@ upper_case() {
 }
 
 # lower_case
-# 
+#
 # Convert text from any uppercase letters to lowercase letters.
 #
 # Syntax:
@@ -1962,7 +2229,7 @@ lower_case() {
 }
 
 # kebab_case
-# 
+#
 # Convert a string from any characters to solely alphanumeric and single internal dash characters.
 #
 # Syntax:
@@ -1984,7 +2251,7 @@ kebab_case() {
 }
 
 # snake_case
-# 
+#
 # Convert a string from any characters to solely alphanumeric and single internal underscore characters.
 #
 # Syntax:
@@ -2006,7 +2273,7 @@ snake_case() {
 }
 
 # space_case
-# 
+#
 # Convert a string from any characters to solely alphanumeric and single internal space characters.
 #
 # Syntax:
@@ -2028,7 +2295,7 @@ space_case() {
 }
 
 # touch_case
-# 
+#
 # Convert a string from any characters to solely a command "touch -t" timestamp format.
 #
 # Syntax:
@@ -2050,7 +2317,7 @@ touch_case() {
 }
 
 # select_character_class
-# 
+#
 # Get a string's characters that match a class, with optional offset and length.
 #
 # Syntax:
@@ -2089,7 +2356,7 @@ select_character_class() {
 }
 
 # reject_character_class
-# 
+#
 # Get a string's characters that don't match a class, with optional offset and length.
 #
 # Syntax:
@@ -2187,7 +2454,7 @@ random_char() {
 }
 
 # random_char_alnum
-# 
+#
 # Random characters using class [:alnum:].
 #
 # Syntax:
@@ -2209,7 +2476,7 @@ random_char_alnum() {
 }
 
 # random_char_alpha
-# 
+#
 # Random characters using class [:alpha:].
 #
 # Syntax:
@@ -2231,7 +2498,7 @@ random_char_alpha() {
 }
 
 # random_char_blank
-# 
+#
 # Random characters using class [:blank:].
 #
 # Syntax:
@@ -2253,7 +2520,7 @@ random_char_blank() {
 }
 
 # random_char_cntrl
-# 
+#
 # Random characters using class [:cntrl:].
 #
 # Syntax:
@@ -2275,7 +2542,7 @@ random_char_cntrl() {
 }
 
 # random_char_digit
-# 
+#
 # Random characters using class [:digit:].
 #
 # Syntax:
@@ -2297,7 +2564,7 @@ random_char_digit() {
 }
 
 # random_char_graph
-# 
+#
 # Random characters using class [:graph:].
 #
 # Syntax:
@@ -2319,7 +2586,7 @@ random_char_graph() {
 }
 
 # random_char_lower
-# 
+#
 # Random characters using class [:lower:].
 #
 # Syntax:
@@ -2341,7 +2608,7 @@ random_char_lower() {
 }
 
 # random_char_lower_digit
-# 
+#
 # Random characters using classes [:lower:][:digit].
 #
 # Syntax:
@@ -2363,7 +2630,7 @@ random_char_lower_digit() {
 }
 
 # random_char_upper
-# 
+#
 # Random characters using class [:upper:].
 #
 # Syntax:
@@ -2385,7 +2652,7 @@ random_char_upper() {
 }
 
 # random_char_upper_digit
-# 
+#
 # Random characters using classes [:upper:][:digit:].
 #
 # Syntax:
@@ -2407,7 +2674,7 @@ random_char_upper_digit() {
 }
 
 # random_char_print
-# 
+#
 # Random characters using class [:print:].
 #
 # Syntax:
@@ -2429,7 +2696,7 @@ random_char_print() {
 }
 
 # random_char_space
-# 
+#
 # Random characters using class [:space:].
 #
 # Syntax:
@@ -2451,7 +2718,7 @@ random_char_space() {
 }
 
 # random_char_xdigit
-# 
+#
 # Random characters using class [:xdigit:].
 #
 # Syntax:
@@ -2477,7 +2744,7 @@ random_char_xdigit() {
 ##
 
 # array_n
-# 
+#
 # Get the array number of fields a.k.a. length a.k.a. size.
 #
 # Syntax:
@@ -2500,7 +2767,7 @@ array_n() {
 }
 
 # array_i
-# 
+#
 # Get the array element at index `i` which is 1-based.
 #
 # Syntax:
@@ -2525,7 +2792,7 @@ array_n() {
 # Bash syntax can have more power this way if you prefer it:
 #
 # ```sh
-# [ $# == 3 ] && awk -F "$2" "{print \$$3}" <<< "$1" || awk "{print \$$2}" <<< "$1"
+# [# == 3 ] && awk -F "$2" "{print \$$3}" <<< "$1" || awk "{print \$$2}" <<< "$1"
 # ```
 #
 array_i() {
@@ -2544,7 +2811,7 @@ array_i() {
 }
 
 # array_first
-# 
+#
 # Get the array's first element.
 #
 # Syntax:
@@ -2567,7 +2834,7 @@ array_first() {
 }
 
 # array_last
-# 
+#
 # Get the array's last element.
 #
 # Syntax:
@@ -2592,7 +2859,7 @@ array_last() {
 }
 
 # array_car
-# 
+#
 # Get the array's car element a.k.a. first item.
 #
 # Syntax:
@@ -2615,7 +2882,7 @@ array_car() {
 }
 
 # array_cdr
-# 
+#
 # Get the array's cdr items a.k.a. everything after the first item.
 #
 # Syntax:
@@ -2643,7 +2910,7 @@ array_cdr() {
 ##
 
 # mktemp_dir
-# 
+#
 # Make a temporary directory path.
 #
 # Syntax:
@@ -2672,7 +2939,7 @@ mktemp_directory() {
 }
 
 # mktemp_file
-# 
+#
 # Make a temporary file path.
 #
 # Syntax:
@@ -2705,7 +2972,7 @@ mktemp_file() {
 ##
 
 # file_media_type
-# 
+#
 # Get a file's media type a.k.a. mime type such as "text/plain".
 #
 # Syntax:
@@ -2727,7 +2994,7 @@ file_media_type() {
 }
 
 # file_media_type_supertype
-# 
+#
 # Get a file's media type type a.k.a. mime type such as "text".
 #
 # Syntax:
@@ -2749,7 +3016,7 @@ file_media_type_supertype() {
 }
 
 # file_media_type_subtype
-# 
+#
 # Get a file's media type subtype a.k.a. mime type such as "plain".
 #
 # Syntax:
@@ -2775,7 +3042,7 @@ file_media_type_subtype() {
 ##
 
 # font_name_exists
-# 
+#
 # Does a font name exist on this system?
 #
 # Syntax:
@@ -2800,7 +3067,7 @@ font_name_exists() {
 }
 
 # font_name_exists_or_die
-# 
+#
 # Does a font name exist on this system? If no then die.
 #
 # Syntax:
@@ -2818,7 +3085,7 @@ font_name_exists() {
 #
 # font_name_exists_or_die Foo
 # STDERR=> Font needed: Foo
-# => exit 1
+# EXIT=> $EXIT_UNAVAILABLE
 # ```
 #
 font_name_exists_or_die() {
@@ -2830,7 +3097,7 @@ font_name_exists_or_die() {
 ##
 
 # file_ends_with_newline
-# 
+#
 # Does a file end with a newline?
 #
 # Syntax:
@@ -2857,7 +3124,7 @@ file_ends_with_newline() {
 ##
 
 # user_dir
-# 
+#
 # Get a user-specific directory via env var, or XDG setting, or HOME.
 #
 # Syntax:
@@ -2939,7 +3206,7 @@ user_dir(){
 ##
 
 # assert_test
-# 
+#
 # Assert a test utility command succeeds.
 #
 # Syntax:
@@ -2964,7 +3231,7 @@ assert_test() {
 }
 
 # assert_empty
-# 
+#
 # Assert a value is empty.
 #
 # Syntax:
@@ -2989,7 +3256,7 @@ assert_empty() {
 }
 
 # assert_not_empty
-# 
+#
 # Assert a value is not empty.
 #
 # Syntax:
@@ -3014,7 +3281,7 @@ assert_not_empty() {
 }
 
 # assert_int_eq
-# 
+#
 # Assert an integer is equal to another integer.
 #
 # Syntax:
@@ -3039,7 +3306,7 @@ assert_int_eq() {
 }
 
 # assert_int_ne
-# 
+#
 # Assert an integer is not equal to another integer.
 #
 # Syntax:
@@ -3064,7 +3331,7 @@ assert_int_ne() {
 }
 
 # assert_int_ge
-# 
+#
 # Assert an integer is greater than or equal to another integer.
 #
 # Syntax:
@@ -3089,7 +3356,7 @@ assert_int_ge() {
 }
 
 # assert_int_gt
-# 
+#
 # Assert an integer is greater than another integer.
 #
 # Syntax:
@@ -3114,7 +3381,7 @@ assert_int_gt() {
 }
 
 # assert_int_le
-# 
+#
 # Assert an integer is less than or equal to another integer.
 #
 # Syntax:
@@ -3139,7 +3406,7 @@ assert_int_le() {
 }
 
 # assert_int_lt
-# 
+#
 # Assert an integer is less than to another integer.
 #
 # Syntax:
@@ -3164,7 +3431,7 @@ assert_int_lt() {
 }
 
 # assert_str_eq
-# 
+#
 # Assert a string is equal to another string.
 #
 # Syntax:
@@ -3189,7 +3456,7 @@ assert_str_eq() {
 }
 
 # assert_str_ne
-# 
+#
 # Assert a string is not equal to another string.
 #
 # Syntax:
@@ -3214,7 +3481,7 @@ assert_str_ne() {
 }
 
 # assert_str_ge
-# 
+#
 # Assert a string is greater than or equal to another string.
 #
 # Syntax:
@@ -3239,7 +3506,7 @@ assert_str_ge() {
 }
 
 # assert_str_gt
-# 
+#
 # Assert a string is greater than another string.
 #
 # Syntax:
@@ -3264,7 +3531,7 @@ assert_str_gt() {
 }
 
 # assert_str_le
-# 
+#
 # Assert a string is less than or equal to another string.
 #
 # Syntax:
@@ -3289,7 +3556,7 @@ assert_str_le() {
 }
 
 # assert_str_lt
-# 
+#
 # Assert a string is less than to another string.
 #
 # Syntax:
@@ -3314,7 +3581,7 @@ assert_str_lt() {
 }
 
 # assert_str_starts_with
-# 
+#
 # Assert a string starts with a substring.
 #
 # Syntax:
@@ -3339,7 +3606,7 @@ assert_str_starts_with() {
 }
 
 # assert_str_ends_with
-# 
+#
 # Assert a string ends with with a substring.
 #
 # Syntax:
@@ -3364,7 +3631,7 @@ assert_str_ends_with() {
 }
 
 # assert_eval_int_eq_x
-# 
+#
 # Assert an eval into an integer is equal to an expression.
 #
 # Syntax:
@@ -3391,7 +3658,7 @@ assert_eval_int_eq_x() {
 }
 
 # assert_eval_str_eq_x
-# 
+#
 # Assert an eval into a string is equal to an expression.
 #
 # Syntax:

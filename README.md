@@ -12,6 +12,7 @@ Documentation:
 
 - [Functions](https://github.com/SixArm/unix-shell-script-kit/tree/main/doc/functions/)
 - [Color codes](https://github.com/SixArm/unix-shell-script-kit/tree/main/doc/color-codes/)
+- [Log level codes](https://github.com/SixArm/unix-shell-script-kit/tree/main/doc/log-level-codes/)
 - [Exit codes](https://github.com/SixArm/unix-shell-script-kit/tree/main/doc/exit-codes/)
 - [Assert testing](https://github.com/SixArm/unix-shell-script-kit/tree/main/doc/assert-testing/)
 
@@ -155,6 +156,18 @@ Color codes:
 - COLOR_BG_CYAN
 - COLOR_BG_WHITE
 
+Log level codes:
+
+- LOG_EMERG=0
+- LOG_ALERT=1
+- LOG_CRIT=2
+- LOG_ERR=3
+- LOG_WARN=4
+- LOG_NOTICE=5
+- LOG_INFO=6
+- LOG_DEBUG=7
+- LOG_TRACE=8
+
 Exit codes:
 
 - EXIT_SUCCESS=0
@@ -221,9 +234,9 @@ Assert testing:
 ## Tracking
 
 - Package: unix-shell-script-kit
-- Version: 13.0.1
+- Version: 13.1.0
 - Created: 2017-08-22T00:00:00Z
-- Updated: 2026-02-03T22:43:34Z
+- Updated: 2026-02-08T17:38:13Z
 - Website: https://github.com/sixarm/unix-shell-script-kit
 - License: GPL-2.0 or GPL-3.0 or contact us for more
 - Contact: Joel Parker Henderson (joel@sixarm.com)
