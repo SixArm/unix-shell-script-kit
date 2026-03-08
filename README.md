@@ -75,18 +75,25 @@ Functions:
 - datetime_format_for_pmset_command <datetime> -> <mm/dd/yy hh:mm:ss>
 - datetime_add <datetime> <years> <months> <days> <hours> <minutes> <seconds> -> <datetime>
 - directory_exists <directory_path> -> true or false
+- directory_exists_or_err <directory_path> -> true or err
 - directory_exists_or_die <directory_path> -> true or die
 - file_exists <file_path> -> true or false
+- file_exists_or_err <file_path> -> true or err
 - file_exists_or_die <file_path> -> true or die
 - symlink_exists <symlink_path> -> true or false
+- symlink_exists_or_err <symlink_path> -> true or err
 - symlink_exists_or_die <symlink_path> -> true or die
 - command_exists <command_name> -> true or false
+- command_exists_or_err <command_name> -> true or err
 - command_exists_or_die <command_name> -> true or die
 - command_version_exists <command_name> <version_actual> <version_minimum> -> true or false
+- command_version_exists_or_err <command_name> <version_actual> <version_minimum> -> true or err
 - command_version_exists_or_die <command_name> <version_actual> <version_minimum> -> true or die
 - var_exists <var_name> -> true or false
+- var_exists_or_err <var_name> -> true or err
 - var_exists_or_die <var_name> -> true or die
 - version <version_actual> <version_minimum> -> true or false
+- version_or_err <version_actual> <version_minimum> -> true or err
 - version_or_die <version_actual> <version_minimum> -> true or die
 - int <number_string> -> integer
 - sum <number> ... -> sum of numbers
@@ -234,9 +241,9 @@ Assert testing:
 ## Tracking
 
 - Package: unix-shell-script-kit
-- Version: 13.1.0
+- Version: 13.2.0
 - Created: 2017-08-22T00:00:00Z
-- Updated: 2026-02-08T17:38:13Z
+- Updated: 2026-03-08T12:45:01Z
 - Website: https://github.com/sixarm/unix-shell-script-kit
 - License: GPL-2.0 or GPL-3.0 or contact us for more
 - Contact: Joel Parker Henderson (joel@sixarm.com)

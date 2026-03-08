@@ -9,9 +9,7 @@ Functions:
 - color -> true or false
 - out <message> -> message
 - err <message> -> message
-- die <code> <message>
-- big <message>
-- zid -> <32-bit secure random lowercase hex identifier>
+- die <exit code> <message>
 - ask -> <prompt>
 - utf8 -> true or false
 - log <log level> <message> -> <datestamp> <unique random id> <hostname> <process id> <log level> <message>
@@ -39,18 +37,25 @@ Functions:
 - datetime_format_for_pmset_command <datetime> -> <mm/dd/yy hh:mm:ss>
 - datetime_add <datetime> <years> <months> <days> <hours> <minutes> <seconds> -> <datetime>
 - directory_exists <directory_path> -> true or false
+- directory_exists_or_err <directory_path> -> true or err
 - directory_exists_or_die <directory_path> -> true or die
 - file_exists <file_path> -> true or false
+- file_exists_or_err <file_path> -> true or err
 - file_exists_or_die <file_path> -> true or die
 - symlink_exists <symlink_path> -> true or false
+- symlink_exists_or_err <symlink_path> -> true or err
 - symlink_exists_or_die <symlink_path> -> true or die
 - command_exists <command_name> -> true or false
+- command_exists_or_err <command_name> -> true or err
 - command_exists_or_die <command_name> -> true or die
 - command_version_exists <command_name> <version_actual> <version_minimum> -> true or false
+- command_version_exists_or_err <command_name> <version_actual> <version_minimum> -> true or err
 - command_version_exists_or_die <command_name> <version_actual> <version_minimum> -> true or die
 - var_exists <var_name> -> true or false
+- var_exists_or_err <var_name> -> true or err
 - var_exists_or_die <var_name> -> true or die
 - version <version_actual> <version_minimum> -> true or false
+- version_or_err <version_actual> <version_minimum> -> true or err
 - version_or_die <version_actual> <version_minimum> -> true or die
 - int <number_string> -> integer
 - sum <number> ... -> sum of numbers
