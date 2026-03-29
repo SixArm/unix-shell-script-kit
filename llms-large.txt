@@ -51,9 +51,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 13.2.0
+#   * Version: 13.2.1
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2026-03-08T12:45:01Z
+#   * Updated: 2026-03-29T22:23:51Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -1552,11 +1552,11 @@ directory_exists() {
 # => true
 #
 # directory_exists_or_err /loremipsum
-# STDERR=> Directory needed: /loremipsum
+# STDERR=> Directory should exist: /loremipsum
 # ```
 #
 directory_exists_or_err() {
-        directory_exists "$1" || err "Directory needed: $1"
+        directory_exists "$1" || err "Directory should exist: $1"
 }
 
 # directory_exists_or_die
@@ -1577,12 +1577,12 @@ directory_exists_or_err() {
 # => true
 #
 # directory_exists_or_die /loremipsum
-# STDERR=> Directory needed: /loremipsum
+# STDERR=> Directory must exist: /loremipsum
 # EXIT=> $EXIT_IOERR
 # ```
 #
 directory_exists_or_die() {
-        directory_exists "$1" || die "$EXIT_IOERR" "Directory needed: $1"
+        directory_exists "$1" || die "$EXIT_IOERR" "Directory must exist: $1"
 }
 
 # file_exists
@@ -1610,7 +1610,6 @@ file_exists() {
         test -f "$1"
 }
 
-
 # file_exists_or_err
 #
 # Does a file exist? If no then err.
@@ -1629,11 +1628,11 @@ file_exists() {
 # => true
 #
 # file_exists_or_err loremipsum.txt
-# STDERR=> File needed: loremipsum.txt
+# STDERR=> File should exist: loremipsum.txt
 # ```
 #
 file_exists_or_err() {
-        file_exists "$1" || err "$EXIT_IOERR" "File needed: $1"
+        file_exists "$1" || err "File should exist: $1"
 }
 
 # file_exists_or_die
@@ -1654,12 +1653,88 @@ file_exists_or_err() {
 # => true
 #
 # file_exists_or_die loremipsum.txt
-# STDERR=> File needed: loremipsum.txt
+# STDERR=> File must exist: loremipsum.txt
 # EXIT=> $EXIT_IOERR
 # ```
 #
 file_exists_or_die() {
-        file_exists "$1" || err "File needed: $1"
+        file_exists "$1" || err "File must exist: $1"
+}
+
+# file_not_empty
+#
+# Is a file not empty?
+#
+# Syntax:
+#
+# ```sh
+# file_not_empty <file_path>
+# => true or false
+# ```
+#
+# Example:
+#
+# ```sh
+# file_not_empty foo.txt
+# => true
+#
+# file_not_empty loremipsum.txt
+# => false
+# ```
+#
+file_not_empty() {
+        test -s "$1"
+}
+
+# file_not_empty_or_err
+#
+# Is a file not empty? If no then err.
+#
+# Syntax:
+#
+# ```sh
+# file_not_empty_or_err <file_path>
+# => true or err
+# ```
+#
+# Example:
+#
+# ```sh
+# file_not_empty_or_err foo.txt
+# => true
+#
+# file_not_empty_or_err loremipsum.txt
+# STDERR=> File should be not empty: loremipsum.txt
+# ```
+#
+file_not_empty_or_err() {
+        file_not_empty "$1" || err "File should be not empty: $1"
+}
+
+# file_not_empty_or_die
+#
+# Does a file exist? If no then die.
+#
+# Syntax:
+#
+# ```sh
+# file_not_empty_or_die <file_path>
+# => true or die
+# ```
+#
+# Example:
+#
+# ```sh
+# file_not_empty_or_die foo.txt
+# => true
+#
+# file_not_empty_or_die loremipsum.txt
+# STDERR=> File must be not empty: loremipsum.txt
+# EXIT=> $EXIT_IOERR
+# ```
+#
+file_not_empty_or_die() {
+        file_not_empty "$1" || err "File must be not empty: $1"
 }
 
 # symlink_exists
@@ -1705,11 +1780,11 @@ symlink_exists() {
 # => true
 #
 # symlink_exists_or_err loremipsum.txt
-# STDERR=> Symlink needed: loremipsum.txt
+# STDERR=> Symlink should exist: loremipsum.txt
 # ```
 #
 symlink_exists_or_err() {
-        symlink_exists "$1" || err "Symlink needed: $1"
+        symlink_exists "$1" || err "Symlink should exist: $1"
 }
 
 # symlink_exists_or_die
@@ -1730,12 +1805,12 @@ symlink_exists_or_err() {
 # => true
 #
 # symlink_exists_or_die loremipsum.txt
-# STDERR=> Symlink needed: loremipsum.txt
+# STDERR=> Symlink must exist: loremipsum.txt
 # EXIT=> $EXIT_IOERR
 # ```
 #
 symlink_exists_or_die() {
-        symlink_exists "$1" || die "$EXIT_IOERR" "Symlink needed: $1"
+        symlink_exists "$1" || die "$EXIT_IOERR" "Symlink must exist: $1"
 }
 
 # command_exists
@@ -1781,11 +1856,11 @@ command_exists() {
 # => true
 #
 # command_exists_or_err loremipsum
-# STDERR=> Command needed: loremipsum
+# STDERR=> Command should exist: loremipsum
 # ```
 #
 command_exists_or_err() {
-        command_exists "$1" || err "Command needed: $1"
+        command_exists "$1" || err "Command should exist: $1"
 }
 
 # command_exists_or_die
@@ -1811,7 +1886,7 @@ command_exists_or_err() {
 # ```
 #
 command_exists_or_die() {
-        command_exists "$1" || die "$EXIT_UNAVAILABLE" "Command needed: $1"
+        command_exists "$1" || die "$EXIT_UNAVAILABLE" "Command must exist: $1"
 }
 
 # command_version_exists
@@ -1858,11 +1933,11 @@ command_version_exists() {
 # => true
 #
 # command_version_exists_or_err grep 1.1 2.2
-# STDERR=> Command and version needed: grep >= 3.x
+# STDERR=> Command version should exist: grep 1.1 >= 2.2
 # ```
 #
 command_version_exists_or_err() {
-        command_version_exists "$1" "$2" "$3" || err "Command $1 must exist and version $2 must be >= $3"
+        command_version_exists "$1" "$2" "$3" || err "Command version should exist: $1 $2 should be >= $3"
 }
 
 # command_version_exists_or_die
@@ -1883,12 +1958,12 @@ command_version_exists_or_err() {
 # => true
 #
 # command_version_exists_or_die grep 1.1 2.2
-# STDERR=> Command and version needed: grep >= 3.x
+# STDERR=> Command and version must exist: grep 1.1 >= 1.2
 # EXIT=> $EXIT_UNAVAILABLE
 # ```
 #
 command_version_exists_or_die() {
-        command_version_exists "$1" "$2" "$3" || die "$EXIT_UNAVAILABLE" "Command $1 must exist and version $2 must be >= $3"
+        command_version_exists "$1" "$2" "$3" || die "$EXIT_UNAVAILABLE" "Command version must exist: $1 $2 must be >= $3"
 }
 
 # var_exists
@@ -1934,11 +2009,11 @@ var_exists() {
 # => true
 #
 # var_exists_or_err FOO
-# STDERR=> Variable needed: FOO
+# STDERR=> Variable should exist: FOO
 # ```
 #
 var_exists_or_err() {
-        var_exists "$1" || err "Variable needed: $1"
+        var_exists "$1" || err "Variable should exist: $1"
 }
 
 # var_exists_or_die
@@ -1959,12 +2034,12 @@ var_exists_or_err() {
 # => true
 #
 # var_exists_or_die FOO
-# STDERR=> Variable needed: FOO
+# STDERR=> Variable must exist: FOO
 # EXIT=> $EXIT_CONFIG
 # ```
 #
 var_exists_or_die() {
-        var_exists "$1" || die "$EXIT_CONFIG" "Variable needed: $1"
+        var_exists "$1" || die "$EXIT_CONFIG" "Variable must exist: $1"
 }
 
 # version
@@ -2010,11 +2085,11 @@ version() {
 # => true
 #
 # version_or_err 1.1 2.2
-# STDERR=> Version 1.1 is not >= 2.2
+# STDERR=> Version 1.1 should be >= 2.2
 # ```
 #
 version_or_err() {
-        version "$1" "$2" || err "Version $1 must be >= $2"
+        version "$1" "$2" || err "Version $1 should be >= $2"
 }
 
 # version_or_die: ensure a version is sufficient
@@ -2035,7 +2110,7 @@ version_or_err() {
 # => true
 #
 # version_or_die 1.1 2.2
-# STDERR=> Version 1.1 is not >= 2.2
+# STDERR=> Version 1.1 must be >= 2.2
 # EXIT=> $EXIT_CONFIG
 # ```
 #
@@ -3086,43 +3161,66 @@ array_cdr() {
 # Make temp helpers
 ##
 
-# mktemp_dir
+# mktemp_directory
 #
-# Make a temporary directory path.
+# Create a temporary directory.
 #
 # Syntax:
 #
 # ```sh
-# mktemp_dir
+# mktemp_directory [base-directory]
 # =>  temporary directory path
 # ```
 #
 # Example:
 #
 # ```sh
-# mktemp_dir
-# => /var/folders/4f7b65122b0fb65b0fdad568a65dc97d
+# mktemp_directory
+# => /tmp/4f7b65122b0fb65b0fdad568a65dc97d
 # ```
+#
+# Example with base directory:
+#
+# ```sh
+# mktemp_directory /foo/bar
+# => /foo/bar/4f7b65122b0fb65b0fdad568a65dc97d
+# ```
+#
+# The base directory uses the first available `$1` or `$TMPDIR` or `/tmp`.
+# If you provide a base directory, then it must already exist and be usable.
+#
+# The mkdir command is atomic, and only reports success if it actually creates
+# the directory. So long as we do not use the -p option, we can be assured that
+# it actually creates a brand new directory, rather than following a symlink to
+# danger.
 #
 # Immediately after you make it, create a trap to remove it:
 #
 # ```sh
-# x=mktemp_directory
-# trap '{ rm -rf "$x"; }' EXIT
+# x=$(mktemp_directory)
+# cleanup() { test "$x" && rm -rf -- "$x"; }
+# trap cleanup EXIT HUP INT TERM
 # ```
 #
 mktemp_directory() {
-        mktemp -d -t "${1:-$(zid)}"
+        (
+                umask 077; set -C
+                x="${1:-${TMPDIR:-/tmp}}/$(zid)"
+                mkdir -m 700 -- "$x" >/dev/null 2>&1 && { printf '%s\n' "$x"; exit 0; }
+                exit 1
+        )
 }
 
 # mktemp_file
 #
-# Make a temporary file path.
+# Create a temporary file.
+#
+# Upon successful completion, return an open file descriptor. Otherwise, return 1.
 #
 # Syntax:
 #
 # ```sh
-# mktemp_file
+# mktemp_file [base-directory]
 # =>  temporary file path
 # ```
 #
@@ -3130,18 +3228,45 @@ mktemp_directory() {
 #
 # ```sh
 # mktemp_file
-# => /var/folders/4f7b65122b0fb65b0fdad568a65dc97d/1d9aafac5373be95d8b4c2dece0b1197
+# => /tmp/1d9aafac5373be95d8b4c2dece0b1197
 # ```
+#
+# Example with base directory:
+#
+# ```sh
+# mktemp_file /foo/bar
+# => /foo/bar/1d9aafac5373be95d8b4c2dece0b1197
+# ```
+#
+# The base directory uses the first available `$1` or `$TMPDIR` or `/tmp`.
+# If you provide a base directory, then it must already exist and be usable.
 #
 # Immediately after you make it, create a trap to remove it:
 #
 # ```sh
-# x=mktemp_file
-# trap '{ rm -rf "$x"; }' EXIT
+# x=$(mktemp_file)
+# cleanup() { test "$x" && rm -rf -- "$x"; }
+# trap cleanup EXIT HUP INT TERM
 # ```
 #
+# ## implementation
+#
+#  See https://mywiki.wooledge.org/BashFAQ/062
+#
+# To make this work safely, we must perform an atomic file creation. The way to
+# do this in a shell script is to turn on the noclobber option (set -C) and then
+# attempt an output redirection.
+#
+# The m4 approach, although in POSIX, may not be an ideal solution in practice.
+# For example, the macOS m4 (March 2026) was too old to have the mkstemp macro.
+#
 mktemp_file() {
-        mktemp -t "${1:-$(zid)}"
+        (
+                umask 077; set -C
+                x="${1:-${TMPDIR:-/tmp}}/$(zid)"
+                ( : > "$x" ) >/dev/null 2>&1 && { printf '%s\n' "$x"; exit 0; }
+                exit 1
+        )
 }
 
 ##

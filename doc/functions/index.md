@@ -1851,39 +1851,50 @@ array_cdr "$@"
 
 ## Make temp helpers
 
-### mktemp_dir
+### mktemp_directory
 
-Make a temporary directory path.
+Create a temporary directory.
 
 Syntax:
 
 ```sh
-mktemp_dir
+mktemp_directory [base-directory]
 =>  temporary directory path
 ```
 
 Example:
 
 ```sh
-mktemp_dir
-=> /var/folders/4f7b65122b0fb65b0fdad568a65dc97d
+mktemp_directory
+=> /tmp/4f7b65122b0fb65b0fdad568a65dc97d
 ```
+
+Example with base directory:
+
+```sh
+mktemp_directory /foo/bar
+=> /foo/bar/4f7b65122b0fb65b0fdad568a65dc97d
+```
+
+The base directory uses the first available `$1` or `$TMPDIR` or `/tmp`.
+If you provide a base directory, then it must already exist and be usable.
 
 Immediately after you make it, create a trap to remove it:
 
 ```sh
-x=mktemp_directory
-trap '{ rm -rf "$x"; }' EXIT
+x=$(mktemp_directory)
+cleanup() { test "$x" && rm -rf -- "$x"; }
+trap cleanup EXIT HUP INT TERM
 ```
 
 ### mktemp_file
 
-Make a temporary file path.
+Create a temporary file.
 
 Syntax:
 
 ```sh
-mktemp_file
+mktemp_file [base-directory]
 =>  temporary file path
 ```
 
@@ -1891,14 +1902,25 @@ Example:
 
 ```sh
 mktemp_file
-=> /var/folders/4f7b65122b0fb65b0fdad568a65dc97d/1d9aafac5373be95d8b4c2dece0b1197
+=> /tmp/1d9aafac5373be95d8b4c2dece0b1197
 ```
+
+Example with base directory:
+
+```sh
+mktemp_file /foo/bar
+=> /foo/bar/1d9aafac5373be95d8b4c2dece0b1197
+```
+
+The base directory uses the first available `$1` or `$TMPDIR` or `/tmp`.
+If you provide a base directory, then it must already exist and be usable.
 
 Immediately after you make it, create a trap to remove it:
 
 ```sh
-x=mktemp_file
-trap '{ rm -rf "$x"; }' EXIT
+x=$(mktemp_file)
+cleanup() { test "$x" && rm -rf -- "$x"; }
+trap cleanup EXIT HUP INT TERM
 ```
 
 ## Media helpers

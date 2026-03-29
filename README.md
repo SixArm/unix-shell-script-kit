@@ -52,96 +52,96 @@ Overview of the functions, color codes, exit codes, and assert testing. For more
 
 Functions:
 
-- color -> true or false
-- out <message> -> message
-- err <message> -> message
-- die <code> <message>
-- big <message>
-- zid -> <32-bit secure random lowercase hex identifier>
-- ask -> <prompt>
-- utf8 -> true or false
-- print_success <message>
-- print_warning <message>
-- print_failure <message>
-- now -> <datetime as our preferred ISO format>
-- now_date -> <date as our preferred ISO format>
-- sec -> <current time as posix sections>
-- age <epoch> -> <difference in seconds between epoch and now>
-- age_lt <epoch> <seconds> -> true or false
-- age_gt <epoch> <seconds> -> true or false
-- leap_year <year> -> true or false
-- datetime_mday_max <datetime | yyyy-mm\*> -> true or false
-- datetime_format_for_at_command <datetime> -> <yyyymmdddhhmm.ss>
-- datetime_format_for_pmset_command <datetime> -> <mm/dd/yy hh:mm:ss>
-- datetime_add <datetime> <years> <months> <days> <hours> <minutes> <seconds> -> <datetime>
-- directory_exists <directory_path> -> true or false
-- directory_exists_or_err <directory_path> -> true or err
-- directory_exists_or_die <directory_path> -> true or die
-- file_exists <file_path> -> true or false
-- file_exists_or_err <file_path> -> true or err
-- file_exists_or_die <file_path> -> true or die
-- symlink_exists <symlink_path> -> true or false
-- symlink_exists_or_err <symlink_path> -> true or err
-- symlink_exists_or_die <symlink_path> -> true or die
-- command_exists <command_name> -> true or false
-- command_exists_or_err <command_name> -> true or err
-- command_exists_or_die <command_name> -> true or die
-- command_version_exists <command_name> <version_actual> <version_minimum> -> true or false
-- command_version_exists_or_err <command_name> <version_actual> <version_minimum> -> true or err
-- command_version_exists_or_die <command_name> <version_actual> <version_minimum> -> true or die
-- var_exists <var_name> -> true or false
-- var_exists_or_err <var_name> -> true or err
-- var_exists_or_die <var_name> -> true or die
-- version <version_actual> <version_minimum> -> true or false
-- version_or_err <version_actual> <version_minimum> -> true or err
-- version_or_die <version_actual> <version_minimum> -> true or die
-- int <number_string> -> integer
-- sum <number> ... -> sum of numbers
-- cmp_alnums <alnum_string> <alnum_string> -> 0 or -1 or 1
-- cmp_digits <digits_string> <digits_string> -> 0 or -1 or 1
-- dot_all <directory_path> -> source all executable files
-- run_all <directory_path> -> run all executable files
-- sh_all <directory_path> -> shell all executable files
-- rm_all <directory_path> -> remove all files
-- trim <string> -> string without leading/trailing spaces
-- slug <string> -> string with solely lowercase and single internal dash characters
-- slugs <string> -> string with solely lowercase and single internal dash characters and slash characters
-- upper_case <string> -> string with uppercase not lowercase
-- lower_case <string> -> string with lowercase nor uppercase
-- kebab_case <string> -> string with solely alphanumeric and single internal dash characters
-- snake_case <string> -> string with solely alphanumeric and single internal underscore characters
-- space_case <string> -> string with solely solely alphanumeric and single internal space characters
-- touch_case <string> -> string with solely a command "touch -t" timestamp format
-- select_character_class <string> <class> [offset [length]] -> selected characters
-- reject_character_class <string> <class> [offset [length]] -> rejected characters
-- random_char [characters [length]] -> random characters
-- random_char_alnum [length] -> random characters in class [:alnum:]
-- random_char_alpha [length] -> random characters in class [:alpha:]
-- random_char_blank [length] -> random characters in class [:blank:]
-- random_char_cntrl [length] -> random characters in class [:cntrl:]
-- random_char_digit [length] -> random characters in class [:digit:]
-- random_char_graph [length] -> random characters in class [:graph:]
-- random_char_lower [length] -> random characters in class [:lower:]
-- random_char_lower_digit [length] -> random characters in classes [:lower:][:digit]
-- random_char_upper [length] -> random characters in class [:upper:]
-- random_char_upper_digit [length] -> random characters in classes [:upper:][:digit]
-- random_char_space [length] -> random characters in class [:space:]
-- random_char_xdigit [length] -> random characters in class [:xdigit:]
-- array_n <array> -> number of fields
-- array_i <array> <index> -> array element at index
-- array_first <array> -> array first element
-- array_last <array> -> array last element
-- array_car <array> -> array car element
-- array_cdr <array> -> array cdr elements
-- mktemp_dir -> temporary directory path
-- mktemp_file -> temporary file path
-- file_media_type <file_path> -> media type
-- file_media_type_supertype <file_path> -> media type supertype
-- file_media_type_subtype <file_path> -> media type subtype
-- font_name_exists <font_name> -> true or false
-- font_name_exists_or_die <font_name> -> true or die
-- file_ends_with_newline <file_path> -> true or false
-- user_dir <directory_locator> -> directory path
+- color -&gt; true or false
+- out &lt;message&gt; -&gt; message
+- err &lt;message&gt; -&gt; message
+- die &lt;code&gt; &lt;message&gt;
+- big &lt;message&gt;
+- zid -&gt; &lt;32-bit secure random lowercase hex identifier&gt;
+- ask -&gt; &lt;prompt&gt;
+- utf8 -&gt; true or false
+- print_success &lt;message&gt;
+- print_warning &lt;message&gt;
+- print_failure &lt;message&gt;
+- now -&gt; &lt;datetime as our preferred ISO format&gt;
+- now_date -&gt; &lt;date as our preferred ISO format&gt;
+- sec -&gt; &lt;current time as posix sections&gt;
+- age &lt;epoch&gt; -&gt; &lt;difference in seconds between epoch and now&gt;
+- age_lt &lt;epoch&gt; &lt;seconds&gt; -&gt; true or false
+- age_gt &lt;epoch&gt; &lt;seconds&gt; -&gt; true or false
+- leap_year &lt;year&gt; -&gt; true or false
+- datetime_mday_max &lt;datetime | yyyy-mm\*&gt; -&gt; true or false
+- datetime_format_for_at_command &lt;datetime&gt; -&gt; &lt;yyyymmdddhhmm.ss&gt;
+- datetime_format_for_pmset_command &lt;datetime&gt; -&gt; &lt;mm/dd/yy hh:mm:ss&gt;
+- datetime_add &lt;datetime&gt; &lt;years&gt; &lt;months&gt; &lt;days&gt; &lt;hours&gt; &lt;minutes&gt; &lt;seconds&gt; -&gt; &lt;datetime&gt;
+- directory_exists &lt;directory_path&gt; -&gt; true or false
+- directory_exists_or_err &lt;directory_path&gt; -&gt; true or err
+- directory_exists_or_die &lt;directory_path&gt; -&gt; true or die
+- file_exists &lt;file_path&gt; -&gt; true or false
+- file_exists_or_err &lt;file_path&gt; -&gt; true or err
+- file_exists_or_die &lt;file_path&gt; -&gt; true or die
+- symlink_exists &lt;symlink_path&gt; -&gt; true or false
+- symlink_exists_or_err &lt;symlink_path&gt; -&gt; true or err
+- symlink_exists_or_die &lt;symlink_path&gt; -&gt; true or die
+- command_exists &lt;command_name&gt; -&gt; true or false
+- command_exists_or_err &lt;command_name&gt; -&gt; true or err
+- command_exists_or_die &lt;command_name&gt; -&gt; true or die
+- command_version_exists &lt;command_name&gt; &lt;version_actual&gt; &lt;version_minimum&gt; -&gt; true or false
+- command_version_exists_or_err &lt;command_name&gt; &lt;version_actual&gt; &lt;version_minimum&gt; -&gt; true or err
+- command_version_exists_or_die &lt;command_name&gt; &lt;version_actual&gt; &lt;version_minimum&gt; -&gt; true or die
+- var_exists &lt;var_name&gt; -&gt; true or false
+- var_exists_or_err &lt;var_name&gt; -&gt; true or err
+- var_exists_or_die &lt;var_name&gt; -&gt; true or die
+- version &lt;version_actual&gt; &lt;version_minimum&gt; -&gt; true or false
+- version_or_err &lt;version_actual&gt; &lt;version_minimum&gt; -&gt; true or err
+- version_or_die &lt;version_actual&gt; &lt;version_minimum&gt; -&gt; true or die
+- int &lt;number_string&gt; -&gt; integer
+- sum &lt;number&gt; ... -&gt; sum of numbers
+- cmp_alnums &lt;alnum_string&gt; &lt;alnum_string&gt; -&gt; 0 or -1 or 1
+- cmp_digits &lt;digits_string&gt; &lt;digits_string&gt; -&gt; 0 or -1 or 1
+- dot_all &lt;directory_path&gt; -&gt; source all executable files
+- run_all &lt;directory_path&gt; -&gt; run all executable files
+- sh_all &lt;directory_path&gt; -&gt; shell all executable files
+- rm_all &lt;directory_path&gt; -&gt; remove all files
+- trim &lt;string&gt; -&gt; string without leading/trailing spaces
+- slug &lt;string&gt; -&gt; string with solely lowercase and single internal dash characters
+- slugs &lt;string&gt; -&gt; string with solely lowercase and single internal dash characters and slash characters
+- upper_case &lt;string&gt; -&gt; string with uppercase not lowercase
+- lower_case &lt;string&gt; -&gt; string with lowercase nor uppercase
+- kebab_case &lt;string&gt; -&gt; string with solely alphanumeric and single internal dash characters
+- snake_case &lt;string&gt; -&gt; string with solely alphanumeric and single internal underscore characters
+- space_case &lt;string&gt; -&gt; string with solely solely alphanumeric and single internal space characters
+- touch_case &lt;string&gt; -&gt; string with solely a command "touch -t" timestamp format
+- select_character_class &lt;string&gt; &lt;class&gt; [offset [length]] -&gt; selected characters
+- reject_character_class &lt;string&gt; &lt;class&gt; [offset [length]] -&gt; rejected characters
+- random_char [characters [length]] -&gt; random characters
+- random_char_alnum [length] -&gt; random characters in class [:alnum:]
+- random_char_alpha [length] -&gt; random characters in class [:alpha:]
+- random_char_blank [length] -&gt; random characters in class [:blank:]
+- random_char_cntrl [length] -&gt; random characters in class [:cntrl:]
+- random_char_digit [length] -&gt; random characters in class [:digit:]
+- random_char_graph [length] -&gt; random characters in class [:graph:]
+- random_char_lower [length] -&gt; random characters in class [:lower:]
+- random_char_lower_digit [length] -&gt; random characters in classes [:lower:][:digit]
+- random_char_upper [length] -&gt; random characters in class [:upper:]
+- random_char_upper_digit [length] -&gt; random characters in classes [:upper:][:digit]
+- random_char_space [length] -&gt; random characters in class [:space:]
+- random_char_xdigit [length] -&gt; random characters in class [:xdigit:]
+- array_n &lt;array&gt; -&gt; number of fields
+- array_i &lt;array&gt; &lt;index&gt; -&gt; array element at index
+- array_first &lt;array&gt; -&gt; array first element
+- array_last &lt;array&gt; -&gt; array last element
+- array_car &lt;array&gt; -&gt; array car element
+- array_cdr &lt;array&gt; -&gt; array cdr elements
+- mktemp_directory -&gt; temporary directory path
+- mktemp_file -&gt; temporary file path
+- file_media_type &lt;file_path&gt; -&gt; media type
+- file_media_type_supertype &lt;file_path&gt; -&gt; media type supertype
+- file_media_type_subtype &lt;file_path&gt; -&gt; media type subtype
+- font_name_exists &lt;font_name&gt; -&gt; true or false
+- font_name_exists_or_die &lt;font_name&gt; -&gt; true or die
+- file_ends_with_newline &lt;file_path&gt; -&gt; true or false
+- user_dir &lt;directory_locator&gt; -&gt; directory path
 
 Color codes:
 
@@ -241,9 +241,9 @@ Assert testing:
 ## Tracking
 
 - Package: unix-shell-script-kit
-- Version: 13.2.0
+- Version: 13.2.1
 - Created: 2017-08-22T00:00:00Z
-- Updated: 2026-03-08T12:45:01Z
+- Updated: 2026-03-29T22:23:51Z
 - Website: https://github.com/sixarm/unix-shell-script-kit
 - License: GPL-2.0 or GPL-3.0 or contact us for more
 - Contact: Joel Parker Henderson (joel@sixarm.com)

@@ -95,8 +95,8 @@ Functions:
 - array_last <array> -> array last element
 - array_car <array> -> array car element
 - array_cdr <array> -> array cdr elements
-- mktemp_dir ->  temporary directory path
-- mktemp_file ->  temporary file path
+- mktemp_directory [base-directory] -> temporary directory path
+- mktemp_file [base-directory] -> temporary file path
 - file_media_type <file_path> -> media type
 - file_media_type_supertype <file_path> -> media type supertype
 - file_media_type_subtype <file_path> -> media type subtype

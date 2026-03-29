@@ -51,9 +51,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 13.2.0
+#   * Version: 13.2.1
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2026-03-08T12:45:01Z
+#   * Updated: 2026-03-29T22:23:51Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -3161,43 +3161,66 @@ array_cdr() {
 # Make temp helpers
 ##
 
-# mktemp_dir
+# mktemp_directory
 #
-# Make a temporary directory path.
+# Create a temporary directory.
 #
 # Syntax:
 #
 # ```sh
-# mktemp_dir
+# mktemp_directory [base-directory]
 # =>  temporary directory path
 # ```
 #
 # Example:
 #
 # ```sh
-# mktemp_dir
-# => /var/folders/4f7b65122b0fb65b0fdad568a65dc97d
+# mktemp_directory
+# => /tmp/4f7b65122b0fb65b0fdad568a65dc97d
 # ```
+#
+# Example with base directory:
+#
+# ```sh
+# mktemp_directory /foo/bar
+# => /foo/bar/4f7b65122b0fb65b0fdad568a65dc97d
+# ```
+#
+# The base directory uses the first available `$1` or `$TMPDIR` or `/tmp`.
+# If you provide a base directory, then it must already exist and be usable.
+# 
+# The mkdir command is atomic, and only reports success if it actually creates
+# the directory. So long as we do not use the -p option, we can be assured that
+# it actually creates a brand new directory, rather than following a symlink to
+# danger.
 #
 # Immediately after you make it, create a trap to remove it:
 #
 # ```sh
-# x=mktemp_directory
-# trap '{ rm -rf "$x"; }' EXIT
+# x=$(mktemp_directory)
+# cleanup() { test "$x" && rm -rf -- "$x"; }
+# trap cleanup EXIT HUP INT TERM 
 # ```
 #
 mktemp_directory() {
-        mktemp -d -t "${1:-$(zid)}"
+        (
+                umask 077; set -C
+                x="${1:-${TMPDIR:-/tmp}}/$(zid)"
+                mkdir -m 700 -- "$x" >/dev/null 2>&1 && { printf '%s\n' "$x"; exit 0; }
+                exit 1
+        )
 }
 
 # mktemp_file
 #
-# Make a temporary file path.
+# Create a temporary file.
+#
+# Upon successful completion, return an open file descriptor. Otherwise, return 1.
 #
 # Syntax:
 #
 # ```sh
-# mktemp_file
+# mktemp_file [base-directory]
 # =>  temporary file path
 # ```
 #
@@ -3205,18 +3228,45 @@ mktemp_directory() {
 #
 # ```sh
 # mktemp_file
-# => /var/folders/4f7b65122b0fb65b0fdad568a65dc97d/1d9aafac5373be95d8b4c2dece0b1197
+# => /tmp/1d9aafac5373be95d8b4c2dece0b1197
 # ```
+#
+# Example with base directory:
+#
+# ```sh
+# mktemp_file /foo/bar
+# => /foo/bar/1d9aafac5373be95d8b4c2dece0b1197
+# ```
+#
+# The base directory uses the first available `$1` or `$TMPDIR` or `/tmp`.
+# If you provide a base directory, then it must already exist and be usable.
 #
 # Immediately after you make it, create a trap to remove it:
 #
 # ```sh
-# x=mktemp_file
-# trap '{ rm -rf "$x"; }' EXIT
+# x=$(mktemp_file)
+# cleanup() { test "$x" && rm -rf -- "$x"; }
+# trap cleanup EXIT HUP INT TERM 
 # ```
 #
+# ## implementation
+# 
+#  See https://mywiki.wooledge.org/BashFAQ/062
+#
+# To make this work safely, we must perform an atomic file creation. The way to
+# do this in a shell script is to turn on the noclobber option (set -C) and then
+# attempt an output redirection.
+# 
+# The m4 approach, although in POSIX, may not be an ideal solution in practice.
+# For example, the macOS m4 (March 2026) was too old to have the mkstemp macro.
+# 
 mktemp_file() {
-        mktemp -t "${1:-$(zid)}"
+        (
+                umask 077; set -C
+                x="${1:-${TMPDIR:-/tmp}}/$(zid)"
+                ( : > "$x" ) >/dev/null 2>&1 && { printf '%s\n' "$x"; exit 0; }
+                exit 1
+        )
 }
 
 ##
