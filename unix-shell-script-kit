@@ -51,9 +51,9 @@
 # ## Tracking
 #
 #   * Package: unix-shell-script-kit
-#   * Version: 13.2.1
+#   * Version: 13.3.0
 #   * Created: 2017-08-22T00:00:00Z
-#   * Updated: 2026-03-29T22:23:51Z
+#   * Updated: 2026-04-22T06:41:37Z
 #   * License: GPL-2.0 or GPL-3.0 or contact us for more
 #   * Website: https://github.com/sixarm/unix-shell-script-kit
 #   * Contact: Joel Parker Henderson (joel@sixarm.com)
@@ -1658,7 +1658,7 @@ file_exists_or_err() {
 # ```
 #
 file_exists_or_die() {
-        file_exists "$1" || err "File must exist: $1"
+        file_exists "$1" || die "$EXIT_IOERR" "File must exist: $1"
 }
 
 # file_not_empty
@@ -2116,6 +2116,82 @@ version_or_err() {
 #
 version_or_die() {
         version "$1" "$2" || die "$EXIT_CONFIG" "Version $1 must be >= $2"
+}
+
+# grep_exists
+#
+# Does a grep exist?
+#
+# Syntax:
+#
+# ```sh
+# grep_exists [args]
+# => true or false
+# ```
+#
+# Example:
+#
+# ```sh
+# grep_exists alfa foo.txt
+# => true
+#
+# grep_exists alfa loremipsum.txt
+# => false
+# ```
+#
+grep_exists() {
+       grep -q -m 1 "$@"
+}
+
+# grep_exists_or_err
+#
+# Does a grep exist? If no then err.
+#
+# Syntax:
+#
+# ```sh
+# grep_exists_or_err [args]
+# => true or err
+# ```
+#
+# Example:
+#
+# ```sh
+# grep_exists_or_err alfa foo.txt
+# => true
+#
+# grep_exists_or_err alfa loremipsum.txt
+# STDERR=> grep should exist: alfa loremipsum.txt
+# ```
+#
+grep_exists_or_err() {
+        grep_exists "$@" || err "grep should exist: " "$@"
+}
+
+# grep_exists_or_die
+#
+# Does a grep exist? If no then die.
+#
+# Syntax:
+#
+# ```sh
+# grep_exists_or_die [args]
+# => true or die
+# ```
+#
+# Example:
+#
+# ```sh
+# grep_exists_or_die alfa foo.txt
+# => true
+#
+# grep_exists_or_die alfa loremipsum.txt
+# STDERR=> grep must exist: alfa loremipsum.txt
+# EXIT=> $EXIT_IOERR
+# ```
+#
+grep_exists_or_die() {
+        grep_exists "$@" || err "grep must exist: " "$@"
 }
 
 ##
